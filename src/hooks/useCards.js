@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
-import { sampleCards } from '../utils/sampleCards';
+import { generateAllFlashcards } from '../data/generateFlashcards';
 
 export function useCards() {
   const [cards, setCards] = useState([]);
@@ -15,10 +15,11 @@ export function useCards() {
     try {
       let loadedCards = await storage.getCards();
 
-      // Load sample cards if empty
+      // Load comprehensive NFL flashcards if empty
       if (loadedCards.length === 0) {
-        loadedCards = sampleCards.map(sample =>
-          createCard(sample.question, sample.answer, sample.tags)
+        const flashcards = generateAllFlashcards();
+        loadedCards = flashcards.map(card =>
+          createCard(card.question, card.answer, card.tags)
         );
         await storage.saveCards(loadedCards);
       }
