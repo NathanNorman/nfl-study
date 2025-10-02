@@ -4,16 +4,12 @@
  */
 
 export const intermediatePlayerCards = [
-  // Statistical Knowledge
-  { question: "How many rushing yards did Saquon Barkley have in 2024?", answer: "2,005 yards", tags: ["INTERMEDIATE", "RB", "2024", "Stats"], difficulty: "intermediate" },
-  { question: "How many passing yards did Joe Burrow have in 2024?", answer: "4,918 yards", tags: ["INTERMEDIATE", "QB", "2024", "Stats"], difficulty: "intermediate" },
-  { question: "How many receiving yards did Ja'Marr Chase have in 2024?", answer: "1,708 yards", tags: ["INTERMEDIATE", "WR", "2024", "Stats"], difficulty: "intermediate" },
-
   // Player Comparisons
-  { question: "Who had more fantasy points in 2024: Josh Allen or Lamar Jackson?", answer: "Lamar Jackson (led all QBs)", tags: ["INTERMEDIATE", "QB", "Fantasy", "2024"], difficulty: "intermediate" },
   { question: "Who was closer to 2024 MVP: Lamar Jackson or Patrick Mahomes?", answer: "Lamar Jackson (362 points vs Mahomes not in top 2)", tags: ["INTERMEDIATE", "QB", "MVP"], difficulty: "intermediate" },
 
-  // Team Context
+  // Team Context & Handcuffs
+  { question: "What is a 'handcuff' in fantasy football?", answer: "A backup RB you draft to protect your starter. If your RB1 gets injured, the handcuff becomes the starter and has immediate value.", tags: ["INTERMEDIATE", "RB", "Handcuff", "Strategy"], difficulty: "intermediate" },
+  { question: "Why are handcuffs important in fantasy football?", answer: "RB injuries are common. Owning the backup means you keep the team's rushing production even if your starter goes down.", tags: ["INTERMEDIATE", "RB", "Handcuff", "Strategy"], difficulty: "intermediate" },
   { question: "Which Lions player should you handcuff if you own Jahmyr Gibbs?", answer: "David Montgomery (shares backfield)", tags: ["INTERMEDIATE", "RB", "Handcuff"], difficulty: "intermediate" },
   { question: "Who is the Eagles' RB after Saquon Barkley?", answer: "Kenneth Gainwell (handcuff)", tags: ["INTERMEDIATE", "RB", "Eagles"], difficulty: "intermediate" },
 

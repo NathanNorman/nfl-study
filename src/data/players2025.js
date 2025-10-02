@@ -27,7 +27,6 @@ export const players2025 = {
       name: "Joe Burrow",
       team: "Cincinnati Bengals",
       cards: [
-        { q: "Who led the NFL in passing yards in 2024?", a: "Joe Burrow - 4,918 yards", tags: ["QB", "2024", "Passing-Leader"] },
         { q: "Why is Joe Burrow's 2025 outlook elite?", a: "Elite passing volume with Ja'Marr Chase connection", tags: ["QB", "2025", "Elite"] }
       ]
     },
@@ -73,7 +72,6 @@ export const players2025 = {
       name: "Saquon Barkley",
       team: "Philadelphia Eagles",
       cards: [
-        { q: "How many rushing yards did Saquon Barkley have in 2024?", a: "2,005 yards (league leader)", tags: ["RB", "2024", "Rushing-Leader"] },
         { q: "What award did Saquon Barkley win for 2024?", a: "AP Offensive Player of the Year", tags: ["RB", "2024", "OPOY"] },
         { q: "What championship did Saquon Barkley win?", a: "Super Bowl LIX with Philadelphia Eagles", tags: ["RB", "2025", "Champion"] },
         { q: "What's Saquon Barkley's 2025 fantasy ranking?", a: "Consensus #1 RB overall", tags: ["RB", "2025", "Elite"] }
@@ -120,7 +118,6 @@ export const players2025 = {
       cards: [
         { q: "What is the Receiving Triple Crown?", a: "Leading NFL in receptions, receiving yards, and receiving TDs", tags: ["WR", "Triple-Crown"] },
         { q: "Who won the 2024 Receiving Triple Crown?", a: "Ja'Marr Chase (Cincinnati Bengals)", tags: ["WR", "2024", "Triple-Crown"] },
-        { q: "How many receiving yards did Ja'Marr Chase have in 2024?", a: "1,708 yards (league leader)", tags: ["WR", "2024"] },
         { q: "What's Ja'Marr Chase's 2025 draft position?", a: "#1 overall pick in many expert drafts", tags: ["WR", "2025", "Elite", "First-Pick"] }
       ]
     },

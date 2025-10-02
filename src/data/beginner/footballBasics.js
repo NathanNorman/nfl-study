@@ -5,15 +5,14 @@
 
 export const footballBasics = [
   // Game Structure
-  { question: "How many quarters are in an NFL game?", answer: "4 quarters", tags: ["BEGINNER", "Rules", "Game-Structure"], difficulty: "beginner" },
-  { question: "How long is each quarter in an NFL game?", answer: "15 minutes", tags: ["BEGINNER", "Rules", "Game-Structure"], difficulty: "beginner" },
   { question: "How long is halftime in an NFL game?", answer: "12 minutes", tags: ["BEGINNER", "Rules", "Game-Structure"], difficulty: "beginner" },
 
   // Scoring
   { question: "How many points is a touchdown worth?", answer: "6 points", tags: ["BEGINNER", "Scoring", "Touchdown"], difficulty: "beginner" },
   { question: "How many points is a field goal worth?", answer: "3 points", tags: ["BEGINNER", "Scoring", "Field-Goal"], difficulty: "beginner" },
-  { question: "How many points is an extra point (PAT) worth?", answer: "1 point", tags: ["BEGINNER", "Scoring", "Extra-Point"], difficulty: "beginner" },
-  { question: "How many points is a 2-point conversion worth?", answer: "2 points", tags: ["BEGINNER", "Scoring", "Two-Point"], difficulty: "beginner" },
+  { question: "What is a PAT (Point After Touchdown)?", answer: "An extra point kick after a touchdown, worth 1 point. Also called an 'extra point'.", tags: ["BEGINNER", "Scoring", "Extra-Point", "PAT"], difficulty: "beginner" },
+  { question: "How many points is a PAT (extra point) worth?", answer: "1 point", tags: ["BEGINNER", "Scoring", "Extra-Point", "PAT"], difficulty: "beginner" },
+  { question: "What is a 2-point conversion?", answer: "Instead of kicking a PAT, the team runs or passes from the 2-yard line. If successful, they score 2 points instead of 1.", tags: ["BEGINNER", "Scoring", "Two-Point"], difficulty: "beginner" },
   { question: "How many points is a safety worth?", answer: "2 points (awarded to defense)", tags: ["BEGINNER", "Scoring", "Safety"], difficulty: "beginner" },
   { question: "What's the most points you can score on one play?", answer: "6 points (touchdown)", tags: ["BEGINNER", "Scoring"], difficulty: "beginner" },
 
@@ -38,7 +37,6 @@ export const footballBasics = [
 
   // Basic Field
   { question: "How long is a football field?", answer: "100 yards (plus two 10-yard end zones)", tags: ["BEGINNER", "Field"], difficulty: "beginner" },
-  { question: "What are the end zones?", answer: "10-yard areas at each end where touchdowns are scored", tags: ["BEGINNER", "Field", "Touchdown"], difficulty: "beginner" },
   { question: "What's the 50-yard line called?", answer: "Midfield", tags: ["BEGINNER", "Field"], difficulty: "beginner" },
   { question: "What's the 'red zone'?", answer: "Inside the opponent's 20-yard line", tags: ["BEGINNER", "Field", "Red-Zone"], difficulty: "beginner" },
 
@@ -54,9 +52,7 @@ export const footballBasics = [
   { question: "What's a 'turnover'?", answer: "When the ball changes possession (INT or fumble)", tags: ["BEGINNER", "Turnovers"], difficulty: "beginner" },
 
   // Basic Defense
-  { question: "What does the defense try to do?", answer: "Stop the offense from scoring and gaining yards", tags: ["BEGINNER", "Defense"], difficulty: "beginner" },
   { question: "What's a 'sack'?", answer: "When defense tackles the QB behind the line of scrimmage", tags: ["BEGINNER", "Defense", "Sack"], difficulty: "beginner" },
-  { question: "What's a 'tackle'?", answer: "Stopping the ball carrier by bringing them to the ground", tags: ["BEGINNER", "Defense"], difficulty: "beginner" },
 
   // Game Flow
   { question: "How does a team get the ball to start?", answer: "Coin toss winner chooses to receive kickoff or defer", tags: ["BEGINNER", "Game-Flow"], difficulty: "beginner" },
@@ -66,15 +62,12 @@ export const footballBasics = [
   // Penalties (Basic)
   { question: "What's a 'false start'?", answer: "Offensive player moves before the snap (5-yard penalty)", tags: ["BEGINNER", "Penalties"], difficulty: "beginner" },
   { question: "What's 'holding'?", answer: "Illegally grabbing a player to block them (10-yard penalty)", tags: ["BEGINNER", "Penalties"], difficulty: "beginner" },
-  { question: "What's 'pass interference'?", answer: "Illegally preventing receiver from catching ball", tags: ["BEGINNER", "Penalties"], difficulty: "beginner" }
+  { question: "What is 'pass interference'?", answer: "A penalty called when a defender makes illegal contact with a receiver who is trying to catch a pass. This includes grabbing, pushing, or hitting the receiver before the ball arrives.", tags: ["BEGINNER", "Penalties", "Pass-Interference"], difficulty: "beginner" },
+  { question: "What's the penalty for pass interference?", answer: "Automatic first down at the spot of the foul (in NFL). Can be a game-changing penalty.", tags: ["BEGINNER", "Penalties", "Pass-Interference"], difficulty: "beginner" }
 ];
 
 export const positionBasics = [
   // Offensive Positions
-  { question: "What position is abbreviated QB?", answer: "Quarterback", tags: ["BEGINNER", "Positions", "QB"], difficulty: "beginner" },
-  { question: "What position is abbreviated RB?", answer: "Running Back", tags: ["BEGINNER", "Positions", "RB"], difficulty: "beginner" },
-  { question: "What position is abbreviated WR?", answer: "Wide Receiver", tags: ["BEGINNER", "Positions", "WR"], difficulty: "beginner" },
-  { question: "What position is abbreviated TE?", answer: "Tight End", tags: ["BEGINNER", "Positions", "TE"], difficulty: "beginner" },
   { question: "What does the quarterback do?", answer: "Throws passes and hands off to running backs", tags: ["BEGINNER", "Positions", "QB"], difficulty: "beginner" },
   { question: "What does a running back do?", answer: "Runs with the ball and catches passes", tags: ["BEGINNER", "Positions", "RB"], difficulty: "beginner" },
   { question: "What does a wide receiver do?", answer: "Catches passes from the quarterback", tags: ["BEGINNER", "Positions", "WR"], difficulty: "beginner" },
@@ -84,7 +77,7 @@ export const positionBasics = [
   { question: "What's a cornerback (CB)?", answer: "Defender who covers wide receivers", tags: ["BEGINNER", "Positions", "Defense", "CB"], difficulty: "beginner" },
   { question: "What's a safety (S)?", answer: "Defensive back who plays deep to prevent big plays", tags: ["BEGINNER", "Positions", "Defense", "Safety"], difficulty: "beginner" },
   { question: "What's a linebacker (LB)?", answer: "Defender who can rush QB, cover passes, and stop runs", tags: ["BEGINNER", "Positions", "Defense", "LB"], difficulty: "beginner" },
-  { question: "What does the defensive line do?", answer: "Rush the QB and stop running plays", tags: ["BEGINNER", "Positions", "Defense", "D-Line"], difficulty: "beginner" }
+  { question: "What are the main jobs of the defensive line?", answer: "1) Rush the passer to sack the QB, 2) Stop running plays at the line of scrimmage, 3) Occupy blockers to free up linebackers", tags: ["BEGINNER", "Positions", "Defense", "D-Line"], difficulty: "beginner" }
 ];
 
 export const formationBasics = [

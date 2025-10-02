@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateFlashcardsByDifficulty } from '../data/generateByDifficulty';
+import { groupAndShuffleByCategory } from '../utils/shuffle';
 
 export function useCards() {
   const [cards, setCards] = useState([]);
@@ -96,11 +97,18 @@ export function useCards() {
   function getDueCards() {
     const due = cards.filter(isDue);
     console.log('🔍 [getDueCards] Found', due.length, 'due cards out of', cards.length, 'total');
-    return due;
+    // Group by category and shuffle within categories
+    const grouped = groupAndShuffleByCategory(due);
+    console.log('🔍 [getDueCards] Grouped and shuffled into categories');
+    return grouped;
   }
 
   function getCardsByDifficulty(difficulty) {
-    return cards.filter(card => card.difficulty === difficulty);
+    const filtered = cards.filter(card => card.difficulty === difficulty);
+    // Group by category and shuffle within categories
+    const grouped = groupAndShuffleByCategory(filtered);
+    console.log('🔍 [getCardsByDifficulty] Grouped and shuffled', filtered.length, 'cards');
+    return grouped;
   }
 
   function getStats() {

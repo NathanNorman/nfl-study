@@ -29,6 +29,14 @@ export default function Header() {
             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
             <span>FSRS Algorithm</span>
           </div>
+          <a
+            href="/debug.html"
+            className="flex items-center gap-2 glass px-4 py-2 rounded-full hover:bg-purple-500/20 transition-colors"
+            title="Debug Mode - Review all cards"
+          >
+            <span>🐛</span>
+            <span>Debug Mode</span>
+          </a>
         </div>
       </div>
     </header>

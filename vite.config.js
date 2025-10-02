@@ -12,7 +12,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        mcq: resolve(__dirname, 'mcq.html')
+        mcq: resolve(__dirname, 'mcq.html'),
+        debug: resolve(__dirname, 'debug.html')
       }
     }
   }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateMCQByDifficulty } from '../data/mcq/generateMCQByDifficulty';
+import { groupAndShuffleByCategory, shuffleArray } from '../utils/shuffle';
 
 export function useMCQ() {
   const [cards, setCards] = useState([]);
@@ -83,7 +84,13 @@ export function useMCQ() {
   function getDueCards() {
     const due = cards.filter(isDue);
     console.log('🔍 [useMCQ.getDueCards] Found', due.length, 'due MCQ cards');
-    return due;
+    // Group by category and shuffle within categories
+    const grouped = groupAndShuffleByCategory(due);
+    // Shuffle answer choices for each card
+    return grouped.map(card => ({
+      ...card,
+      options: shuffleArray(card.options)
+    }));
   }
 
   function getCardsByDifficulty(difficulty, onlyDue = false) {
@@ -91,12 +98,25 @@ export function useMCQ() {
     if (onlyDue) {
       filtered = filtered.filter(isDue);
     }
-    return filtered;
+    // Group by category and shuffle within categories
+    const grouped = groupAndShuffleByCategory(filtered);
+    // Shuffle answer choices for each card
+    return grouped.map(card => ({
+      ...card,
+      options: shuffleArray(card.options)
+    }));
   }
 
   function getAllCardsByDifficulty(difficulty) {
     // Get all cards regardless of due date (for review mode)
-    return cards.filter(card => card.difficulty === difficulty);
+    const filtered = cards.filter(card => card.difficulty === difficulty);
+    // Group by category and shuffle within categories
+    const grouped = groupAndShuffleByCategory(filtered);
+    // Shuffle answer choices for each card
+    return grouped.map(card => ({
+      ...card,
+      options: shuffleArray(card.options)
+    }));
   }
 
   function getStats() {
