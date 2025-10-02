@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
-import { generateAllFlashcards } from '../data/generateFlashcards';
+import { generateFlashcardsByDifficulty } from '../data/generateByDifficulty';
 
 export function useCards() {
   const [cards, setCards] = useState([]);
@@ -21,14 +21,24 @@ export function useCards() {
       // Load comprehensive NFL flashcards if empty
       if (loadedCards.length === 0) {
         console.log('🔍 [loadCards] No cards in storage. Generating flashcards...');
-        const flashcards = generateAllFlashcards();
+        const organized = generateFlashcardsByDifficulty();
+        const flashcards = organized.all;
         console.log('🔍 [loadCards] Generated', flashcards.length, 'flashcards');
+        console.log('🔍 [loadCards] Difficulty breakdown:', {
+          beginner: organized.beginner.count,
+          intermediate: organized.intermediate.count,
+          advanced: organized.advanced.count
+        });
         console.log('🔍 [loadCards] First flashcard:', flashcards[0]);
 
         console.log('🔍 [loadCards] Converting to FSRS cards...');
-        loadedCards = flashcards.map(card =>
-          createCard(card.question, card.answer, card.tags)
-        );
+        loadedCards = flashcards.map(card => {
+          const fsrsCard = createCard(card.question, card.answer, card.tags);
+          return {
+            ...fsrsCard,
+            difficulty: card.difficulty || 'intermediate'
+          };
+        });
         console.log('🔍 [loadCards] Converted to', loadedCards.length, 'FSRS cards');
         console.log('🔍 [loadCards] First FSRS card:', loadedCards[0]);
 

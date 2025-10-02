@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
-import { generateAllMCQ } from '../data/mcq/generateMCQ';
+import { generateMCQByDifficulty } from '../data/mcq/generateMCQByDifficulty';
 
 export function useMCQ() {
   const [cards, setCards] = useState([]);
@@ -21,8 +21,14 @@ export function useMCQ() {
       // Load MCQ flashcards if empty
       if (!loadedCards || loadedCards.length === 0) {
         console.log('🔍 [useMCQ.loadCards] No MCQ cards in storage. Generating...');
-        const mcqQuestions = generateAllMCQ();
+        const organized = generateMCQByDifficulty();
+        const mcqQuestions = organized.all;
         console.log('🔍 [useMCQ.loadCards] Generated', mcqQuestions.length, 'MCQ questions');
+        console.log('🔍 [useMCQ.loadCards] Difficulty breakdown:', {
+          beginner: organized.beginner.count,
+          intermediate: organized.intermediate.count,
+          advanced: organized.advanced.count
+        });
 
         // Convert MCQ to FSRS cards
         loadedCards = mcqQuestions.map(mcq => {
@@ -31,6 +37,7 @@ export function useMCQ() {
             ...fsrsCard,
             options: mcq.options,
             correctAnswer: mcq.correctAnswer,
+            difficulty: mcq.difficulty || 'intermediate',
             type: 'mcq'
           };
         });

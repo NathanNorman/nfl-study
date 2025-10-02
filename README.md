@@ -64,18 +64,44 @@ The FSRS algorithm optimizes your study schedule based on your ratings.
 
 ## Content Database
 
-The app includes comprehensive 2024-2025 NFL content:
-- **45+ Players** across QB, RB, WR, TE positions
-- **40+ Strategy Concepts** covering draft, waiver wire, playoffs
-- **20+ Team/Defense Cards** including Super Bowl LIX results
-- **200+ Total Flashcards** with accurate 2024 stats and 2025 projections
+### 🌱 Beginner Level (80+ cards)
+**Perfect if you're new to football:**
+- Basic rules (scoring, downs, game structure)
+- Position explanations (QB, RB, WR, TE, etc.)
+- Formations (Shotgun, Pistol, I-Formation)
+- Route tree basics (Routes 0-9)
+- Field zones and terminology
+- Simple turnovers and penalties
+
+### ⚡ Intermediate Level (250+ cards)
+**For fantasy players who know the basics:**
+- 2024 season stats and 2025 projections
+- All major players (QB, RB, WR, TE)
+- Fantasy strategy (draft, waiver wire, playoffs)
+- Your WPFL roster analysis
+- Team context and matchups
+- Bye week planning
+- Trade strategy
+
+### 🔥 Advanced Level (50+ cards)
+**For experienced fantasy experts:**
+- Advanced analytics (target share, snap counts, opportunity share)
+- Route tree mastery (even/odd routes, numbering system)
+- Deep draft strategy (Zero RB, auction theory)
+- Trade timing and psychology
+- Dynasty/Keeper concepts
+- Regression analysis
+- Meta-game strategy
+
+### 📊 Total: 380+ Flashcards
 
 ### Featured Content
-- Saquon Barkley's 2,005-yard season
-- Josh Allen's 2024 MVP season
-- Ja'Marr Chase's Triple Crown
-- Jayden Daniels' historic rookie season
-- Super Bowl LIX: Eagles 40, Chiefs 22
+- Josh Allen 2024 MVP (historic stat line)
+- Jayden Daniels OROY (3,500 pass + 800 rush yards)
+- Saquon Barkley 2,005-yard season + OPOY
+- Ja'Marr Chase Receiving Triple Crown
+- Super Bowl LIX: Eagles 40, Chiefs 22 (Jalen Hurts MVP)
+- Your complete WPFL roster analysis
 
 ## Future Enhancements
 

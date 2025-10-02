@@ -1,5 +1,21 @@
 import { useState, useEffect } from 'react';
 
+function DifficultyBadge({ difficulty }) {
+  const config = {
+    beginner: { color: 'from-green-500 to-emerald-500', emoji: '🌱' },
+    intermediate: { color: 'from-blue-500 to-cyan-500', emoji: '⚡' },
+    advanced: { color: 'from-red-500 to-orange-500', emoji: '🔥' }
+  };
+
+  const { color, emoji } = config[difficulty] || config.intermediate;
+
+  return (
+    <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
+      <span>{emoji} {difficulty.toUpperCase()}</span>
+    </div>
+  );
+}
+
 export default function MCQCard({ card, onAnswer }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [showResult, setShowResult] = useState(false);
@@ -33,10 +49,15 @@ export default function MCQCard({ card, onAnswer }) {
       <div className="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
         {/* Question */}
         <div className="mb-8">
-          <div className="inline-block px-4 py-2 bg-purple-500/20 rounded-full border border-purple-400/30 mb-6">
-            <span className="text-purple-300 text-sm font-semibold uppercase tracking-wider">
-              Multiple Choice
-            </span>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="inline-block px-4 py-2 bg-purple-500/20 rounded-full border border-purple-400/30">
+              <span className="text-purple-300 text-sm font-semibold uppercase tracking-wider">
+                Multiple Choice
+              </span>
+            </div>
+            {card.difficulty && (
+              <DifficultyBadge difficulty={card.difficulty} />
+            )}
           </div>
 
           <div className="text-2xl md:text-3xl leading-relaxed font-medium text-white mb-8">

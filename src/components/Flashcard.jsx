@@ -23,10 +23,15 @@ export default function Flashcard({ card, onRate }) {
         {/* Question */}
         <div className="min-h-[280px] flex items-center justify-center mb-8">
           <div className="text-center space-y-6">
-            <div className="inline-block px-4 py-2 bg-purple-500/20 rounded-full border border-purple-400/30 mb-4">
-              <span className="text-purple-300 text-sm font-semibold uppercase tracking-wider">
-                Question
-              </span>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="inline-block px-4 py-2 bg-purple-500/20 rounded-full border border-purple-400/30">
+                <span className="text-purple-300 text-sm font-semibold uppercase tracking-wider">
+                  Question
+                </span>
+              </div>
+              {card.difficulty && (
+                <DifficultyBadge difficulty={card.difficulty} />
+              )}
             </div>
 
             <div className="text-2xl md:text-3xl leading-relaxed font-medium text-white px-4">
@@ -137,5 +142,21 @@ function RatingButton({ onClick, color, hoverColor, label, emoji, description })
       {/* Shimmer effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
     </button>
+  );
+}
+
+function DifficultyBadge({ difficulty }) {
+  const config = {
+    beginner: { color: 'from-green-500 to-emerald-500', label: '📗 Beginner', emoji: '🌱' },
+    intermediate: { color: 'from-blue-500 to-cyan-500', label: '📘 Intermediate', emoji: '⚡' },
+    advanced: { color: 'from-red-500 to-orange-500', label: '📕 Advanced', emoji: '🔥' }
+  };
+
+  const { color, label, emoji } = config[difficulty] || config.intermediate;
+
+  return (
+    <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
+      <span>{emoji} {difficulty.toUpperCase()}</span>
+    </div>
   );
 }
