@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><body><script type="module">
+import { storage } from '/src/utils/storage.js';
+
+setTimeout(async () => {
+  const cards = await storage.getCards();
+  console.log('Total cards:', cards.length);
+  
+  const withDifficulty = cards.filter(c => c.difficulty);
+  console.log('Cards with difficulty field:', withDifficulty.length);
+  
+  const beginner = cards.filter(c => c.difficulty === 'beginner');
+  const intermediate = cards.filter(c => c.difficulty === 'intermediate');
+  const advanced = cards.filter(c => c.difficulty === 'advanced');
+  
+  console.log('Beginner:', beginner.length);
+  console.log('Intermediate:', intermediate.length);
+  console.log('Advanced:', advanced.length);
+  
+  console.log('Sample cards:', cards.slice(0, 3).map(c => ({ 
+    q: c.question?.substring(0, 40), 
+    difficulty: c.difficulty 
+  })));
+  
+  document.body.innerHTML = '<h1>Check Console</h1>';
+}, 3000);
+</script></body></html>
