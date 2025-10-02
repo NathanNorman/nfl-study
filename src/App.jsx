@@ -6,17 +6,25 @@ import Flashcard from './components/Flashcard';
 import AddCardModal from './components/AddCardModal';
 
 export default function App() {
-  const { cards, loading, addCard, updateCard, getDueCards, getStats } = useCards();
+  const { cards, loading, addCard, updateCard, getDueCards, getStats, getCardsByDifficulty } = useCards();
   const [isStudying, setIsStudying] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [dueCards, setDueCards] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
   const stats = getStats();
 
-  const startStudy = () => {
-    const due = getDueCards();
+  const startStudy = (difficulty = 'all') => {
+    let due;
+    if (difficulty === 'all') {
+      due = getDueCards();
+    } else {
+      due = getCardsByDifficulty(difficulty);
+    }
+
     if (due.length === 0) {
+      alert(`No ${difficulty} cards available!`);
       return;
     }
     setDueCards(due);
@@ -101,18 +109,43 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <div className="text-center mb-12">
-                <button
-                  onClick={startStudy}
-                  className="group inline-flex items-center gap-4 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 hover:from-purple-500 hover:via-pink-500 hover:to-purple-500 text-white px-12 py-6 rounded-2xl text-2xl font-black shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 shine transform hover:scale-105 active:scale-95 animate-glow"
-                >
-                  <span className="text-3xl group-hover:rotate-12 transition-transform duration-300">⚡</span>
-                  <span>Start Studying</span>
-                  <span className="glass px-4 py-2 rounded-xl text-lg font-bold">
-                    {stats.due}
-                  </span>
-                </button>
-              </div>
+              <>
+                {/* Difficulty Selector */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+                  <DifficultyButton
+                    level="all"
+                    emoji="📚"
+                    label="All Levels"
+                    count={stats.due}
+                    selected={selectedDifficulty === 'all'}
+                    onClick={() => { setSelectedDifficulty('all'); startStudy('all'); }}
+                  />
+                  <DifficultyButton
+                    level="beginner"
+                    emoji="🌱"
+                    label="Beginner"
+                    count={getCardsByDifficulty('beginner').length}
+                    selected={selectedDifficulty === 'beginner'}
+                    onClick={() => { setSelectedDifficulty('beginner'); startStudy('beginner'); }}
+                  />
+                  <DifficultyButton
+                    level="intermediate"
+                    emoji="⚡"
+                    label="Intermediate"
+                    count={getCardsByDifficulty('intermediate').length}
+                    selected={selectedDifficulty === 'intermediate'}
+                    onClick={() => { setSelectedDifficulty('intermediate'); startStudy('intermediate'); }}
+                  />
+                  <DifficultyButton
+                    level="advanced"
+                    emoji="🔥"
+                    label="Advanced"
+                    count={getCardsByDifficulty('advanced').length}
+                    selected={selectedDifficulty === 'advanced'}
+                    onClick={() => { setSelectedDifficulty('advanced'); startStudy('advanced'); }}
+                  />
+                </div>
+              </>
             )}
           </>
         )}
@@ -147,5 +180,20 @@ export default function App() {
         onAdd={handleAddCard}
       />
     </div>
+  );
+}
+
+function DifficultyButton({ level, emoji, label, count, selected, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`glass-card px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 flex flex-col items-center gap-2 ${
+        selected ? 'ring-2 ring-purple-400 bg-purple-500/20' : 'hover:bg-white/10'
+      }`}
+    >
+      <span className="text-3xl">{emoji}</span>
+      <span className="text-white text-sm">{label}</span>
+      <span className="text-purple-300 text-xs">{count} cards</span>
+    </button>
   );
 }

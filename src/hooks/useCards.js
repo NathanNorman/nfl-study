@@ -99,6 +99,10 @@ export function useCards() {
     return due;
   }
 
+  function getCardsByDifficulty(difficulty) {
+    return cards.filter(card => card.difficulty === difficulty);
+  }
+
   function getStats() {
     const dueCards = getDueCards();
     const masteredCards = cards.filter(card =>
@@ -121,6 +125,7 @@ export function useCards() {
     updateCard,
     deleteCard,
     getDueCards,
+    getCardsByDifficulty,
     getStats
   };
 }

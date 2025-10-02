@@ -86,6 +86,10 @@ export function useMCQ() {
     return due;
   }
 
+  function getCardsByDifficulty(difficulty) {
+    return cards.filter(card => card.difficulty === difficulty);
+  }
+
   function getStats() {
     const dueCards = getDueCards();
     const masteredCards = cards.filter(card =>
@@ -104,6 +108,7 @@ export function useMCQ() {
     loading,
     updateCard,
     getDueCards,
+    getCardsByDifficulty,
     getStats
   };
 }
