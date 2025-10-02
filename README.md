@@ -4,25 +4,47 @@ Browser-based spaced repetition flashcard system for mastering NFL fantasy footb
 
 ## Features
 
-- **FSRS Algorithm**: Uses the Free Spaced Repetition Scheduler for optimal learning
-- **Browser-Based**: Pure JavaScript - just open `index.html` in your browser
-- **Local Storage**: All data saved in your browser
+- **FSRS Algorithm**: Uses the official [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) library - scientifically-proven spaced repetition
+- **Modern Stack**: React + Vite + Tailwind CSS for fast, responsive UI
+- **Persistent Storage**: IndexedDB via localforage for reliable data persistence
 - **Sample Cards**: Includes 2023 NFL stats to get started
-- **Easy Card Management**: Add custom flashcards through the UI
+- **Easy Card Management**: Add custom flashcards through beautiful modal UI
 
 ## Getting Started
 
-1. Open `index.html` in your web browser
-2. Click "Start Studying" to begin with sample cards
-3. Review cards and rate your knowledge:
+### Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 in your browser.
+
+### Production Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## How to Study
+
+1. Click "Start Studying" to begin with due cards
+2. Review cards and rate your knowledge:
    - **Again**: Didn't know it - see again soon
    - **Hard**: Knew it but struggled - moderate interval
    - **Good**: Knew it well - longer interval
    - **Easy**: Knew it perfectly - much longer interval
 
-## Adding Cards
+## Tech Stack
 
-Click "Add Card" to create your own flashcards about NFL players, stats, or strategies.
+- **React 19** - UI framework
+- **Vite** - Build tool and dev server
+- **Tailwind CSS 4** - Utility-first styling
+- **ts-fsrs** - Official FSRS spaced repetition algorithm
+- **localforage** - IndexedDB wrapper for better storage
+- **date-fns** - Date utilities
 
 ## Future Enhancements
 
@@ -30,10 +52,4 @@ Click "Add Card" to create your own flashcards about NFL players, stats, or stra
 - [ ] Import/export flashcard decks
 - [ ] Tag filtering and deck organization
 - [ ] Study statistics and progress tracking
-- [ ] Mobile-responsive design improvements
-
-## Technical Details
-
-- **FSRS Implementation**: Simplified version of the FSRS-4 algorithm
-- **Storage**: Browser localStorage for persistence
-- **No Dependencies**: Pure vanilla JavaScript, HTML, CSS
+- [ ] Dark mode support

@@ -1,88 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/football.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NFL Study - Spaced Repetition Learning</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🏈 NFL Study</h1>
-            <p>Master fantasy football with spaced repetition</p>
-        </header>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value" id="totalCards">0</div>
-                <div class="stat-label">Total Cards</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="dueCards">0</div>
-                <div class="stat-label">Due Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="masteredCards">0</div>
-                <div class="stat-label">Mastered</div>
-            </div>
-        </div>
-
-        <div id="studyArea" class="study-area hidden">
-            <div class="flashcard" id="flashcard">
-                <div class="card-front" id="cardFront"></div>
-                <div class="card-back hidden" id="cardBack"></div>
-            </div>
-
-            <div class="controls">
-                <button id="showAnswer" class="btn btn-primary">Show Answer</button>
-                <div id="ratingButtons" class="rating-buttons hidden">
-                    <button class="btn btn-again" data-rating="1">Again</button>
-                    <button class="btn btn-hard" data-rating="2">Hard</button>
-                    <button class="btn btn-good" data-rating="3">Good</button>
-                    <button class="btn btn-easy" data-rating="4">Easy</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="completedMessage" class="completed-message hidden">
-            <h2>🎉 All done for today!</h2>
-            <p>You've reviewed all your due cards. Great work!</p>
-        </div>
-
-        <div class="action-buttons">
-            <button id="startStudy" class="btn btn-success btn-large">Start Studying</button>
-            <button id="addCard" class="btn btn-secondary">Add Card</button>
-            <button id="importData" class="btn btn-secondary">Import NFL Data</button>
-        </div>
-    </div>
-
-    <!-- Add Card Modal -->
-    <div id="addCardModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Add Flashcard</h2>
-            <form id="addCardForm">
-                <div class="form-group">
-                    <label for="cardQuestion">Question:</label>
-                    <textarea id="cardQuestion" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="cardAnswer">Answer:</label>
-                    <textarea id="cardAnswer" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="cardTags">Tags (comma-separated):</label>
-                    <input type="text" id="cardTags" placeholder="QB, 2024, Fantasy">
-                </div>
-                <div class="modal-buttons">
-                    <button type="submit" class="btn btn-primary">Add Card</button>
-                    <button type="button" id="cancelAdd" class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="fsrs.js"></script>
-    <script src="app.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
