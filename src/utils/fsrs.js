@@ -1,4 +1,4 @@
-import { fsrs, generatorParameters, Rating, State } from 'ts-fsrs';
+import { fsrs, generatorParameters, Rating, State, createEmptyCard } from 'ts-fsrs';
 
 // Initialize FSRS with default parameters
 const params = generatorParameters();
@@ -10,8 +10,10 @@ export { Rating, State };
  * Create a new card
  */
 export function createCard(question, answer, tags = []) {
-  const card = f.createEmptyCard();
-  return {
+  console.log('🔍 [createCard] Creating new card:', question.substring(0, 50) + '...');
+  const card = createEmptyCard();
+  console.log('🔍 [createCard] Empty card created:', card);
+  const newCard = {
     ...card,
     id: Date.now() + Math.random(),
     question,
@@ -19,12 +21,17 @@ export function createCard(question, answer, tags = []) {
     tags,
     createdAt: new Date().toISOString()
   };
+  console.log('🔍 [createCard] ✅ Card created with ID:', newCard.id);
+  return newCard;
 }
 
 /**
  * Schedule next review based on rating
  */
 export function scheduleCard(card, rating) {
+  console.log('🔍 [scheduleCard] Scheduling card with rating:', rating);
+  console.log('🔍 [scheduleCard] Card before:', { id: card.id, due: card.due, state: card.state });
+
   const now = new Date();
   const scheduling = f.repeat(card, now);
 
@@ -37,7 +44,7 @@ export function scheduleCard(card, rating) {
   };
 
   const result = ratingMap[rating];
-  return {
+  const scheduledCard = {
     ...card,
     ...result.card,
     question: card.question,
@@ -46,6 +53,11 @@ export function scheduleCard(card, rating) {
     id: card.id,
     createdAt: card.createdAt
   };
+
+  console.log('🔍 [scheduleCard] Card after:', { id: scheduledCard.id, due: scheduledCard.due, state: scheduledCard.state });
+  console.log('🔍 [scheduleCard] ✅ Rescheduled for:', scheduledCard.due);
+
+  return scheduledCard;
 }
 
 /**

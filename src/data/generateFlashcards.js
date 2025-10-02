@@ -6,10 +6,13 @@ import { teams2025, defenseQuestions } from './teams2025';
  * Generate all flashcards from player and strategy data
  */
 export function generateAllFlashcards() {
+  console.log('🔍 [generateAllFlashcards] Starting generation...');
   const cards = [];
 
   // Generate player cards for all positions
+  console.log('🔍 [generateAllFlashcards] Processing players2025:', Object.keys(players2025));
   Object.entries(players2025).forEach(([position, playersList]) => {
+    console.log(`🔍 [generateAllFlashcards] Processing ${position}: ${playersList.length} players`);
     playersList.forEach(player => {
       // Card 1: Stats/achievements question
       cards.push({
@@ -35,6 +38,7 @@ export function generateAllFlashcards() {
   });
 
   // Add strategy cards
+  console.log('🔍 [generateAllFlashcards] Adding', fantasyStrategy.length, 'strategy cards');
   fantasyStrategy.forEach(strategy => {
     cards.push({
       question: strategy.question,
@@ -44,6 +48,7 @@ export function generateAllFlashcards() {
   });
 
   // Add team cards
+  console.log('🔍 [generateAllFlashcards] Adding', teams2025.length, 'team cards');
   teams2025.forEach(team => {
     cards.push({
       question: team.question,
@@ -53,6 +58,7 @@ export function generateAllFlashcards() {
   });
 
   // Add defense cards
+  console.log('🔍 [generateAllFlashcards] Adding', defenseQuestions.length, 'defense cards');
   defenseQuestions.forEach(def => {
     cards.push({
       question: def.question,
@@ -61,6 +67,7 @@ export function generateAllFlashcards() {
     });
   });
 
+  console.log('🔍 [generateAllFlashcards] ✅ Total cards generated:', cards.length);
   return cards;
 }
 

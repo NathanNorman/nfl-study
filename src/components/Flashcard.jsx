@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Flashcard({ card, onRate }) {
   const [showAnswer, setShowAnswer] = useState(false);
+
+  // Reset showAnswer when card changes
+  useEffect(() => {
+    console.log('🔍 [Flashcard] Card changed, resetting showAnswer. Card ID:', card.id);
+    setShowAnswer(false);
+  }, [card.id]);
 
   return (
     <div className="bg-white rounded-xl p-10 shadow-2xl">
