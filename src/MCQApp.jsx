@@ -72,6 +72,18 @@ export default function MCQApp() {
     }
   };
 
+  const handlePrevious = () => {
+    if (currentCardIndex > 0) {
+      setCurrentCardIndex(currentCardIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentCardIndex < dueCards.length - 1) {
+      setCurrentCardIndex(currentCardIndex + 1);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -129,6 +141,35 @@ export default function MCQApp() {
                   style={{width: `${((currentCardIndex + 1) / dueCards.length) * 100}%`}}
                 ></div>
               </div>
+            </div>
+
+            {/* Navigation buttons */}
+            <div className="flex justify-between items-center mb-4">
+              <button
+                onClick={handlePrevious}
+                disabled={currentCardIndex === 0}
+                className={`glass-card px-6 py-3 rounded-xl font-bold transition-all duration-300 flex items-center gap-2 ${
+                  currentCardIndex === 0
+                    ? 'opacity-40 cursor-not-allowed'
+                    : 'hover:bg-white/10 hover:scale-105 text-purple-200'
+                }`}
+              >
+                <span className="text-xl">←</span>
+                <span>Previous</span>
+              </button>
+
+              <button
+                onClick={handleNext}
+                disabled={currentCardIndex === dueCards.length - 1}
+                className={`glass-card px-6 py-3 rounded-xl font-bold transition-all duration-300 flex items-center gap-2 ${
+                  currentCardIndex === dueCards.length - 1
+                    ? 'opacity-40 cursor-not-allowed'
+                    : 'hover:bg-white/10 hover:scale-105 text-purple-200'
+                }`}
+              >
+                <span>Next</span>
+                <span className="text-xl">→</span>
+              </button>
             </div>
 
             <MCQCard
