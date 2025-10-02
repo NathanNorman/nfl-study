@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { useCards } from './hooks/useCards';
+import { useMCQ } from './hooks/useMCQ';
 import Header from './components/Header';
 import Stats from './components/Stats';
-import Flashcard from './components/Flashcard';
-import AddCardModal from './components/AddCardModal';
+import MCQCard from './components/MCQCard';
 
-export default function App() {
-  const { cards, loading, addCard, updateCard, getDueCards, getStats } = useCards();
+export default function MCQApp() {
+  const { cards, loading, updateCard, getDueCards, getStats } = useMCQ();
   const [isStudying, setIsStudying] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [dueCards, setDueCards] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [score, setScore] = useState({ correct: 0, total: 0 });
 
   const stats = getStats();
 
@@ -22,12 +21,20 @@ export default function App() {
     setDueCards(due);
     setCurrentCardIndex(0);
     setIsStudying(true);
+    setScore({ correct: 0, total: 0 });
   };
 
-  const handleRate = async (rating) => {
+  const handleAnswer = async (isCorrect) => {
     const currentCard = dueCards[currentCardIndex];
-    await updateCard(currentCard.id, rating);
+    await updateCard(currentCard.id, isCorrect);
 
+    // Update score
+    setScore(prev => ({
+      correct: prev.correct + (isCorrect ? 1 : 0),
+      total: prev.total + 1
+    }));
+
+    // Move to next card
     if (currentCardIndex < dueCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
     } else {
@@ -37,17 +44,12 @@ export default function App() {
     }
   };
 
-  const handleAddCard = async (question, answer, tags) => {
-    await addCard(question, answer, tags);
-    setShowAddModal(false);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-bounce">🏈</div>
-          <div className="text-2xl text-white font-bold gradient-text">Loading your cards...</div>
+          <div className="text-2xl text-white font-bold gradient-text">Loading MCQ mode...</div>
         </div>
       </div>
     );
@@ -57,18 +59,27 @@ export default function App() {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
         <Header />
+
+        {/* Mode indicator */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-3 glass-card px-6 py-3 rounded-full">
+            <span className="text-2xl">✅</span>
+            <span className="text-purple-200 font-bold uppercase tracking-wider">MCQ Mode</span>
+          </div>
+        </div>
+
         <Stats stats={stats} />
 
         {isStudying ? (
           <div className="mb-12 space-y-6">
-            {/* Progress bar */}
+            {/* Progress bar with score */}
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-purple-200 font-semibold">
-                  Card {currentCardIndex + 1} of {dueCards.length}
+                  Question {currentCardIndex + 1} of {dueCards.length}
                 </span>
                 <span className="text-purple-300 text-sm font-medium">
-                  {Math.round(((currentCardIndex + 1) / dueCards.length) * 100)}% Complete
+                  Score: {score.correct}/{score.total} ({score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0}%)
                 </span>
               </div>
               <div className="h-3 bg-white/10 rounded-full overflow-hidden">
@@ -79,9 +90,9 @@ export default function App() {
               </div>
             </div>
 
-            <Flashcard
+            <MCQCard
               card={dueCards[currentCardIndex]}
-              onRate={handleRate}
+              onAnswer={handleAnswer}
             />
           </div>
         ) : (
@@ -93,12 +104,18 @@ export default function App() {
                   All Done For Today!
                 </h2>
                 <p className="text-xl text-purple-200 mb-8">
-                  You've reviewed all your due cards. Come back tomorrow!
+                  You've reviewed all your due MCQ cards. Great work!
                 </p>
-                <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
-                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-purple-200 font-semibold">All caught up</span>
-                </div>
+                {score.total > 0 && (
+                  <div className="glass-card inline-block px-8 py-4 rounded-2xl">
+                    <div className="text-3xl font-black text-white mb-2">
+                      Final Score: {score.correct}/{score.total}
+                    </div>
+                    <div className="text-purple-300">
+                      {Math.round((score.correct / score.total) * 100)}% Correct
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center mb-12">
@@ -106,8 +123,8 @@ export default function App() {
                   onClick={startStudy}
                   className="group inline-flex items-center gap-4 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 hover:from-purple-500 hover:via-pink-500 hover:to-purple-500 text-white px-12 py-6 rounded-2xl text-2xl font-black shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 shine transform hover:scale-105 active:scale-95 animate-glow"
                 >
-                  <span className="text-3xl group-hover:rotate-12 transition-transform duration-300">⚡</span>
-                  <span>Start Studying</span>
+                  <span className="text-3xl group-hover:rotate-12 transition-transform duration-300">✅</span>
+                  <span>Start MCQ Quiz</span>
                   <span className="glass px-4 py-2 rounded-xl text-lg font-bold">
                     {stats.due}
                   </span>
@@ -117,35 +134,22 @@ export default function App() {
           </>
         )}
 
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* Mode switcher */}
+        <div className="text-center mt-12">
           <a
-            href="/mcq.html"
-            className="glass-card hover:bg-white/10 text-purple-200 hover:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 card-hover flex items-center gap-3"
+            href="/"
+            className="glass-card hover:bg-white/10 text-purple-200 hover:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 inline-flex items-center gap-3"
           >
-            <span className="text-2xl">✅</span>
-            <span>MCQ Mode</span>
+            <span className="text-2xl">🔄</span>
+            <span>Switch to Flashcard Mode</span>
           </a>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="glass-card hover:bg-white/10 text-purple-200 hover:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 card-hover flex items-center gap-3"
-          >
-            <span className="text-2xl">➕</span>
-            <span>Create Card</span>
-          </button>
         </div>
 
         {/* Footer */}
         <div className="text-center mt-16 text-purple-400 text-sm">
-          <p>Powered by FSRS Algorithm • 207 Flashcards • 2024-2025 Season</p>
+          <p>Multiple Choice Quiz Mode • FSRS Algorithm • 2024-2025 Season</p>
         </div>
       </div>
-
-      <AddCardModal
-        isOpen={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        onAdd={handleAddCard}
-      />
     </div>
   );
 }

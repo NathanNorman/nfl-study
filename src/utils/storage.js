@@ -21,6 +21,19 @@ export const storage = {
     console.log('🔍 [storage.saveCards] ✅ Save complete');
   },
 
+  async getItem(key) {
+    console.log('🔍 [storage.getItem] Fetching key:', key);
+    const value = await localforage.getItem(key);
+    console.log('🔍 [storage.getItem] Retrieved:', value ? 'data found' : 'no data');
+    return value;
+  },
+
+  async setItem(key, value) {
+    console.log('🔍 [storage.setItem] Saving key:', key);
+    await localforage.setItem(key, value);
+    console.log('🔍 [storage.setItem] ✅ Save complete');
+  },
+
   async clear() {
     console.log('🔍 [storage.clear] Clearing IndexedDB...');
     await localforage.clear();
