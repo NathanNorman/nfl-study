@@ -36,12 +36,12 @@ test.describe('NFL Study App - Complete Verification', () => {
     expect(parseInt(totalCards)).toBeGreaterThan(200);
     expect(parseInt(dueCards)).toBeGreaterThan(200);
 
-    // Check if Start Studying button exists
-    const studyButton = page.locator('button:has-text("Start Studying")');
-    await expect(studyButton).toBeVisible();
+    // Check if difficulty selector buttons exist
+    await expect(page.locator('button:has-text("All Levels")')).toBeVisible();
+    await expect(page.locator('button:has-text("Beginner")')).toBeVisible();
 
-    // Click Start Studying
-    await studyButton.click();
+    // Click "All Levels" to start studying
+    await page.locator('button:has-text("All Levels")').click();
     await page.waitForTimeout(1000);
 
     // Verify flashcard appeared
@@ -115,10 +115,12 @@ test.describe('NFL Study App - Complete Verification', () => {
     console.log('\n=== MCQ STATS ===');
     console.log('Total MCQ Cards:', totalCards);
 
-    // Start quiz
-    const quizButton = page.locator('button:has-text("Start MCQ Quiz")');
-    await expect(quizButton).toBeVisible();
-    await quizButton.click();
+    // Verify difficulty selector exists
+    await expect(page.locator('button:has-text("All Levels")')).toBeVisible();
+    await expect(page.locator('button:has-text("Beginner")')).toBeVisible();
+
+    // Click "All Levels" to start quiz
+    await page.locator('button:has-text("All Levels")').click();
     await page.waitForTimeout(1000);
 
     // Verify MCQ card with 4 options
