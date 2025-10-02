@@ -1,6 +1,6 @@
 /**
  * 2024 NFL Season Stats and 2025 Fantasy Football Player Data
- * Based on actual 2024 season results
+ * ONE FACT PER CARD - Optimized for spaced repetition
  */
 
 export const players2025 = {
@@ -8,72 +8,63 @@ export const players2025 = {
     {
       name: "Josh Allen",
       team: "Buffalo Bills",
-      stats: "2024 MVP - First player ever with 25+ pass TDs, 10+ rush TDs, <10 INTs in one season",
-      fantasy: "Elite dual-threat QB1. 2024 MVP. Absolutely dominant. Clear #1 QB for 2025.",
-      tags: ["QB", "2025", "Elite", "MVP"]
+      cards: [
+        { q: "Who won the 2024 NFL MVP?", a: "Josh Allen (Buffalo Bills)", tags: ["QB", "MVP", "2024"] },
+        { q: "What historic stat line did Josh Allen achieve in 2024?", a: "First player ever with 25+ pass TDs, 10+ rush TDs, and fewer than 10 INTs", tags: ["QB", "MVP", "2024", "Historic"] },
+        { q: "What makes Josh Allen the #1 fantasy QB for 2025?", a: "Elite dual-threat ability - elite passer AND rusher", tags: ["QB", "2025", "Elite"] }
+      ]
     },
     {
       name: "Lamar Jackson",
       team: "Baltimore Ravens",
-      stats: "Led all QBs in fantasy points 2024. Narrowly lost MVP to Josh Allen",
-      fantasy: "Elite rushing QB. Led fantasy QB scoring 2024. Top-2 QB for 2025.",
-      tags: ["QB", "2025", "Elite", "Rushing"]
+      cards: [
+        { q: "Which QB led all QBs in fantasy points in 2024?", a: "Lamar Jackson", tags: ["QB", "2024", "Fantasy-Leader"] },
+        { q: "How close was the 2024 MVP race between Allen and Jackson?", a: "Josh Allen: 383 points, 27 votes. Lamar Jackson: 362 points, 23 votes", tags: ["QB", "MVP", "2024"] },
+        { q: "What's Lamar Jackson's ranking for 2025 fantasy drafts?", a: "Top-2 QB alongside Josh Allen", tags: ["QB", "2025", "Elite"] }
+      ]
     },
     {
       name: "Joe Burrow",
       team: "Cincinnati Bengals",
-      stats: "Led NFL with 4,918 passing yards in 2024",
-      fantasy: "Passing yards leader. Elite QB1. Ja'Marr Chase connection is unstoppable.",
-      tags: ["QB", "2025", "Elite", "Volume"]
+      cards: [
+        { q: "Who led the NFL in passing yards in 2024?", a: "Joe Burrow - 4,918 yards", tags: ["QB", "2024", "Passing-Leader"] },
+        { q: "Why is Joe Burrow's 2025 outlook elite?", a: "Elite passing volume with Ja'Marr Chase connection", tags: ["QB", "2025", "Elite"] }
+      ]
     },
     {
       name: "Jalen Hurts",
       team: "Philadelphia Eagles",
-      stats: "Super Bowl LIX MVP - 300+ total yards, 3 TDs in championship",
-      fantasy: "Super Bowl champ. Dual-threat elite QB1. Eagles offense rolling.",
-      tags: ["QB", "2025", "Elite", "Champion"]
+      cards: [
+        { q: "Who won Super Bowl LIX MVP?", a: "Jalen Hurts", tags: ["QB", "Super-Bowl", "MVP", "2025"] },
+        { q: "What did Jalen Hurts do in Super Bowl LIX?", a: "300+ total yards, 3 TDs in Eagles' 40-22 win", tags: ["QB", "Super-Bowl", "2025"] },
+        { q: "Why is Jalen Hurts a top-5 QB for 2025?", a: "Super Bowl champion with elite dual-threat ability", tags: ["QB", "2025", "Elite", "Champion"] }
+      ]
     },
     {
       name: "Jayden Daniels",
       team: "Washington Commanders",
-      stats: "2024 OROY - First rookie ever with 3,500+ pass yards and 800+ rush yards",
-      fantasy: "Offensive Rookie of Year. Historic season. Elite dual-threat QB1 for 2025.",
-      tags: ["QB", "2025", "OROY", "Dual-Threat", "Sophomore"]
+      cards: [
+        { q: "Who won 2024 Offensive Rookie of the Year?", a: "Jayden Daniels (Washington Commanders)", tags: ["QB", "OROY", "2024"] },
+        { q: "What historic rookie stat did Jayden Daniels achieve?", a: "First rookie ever with 3,500+ pass yards AND 800+ rush yards", tags: ["QB", "OROY", "2024", "Historic"] },
+        { q: "How many first-place votes did Jayden Daniels get for OROY?", a: "48 of 49 votes (Brock Bowers got 1)", tags: ["QB", "OROY", "2024"] },
+        { q: "What's Jayden Daniels' 2025 fantasy outlook?", a: "Elite QB1 potential in Year 2 as dual-threat", tags: ["QB", "2025", "Breakout"] }
+      ]
     },
     {
       name: "Patrick Mahomes",
       team: "Kansas City Chiefs",
-      stats: "Lost Super Bowl LIX to Eagles 22-40. Sacked 6 times.",
-      fantasy: "Rare down game in Super Bowl. Still elite QB1. Don't overthink it.",
-      tags: ["QB", "2025", "Elite"]
+      cards: [
+        { q: "What happened to Patrick Mahomes in Super Bowl LIX?", a: "Lost 22-40 to Eagles, sacked 6 times", tags: ["QB", "Super-Bowl", "2025"] },
+        { q: "Is Patrick Mahomes still elite for 2025 fantasy despite Super Bowl loss?", a: "Yes - one bad game doesn't change elite QB1 status", tags: ["QB", "2025", "Elite"] }
+      ]
     },
     {
       name: "C.J. Stroud",
       team: "Houston Texans",
-      stats: "Sophomore success continued. Stefon Diggs and Nico Collins duo",
-      fantasy: "Elite passing offense. Weapons everywhere. Top-5 QB.",
-      tags: ["QB", "2025"]
-    },
-    {
-      name: "Jordan Love",
-      team: "Green Bay Packers",
-      stats: "Continued breakout 2024 season",
-      fantasy: "High TD rate. Top-tier weapons. Solid QB1.",
-      tags: ["QB", "2025"]
-    },
-    {
-      name: "Dak Prescott",
-      team: "Dallas Cowboys",
-      stats: "Another high-volume passing season with CeeDee Lamb",
-      fantasy: "Consistent QB1. High passing volume. Safe floor.",
-      tags: ["QB", "2025"]
-    },
-    {
-      name: "Tua Tagovailoa",
-      team: "Miami Dolphins",
-      stats: "Speed offense with Tyreek Hill and Jaylen Waddle",
-      fantasy: "When healthy, top-10 QB. Explosive offense.",
-      tags: ["QB", "2025", "Injury-Risk"]
+      cards: [
+        { q: "What weapons does C.J. Stroud have in 2024-2025?", a: "Nico Collins and Stefon Diggs at WR", tags: ["QB", "2025", "HOU"] },
+        { q: "What's C.J. Stroud's 2025 fantasy ranking?", a: "Top-5 QB in elite passing offense", tags: ["QB", "2025"] }
+      ]
     }
   ],
 
@@ -81,86 +72,44 @@ export const players2025 = {
     {
       name: "Saquon Barkley",
       team: "Philadelphia Eagles",
-      stats: "2,005 rush yards (2024 leader), AP Offensive Player of Year, Super Bowl champion",
-      fantasy: "Consensus #1 RB for 2025. 2000-yard season. Super Bowl champ. Elite.",
-      tags: ["RB", "2025", "Elite", "Champion", "OPOY"]
+      cards: [
+        { q: "How many rushing yards did Saquon Barkley have in 2024?", a: "2,005 yards (league leader)", tags: ["RB", "2024", "Rushing-Leader"] },
+        { q: "What award did Saquon Barkley win for 2024?", a: "AP Offensive Player of the Year", tags: ["RB", "2024", "OPOY"] },
+        { q: "What championship did Saquon Barkley win?", a: "Super Bowl LIX with Philadelphia Eagles", tags: ["RB", "2025", "Champion"] },
+        { q: "What's Saquon Barkley's 2025 fantasy ranking?", a: "Consensus #1 RB overall", tags: ["RB", "2025", "Elite"] }
+      ]
     },
     {
       name: "Bijan Robinson",
       team: "Atlanta Falcons",
-      stats: "Increased workload in Year 2. Elite talent finally unleashed",
-      fantasy: "Top-3 RB for 2025. Year 2 breakout complete. Bellcow usage.",
-      tags: ["RB", "2025", "Elite", "Breakout"]
+      cards: [
+        { q: "What's Bijan Robinson's 2025 fantasy ranking?", a: "Top-3 RB with bellcow usage", tags: ["RB", "2025", "Elite"] },
+        { q: "What year is it for Bijan Robinson?", a: "Year 3 - breakout complete", tags: ["RB", "2025"] }
+      ]
     },
     {
       name: "Jahmyr Gibbs",
       team: "Detroit Lions",
-      stats: "Elite explosiveness. Shares backfield with David Montgomery",
-      fantasy: "Top-5 RB despite timeshare. Elite big-play ability. PPR monster.",
-      tags: ["RB", "2025", "Elite", "Timeshare", "PPR"]
+      cards: [
+        { q: "What's Jahmyr Gibbs' role with the Lions?", a: "Shares backfield with David Montgomery", tags: ["RB", "2025", "Timeshare"] },
+        { q: "Despite timeshare, why is Jahmyr Gibbs top-5 RB?", a: "Elite big-play ability and PPR value", tags: ["RB", "2025", "Elite", "PPR"] }
+      ]
     },
     {
       name: "Christian McCaffrey",
       team: "San Francisco 49ers",
-      stats: "Injury-plagued 2024 season limited production",
-      fantasy: "Age 29. Injury concerns. Still elite when healthy. Risk/reward pick.",
-      tags: ["RB", "2025", "Elite", "Injury-Risk"]
-    },
-    {
-      name: "Derrick Henry",
-      team: "Baltimore Ravens",
-      stats: "Age 31. Joined Ravens in 2024. Still producing",
-      fantasy: "Old but still elite in Ravens offense. RB1 but age concerns.",
-      tags: ["RB", "2025", "Veteran"]
-    },
-    {
-      name: "Breece Hall",
-      team: "New York Jets",
-      stats: "Elite pass-catching back. Jets offense improving",
-      fantasy: "PPR RB1. Aaron Rodgers healthy helps. Top-10 RB.",
-      tags: ["RB", "2025", "PPR"]
-    },
-    {
-      name: "Jonathan Taylor",
-      team: "Indianapolis Colts",
-      stats: "Bounce-back 2024 season after contract issues",
-      fantasy: "Lead back. RB1 when healthy. Solid floor.",
-      tags: ["RB", "2025"]
-    },
-    {
-      name: "Kenneth Walker III",
-      team: "Seattle Seahawks",
-      stats: "Lead back in Seattle. Limited receiving work",
-      fantasy: "Solid RB2. TD-dependent. New OC may help receiving role.",
-      tags: ["RB", "2025"]
+      cards: [
+        { q: "What's the concern with Christian McCaffrey for 2025?", a: "Age 29 with injury-plagued 2024 season", tags: ["RB", "2025", "Injury-Risk"] },
+        { q: "Is CMC still elite when healthy?", a: "Yes - still elite talent, just higher injury risk", tags: ["RB", "2025"] }
+      ]
     },
     {
       name: "Kyren Williams",
       team: "Los Angeles Rams",
-      stats: "Continued red zone dominance 2024",
-      fantasy: "TD machine. Lead back. RB1 potential.",
-      tags: ["RB", "2025", "TDs"]
-    },
-    {
-      name: "Travis Etienne",
-      team: "Jacksonville Jaguars",
-      stats: "Lead back. High TD rate when Jags are good",
-      fantasy: "RB2 with RB1 weeks. TD-dependent.",
-      tags: ["RB", "2025"]
-    },
-    {
-      name: "Josh Jacobs",
-      team: "Green Bay Packers",
-      stats: "Solid 2024 in first year with Packers",
-      fantasy: "Lead back in elite offense. RB2 with upside.",
-      tags: ["RB", "2025"]
-    },
-    {
-      name: "David Montgomery",
-      team: "Detroit Lions",
-      stats: "TD vulture in Lions offense. Shares with Gibbs",
-      fantasy: "RB2. TD-dependent. Timeshare limits ceiling.",
-      tags: ["RB", "2025", "Timeshare", "TDs"]
+      cards: [
+        { q: "What's Kyren Williams' specialty?", a: "Red zone TD machine", tags: ["RB", "2025", "TDs"] },
+        { q: "What's Kyren Williams' 2025 fantasy outlook?", a: "RB1 potential as lead back", tags: ["RB", "2025"] }
+      ]
     }
   ],
 
@@ -168,114 +117,52 @@ export const players2025 = {
     {
       name: "Ja'Marr Chase",
       team: "Cincinnati Bengals",
-      stats: "1,708 receiving yards (2024 leader), Receiving Triple Crown winner",
-      fantasy: "#1 overall pick in many 2025 drafts. Triple Crown. Elite WR1.",
-      tags: ["WR", "2025", "Elite", "Triple-Crown"]
+      cards: [
+        { q: "What is the Receiving Triple Crown?", a: "Leading NFL in receptions, receiving yards, and receiving TDs", tags: ["WR", "Triple-Crown"] },
+        { q: "Who won the 2024 Receiving Triple Crown?", a: "Ja'Marr Chase (Cincinnati Bengals)", tags: ["WR", "2024", "Triple-Crown"] },
+        { q: "How many receiving yards did Ja'Marr Chase have in 2024?", a: "1,708 yards (league leader)", tags: ["WR", "2024"] },
+        { q: "What's Ja'Marr Chase's 2025 draft position?", a: "#1 overall pick in many expert drafts", tags: ["WR", "2025", "Elite", "First-Pick"] }
+      ]
     },
     {
       name: "CeeDee Lamb",
       team: "Dallas Cowboys",
-      stats: "Continued elite production. Massive target share",
-      fantasy: "Elite WR1. Safe floor. High target volume. Top-3 WR.",
-      tags: ["WR", "2025", "Elite", "Volume"]
+      cards: [
+        { q: "What's CeeDee Lamb's target share?", a: "Massive - elite volume in Cowboys offense", tags: ["WR", "2025", "Volume"] },
+        { q: "What's CeeDee Lamb's 2025 ranking?", a: "Top-3 WR - safe floor with high target volume", tags: ["WR", "2025", "Elite"] }
+      ]
     },
     {
       name: "Justin Jefferson",
       team: "Minnesota Vikings",
-      stats: "When healthy, best WR in football",
-      fantasy: "Elite WR1. Bounce-back from injury. Top-3 WR for 2025.",
-      tags: ["WR", "2025", "Elite"]
+      cards: [
+        { q: "What's the consensus on Justin Jefferson's talent level?", a: "Best WR in football when healthy", tags: ["WR", "2025", "Elite"] },
+        { q: "What's Justin Jefferson's 2025 fantasy ranking?", a: "Top-3 WR despite QB concerns", tags: ["WR", "2025", "Elite"] }
+      ]
     },
     {
       name: "Tyreek Hill",
       team: "Miami Dolphins",
-      stats: "Elite speed threat with Tua. Big-play machine",
-      fantasy: "Elite WR1. Explosive. Top-5 WR when Tua plays.",
-      tags: ["WR", "2025", "Elite", "Speed"]
-    },
-    {
-      name: "Amon-Ra St. Brown",
-      team: "Detroit Lions",
-      stats: "PPR monster. Elite target share in Lions offense",
-      fantasy: "PPR WR1. Elite slot receiver. Top-5 WR.",
-      tags: ["WR", "2025", "Elite", "PPR"]
-    },
-    {
-      name: "A.J. Brown",
-      team: "Philadelphia Eagles",
-      stats: "Super Bowl champion. Elite in Eagles offense",
-      fantasy: "Elite WR1. Super Bowl champ. Top-5 WR.",
-      tags: ["WR", "2025", "Elite", "Champion"]
-    },
-    {
-      name: "Puka Nacua",
-      team: "Los Angeles Rams",
-      stats: "Sophomore success after record-breaking rookie year",
-      fantasy: "Elite WR1. Proven in Year 2. Top-10 WR.",
-      tags: ["WR", "2025", "Elite"]
-    },
-    {
-      name: "Nico Collins",
-      team: "Houston Texans",
-      stats: "Elite with C.J. Stroud. Big-play threat",
-      fantasy: "WR1. High YPC. Elite talent. Top-10 WR.",
-      tags: ["WR", "2025"]
-    },
-    {
-      name: "Garrett Wilson",
-      team: "New York Jets",
-      stats: "Aaron Rodgers healthy helps. Elite talent",
-      fantasy: "WR1 with healthy Rodgers. Breakout potential.",
-      tags: ["WR", "2025", "Breakout"]
+      cards: [
+        { q: "What's Tyreek Hill's specialty?", a: "Elite speed - explosive big-play machine", tags: ["WR", "2025", "Speed"] },
+        { q: "What's Tyreek Hill's dependency?", a: "Needs Tua healthy for top-5 WR value", tags: ["WR", "2025", "QB-Dependent"] }
+      ]
     },
     {
       name: "Malik Nabers",
       team: "New York Giants",
-      stats: "Rookie sensation 2024. Elite target share",
-      fantasy: "Top-10 WR for 2025. Year 2 breakout incoming.",
-      tags: ["WR", "2025", "Sophomore", "Breakout"]
+      cards: [
+        { q: "What did Malik Nabers do as a rookie in 2024?", a: "Elite target share - rookie sensation", tags: ["WR", "2024", "Rookie"] },
+        { q: "What's Malik Nabers' 2025 outlook?", a: "Top-10 WR in Year 2 breakout", tags: ["WR", "2025", "Sophomore", "Breakout"] }
+      ]
     },
     {
-      name: "Stefon Diggs",
-      team: "Houston Texans",
-      stats: "Joined Texans in 2024. Veteran presence",
-      fantasy: "WR2 in elite offense. Still producing at age 31.",
-      tags: ["WR", "2025"]
-    },
-    {
-      name: "Deebo Samuel",
-      team: "San Francisco 49ers",
-      stats: "Dual-threat weapon. YAC monster",
-      fantasy: "WR2 with WR1 weeks. Unique skill set.",
-      tags: ["WR", "2025", "Dual-Threat"]
-    },
-    {
-      name: "Mike Evans",
-      team: "Tampa Bay Buccaneers",
-      stats: "11 straight 1000-yard seasons. TD machine",
-      fantasy: "Consistent WR2. TD-dependent. Never stops producing.",
-      tags: ["WR", "2025", "TDs", "Consistent"]
-    },
-    {
-      name: "Chris Olave",
-      team: "New Orleans Saints",
-      stats: "Elite talent. Needs better QB play",
-      fantasy: "WR2 with WR1 upside if QB improves.",
-      tags: ["WR", "2025"]
-    },
-    {
-      name: "DK Metcalf",
-      team: "Seattle Seahawks",
-      stats: "Big-play threat. Boom-bust profile",
-      fantasy: "WR2. High ceiling, low floor weeks.",
-      tags: ["WR", "2025", "Boom-Bust"]
-    },
-    {
-      name: "Davante Adams",
+      name: "Brock Bowers",
       team: "Las Vegas Raiders",
-      stats: "Elite veteran. Consistent production",
-      fantasy: "WR2. Safe floor. Age 33 but still elite.",
-      tags: ["WR", "2025", "Veteran"]
+      cards: [
+        { q: "How did Brock Bowers finish in 2024 OROY voting?", a: "2nd place - got 1 of 49 first-place votes", tags: ["TE", "OROY", "2024"] },
+        { q: "What's Brock Bowers' 2025 TE ranking?", a: "Top-5 TE - best rookie TE in years", tags: ["TE", "2025", "Elite"] }
+      ]
     }
   ],
 
@@ -283,72 +170,26 @@ export const players2025 = {
     {
       name: "Sam LaPorta",
       team: "Detroit Lions",
-      stats: "Year 2 continued elite production in Lions offense",
-      fantasy: "TE1. Elite in high-powered offense. Top-2 TE.",
-      tags: ["TE", "2025", "Elite"]
+      cards: [
+        { q: "What's Sam LaPorta's 2025 TE ranking?", a: "Top-2 TE in elite Lions offense", tags: ["TE", "2025", "Elite"] },
+        { q: "Why is Sam LaPorta so consistent?", a: "Elite offense gives him high volume and red zone targets", tags: ["TE", "2025"] }
+      ]
     },
     {
       name: "Travis Kelce",
       team: "Kansas City Chiefs",
-      stats: "Age 36. Showed decline in 2024 season",
-      fantasy: "Still TE1 but aging. Chiefs offense changes coming.",
-      tags: ["TE", "2025", "Veteran", "Decline"]
+      cards: [
+        { q: "How old will Travis Kelce be in 2025?", a: "36 years old", tags: ["TE", "2025", "Age"] },
+        { q: "Is Travis Kelce declining?", a: "Yes - showed decline in 2024 season", tags: ["TE", "2025", "Decline"] }
+      ]
     },
     {
       name: "Trey McBride",
       team: "Arizona Cardinals",
-      stats: "Continued elite production. High target share",
-      fantasy: "Elite TE1. Young and improving. Top-3 TE.",
-      tags: ["TE", "2025", "Elite", "Volume"]
-    },
-    {
-      name: "Brock Bowers",
-      team: "Las Vegas Raiders",
-      stats: "2nd in OROY voting. Historic rookie TE season",
-      fantasy: "Elite TE1 for 2025. Best rookie TE in years. Top-5 TE.",
-      tags: ["TE", "2025", "Elite", "Sophomore"]
-    },
-    {
-      name: "T.J. Hockenson",
-      team: "Minnesota Vikings",
-      stats: "Returned from ACL injury 2024",
-      fantasy: "TE1 when healthy. Injury history concerning.",
-      tags: ["TE", "2025", "Injury-Return"]
-    },
-    {
-      name: "Mark Andrews",
-      team: "Baltimore Ravens",
-      stats: "Bounce-back 2024 after injury-plagued 2023",
-      fantasy: "TE1 in Ravens offense. Elite red zone target.",
-      tags: ["TE", "2025"]
-    },
-    {
-      name: "Dalton Kincaid",
-      team: "Buffalo Bills",
-      stats: "Josh Allen's safety valve. Increased role Year 2",
-      fantasy: "TE1 potential in Bills offense. Rising.",
-      tags: ["TE", "2025", "Emerging"]
-    },
-    {
-      name: "George Kittle",
-      team: "San Francisco 49ers",
-      stats: "Elite blocker and receiver. Consistent production",
-      fantasy: "TE1. Reliable. Age 32 but still elite.",
-      tags: ["TE", "2025"]
-    },
-    {
-      name: "Evan Engram",
-      team: "Jacksonville Jaguars",
-      stats: "High-volume PPR machine",
-      fantasy: "PPR TE1. Target monster. Low TDs.",
-      tags: ["TE", "2025", "PPR"]
-    },
-    {
-      name: "Kyle Pitts",
-      team: "Atlanta Falcons",
-      stats: "Finally showing potential in Year 4",
-      fantasy: "TE1 breakout candidate. Elite talent.",
-      tags: ["TE", "2025", "Breakout"]
+      cards: [
+        { q: "What's Trey McBride's strength?", a: "High target share and volume", tags: ["TE", "2025", "Volume"] },
+        { q: "What's Trey McBride's 2025 TE ranking?", a: "Top-3 TE - young and improving", tags: ["TE", "2025", "Elite"] }
+      ]
     }
   ]
 };

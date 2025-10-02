@@ -1,182 +1,92 @@
 /**
- * Personalized flashcards for your WPFL Fantasy Roster
- * Updated for current roster composition
+ * Personalized flashcards for WPFL Fantasy Roster
+ * ONE FACT PER CARD
  */
 
 export const myRosterCards = [
-  // Starters - QBs
-  {
-    question: "What are Jared Goff's (YOUR QB) key stats and fantasy outlook?",
-    answer: "Detroit Lions QB. Bye Week 8. Elite offense with weapons. Top-10 QB in 2024. Safe floor with high ceiling.",
-    tags: ["MY-ROSTER", "QB", "Jared-Goff", "DET"]
-  },
-  {
-    question: "Why is Jared Goff a good fantasy QB in 2024?",
-    answer: "Lions have elite offensive weapons: Amon-Ra St. Brown, Sam LaPorta (your TE!), David Montgomery + Jahmyr Gibbs. High-powered offense = QB success.",
-    tags: ["MY-ROSTER", "QB", "Jared-Goff", "Strategy"]
-  },
+  // QB - Jared Goff
+  { question: "Who is YOUR starting QB?", answer: "Jared Goff (Detroit Lions)", tags: ["MY-ROSTER", "QB"] },
+  { question: "When is Jared Goff's bye week?", answer: "Week 8", tags: ["MY-ROSTER", "QB", "Bye"] },
+  { question: "Why is Jared Goff a good fantasy QB?", answer: "Elite offensive weapons in high-powered Lions offense", tags: ["MY-ROSTER", "QB"] },
 
-  // Starters - RBs
-  {
-    question: "What's James Cook's (YOUR RB1) role and fantasy value?",
-    answer: "Buffalo Bills lead back. Bye Week 7. 18-22 touches per game. Bellcow in Josh Allen's offense. RB1 with high upside.",
-    tags: ["MY-ROSTER", "RB", "James-Cook", "BUF"]
-  },
-  {
-    question: "Why is James Cook valuable in fantasy?",
-    answer: "Lead back in elite Bills offense. Gets goal-line work. Josh Allen spreads ball around. 18-22 touches = RB1 volume.",
-    tags: ["MY-ROSTER", "RB", "James-Cook", "Strategy"]
-  },
-  {
-    question: "What's Kyren Williams' (YOUR RB2) role with the Rams?",
-    answer: "LA Rams lead back. Bye Week 8. 15-18 touches per game. TD machine. Red zone vulture. RB1 upside.",
-    tags: ["MY-ROSTER", "RB", "Kyren-Williams", "LAR"]
-  },
-  {
-    question: "Why is Kyren Williams a good fantasy RB?",
-    answer: "High TD rate (12 TDs in 2023 breakout). Lead back role. Catches passes. Red zone work. Consistent RB1/RB2.",
-    tags: ["MY-ROSTER", "RB", "Kyren-Williams", "Strategy"]
-  },
+  // RB1 - James Cook
+  { question: "Who is YOUR RB1?", answer: "James Cook (Buffalo Bills)", tags: ["MY-ROSTER", "RB"] },
+  { question: "What's James Cook's weekly touch range?", answer: "18-22 touches per game", tags: ["MY-ROSTER", "RB", "Volume"] },
+  { question: "When is James Cook's bye week?", answer: "Week 7", tags: ["MY-ROSTER", "RB", "Bye"] },
+  { question: "What's James Cook's role?", answer: "Lead back in elite Bills offense", tags: ["MY-ROSTER", "RB"] },
 
-  // Starters - WRs
-  {
-    question: "What makes Justin Jefferson (YOUR WR1) elite?",
-    answer: "Vikings WR1. Bye Week 6. 8-10 targets per game. One of best WRs in NFL. Top-5 fantasy WR when healthy. Elite target share.",
-    tags: ["MY-ROSTER", "WR", "Justin-Jefferson", "MIN"]
-  },
-  {
-    question: "What's the risk with Justin Jefferson on your roster?",
-    answer: "Injury history (2023 hamstring). QB play with Sam Darnold. Bye Week 6. But talent is undeniable - when healthy, he's top-5 WR.",
-    tags: ["MY-ROSTER", "WR", "Justin-Jefferson", "Risk"]
-  },
-  {
-    question: "What's Cooper Kupp's (YOUR WR2) outlook for 2024?",
-    answer: "Rams WR1. Bye Week 8. 6-8 targets per game. Injury-prone but elite when healthy. High-floor WR2 with WR1 weeks.",
-    tags: ["MY-ROSTER", "WR", "Cooper-Kupp", "LAR"]
-  },
-  {
-    question: "Should you be concerned about Cooper Kupp?",
-    answer: "Age 31, injury history. BUT: Still Stafford's favorite target. Slot role = PPR value. Monitor health weekly.",
-    tags: ["MY-ROSTER", "WR", "Cooper-Kupp", "Risk"]
-  },
+  // RB2 - Kyren Williams
+  { question: "Who is YOUR RB2?", answer: "Kyren Williams (LA Rams)", tags: ["MY-ROSTER", "RB"] },
+  { question: "What's Kyren Williams' weekly touch range?", answer: "15-18 touches per game", tags: ["MY-ROSTER", "RB", "Volume"] },
+  { question: "When is Kyren Williams' bye week?", answer: "Week 8", tags: ["MY-ROSTER", "RB", "Bye"] },
+  { question: "What's Kyren Williams' strength?", answer: "High TD rate - red zone specialist", tags: ["MY-ROSTER", "RB", "TDs"] },
 
-  // Starters - TE
-  {
-    question: "Why is Sam LaPorta (YOUR TE) elite in fantasy?",
-    answer: "Detroit Lions TE. Bye Week 8. 5-7 targets per game. Best rookie TE season ever (2023). Elite TE1. High-powered offense.",
-    tags: ["MY-ROSTER", "TE", "Sam-LaPorta", "DET"]
-  },
-  {
-    question: "What makes Sam LaPorta consistent?",
-    answer: "Goff loves TEs. Red zone target. Runs great routes. In elite offense with Goff (your QB!). Top-3 TE in fantasy.",
-    tags: ["MY-ROSTER", "TE", "Sam-LaPorta", "Strategy"]
-  },
+  // WR1 - Justin Jefferson
+  { question: "Who is YOUR WR1?", answer: "Justin Jefferson (Minnesota Vikings)", tags: ["MY-ROSTER", "WR"] },
+  { question: "What's Justin Jefferson's weekly target range?", answer: "8-10 targets per game", tags: ["MY-ROSTER", "WR", "Volume"] },
+  { question: "When is Justin Jefferson's bye week?", answer: "Week 6", tags: ["MY-ROSTER", "WR", "Bye"] },
+  { question: "What's the risk with Justin Jefferson?", answer: "Injury history (hamstring issues)", tags: ["MY-ROSTER", "WR", "Risk"] },
 
-  // Starters - FLEX
-  {
-    question: "Who is Woody Marks (YOUR FLEX1) and why is he valuable?",
-    answer: "Houston Texans RB. Bye Week 6. BREAKOUT - 21 touches Week 4. Emerging in Texans offense. Flex/RB2 upside.",
-    tags: ["MY-ROSTER", "FLEX", "Woody-Marks", "HOU", "Breakout"]
-  },
-  {
-    question: "Should you trust Woody Marks in your lineup?",
-    answer: "Breakout Week 4. Monitor usage trends. If touches stay 18-21, he's RB2. Texans offense is elite. High upside flex play.",
-    tags: ["MY-ROSTER", "FLEX", "Woody-Marks", "Strategy"]
-  },
-  {
-    question: "What's Javonte Williams' (YOUR FLEX2) situation?",
-    answer: "Denver Broncos RB (starter). Bye Week 10. 19.8 touches per game, 4 TDs. Lead back. Solid RB2/Flex.",
-    tags: ["MY-ROSTER", "FLEX", "Javonte-Williams", "DEN"]
-  },
-  {
-    question: "Why is Javonte Williams startable every week?",
-    answer: "Nearly 20 touches per game = volume. 4 TDs = scoring. Lead back role secured. Safe RB2 floor.",
-    tags: ["MY-ROSTER", "FLEX", "Javonte-Williams", "Strategy"]
-  },
+  // WR2 - Cooper Kupp
+  { question: "Who is YOUR WR2?", answer: "Cooper Kupp (LA Rams)", tags: ["MY-ROSTER", "WR"] },
+  { question: "What's Cooper Kupp's weekly target range?", answer: "6-8 targets per game", tags: ["MY-ROSTER", "WR", "Volume"] },
+  { question: "When is Cooper Kupp's bye week?", answer: "Week 8", tags: ["MY-ROSTER", "WR", "Bye"] },
+  { question: "What's Cooper Kupp's age concern?", answer: "Age 31 with injury history", tags: ["MY-ROSTER", "WR", "Risk"] },
 
-  // Bench Players
-  {
-    question: "What's DK Metcalf's (BENCH) role and value?",
-    answer: "Seattle Seahawks WR. Bye Week 5. Boom/bust. Big-play threat. Start in good matchups. WR2/3 with upside.",
-    tags: ["MY-ROSTER", "BENCH", "DK-Metcalf", "SEA"]
-  },
-  {
-    question: "When should you start DK Metcalf over your current WRs?",
-    answer: "vs weak secondaries. When Kupp is injured. If Jefferson is out. Otherwise bench for consistency of Jefferson/Kupp.",
-    tags: ["MY-ROSTER", "BENCH", "DK-Metcalf", "Strategy"]
-  },
-  {
-    question: "What's Rhamondre Stevenson's (BENCH) fantasy outlook?",
-    answer: "New England Patriots RB. Lead back but bad offense. Inconsistent scoring. Bench unless emergency or great matchup.",
-    tags: ["MY-ROSTER", "BENCH", "Rhamondre-Stevenson", "NE"]
-  },
-  {
-    question: "Is Rhamondre Stevenson worth keeping on your bench?",
-    answer: "Lead back role = value. Patriots offense struggles. Hold as RB depth. Trade bait if someone needs RB.",
-    tags: ["MY-ROSTER", "BENCH", "Rhamondre-Stevenson", "Strategy"]
-  },
-  {
-    question: "What's Calvin Ridley's (BENCH) situation in Tennessee?",
-    answer: "Tennessee Titans WR1. Inconsistent QB play hurts value. Low ceiling. Bench/trade piece. WR3/4.",
-    tags: ["MY-ROSTER", "BENCH", "Calvin-Ridley", "TEN"]
-  },
-  {
-    question: "Should you drop Calvin Ridley from your roster?",
-    answer: "WR1 for Titans = targets. QB play is bad. Hold as WR depth. Could have spike weeks. Trade if possible.",
-    tags: ["MY-ROSTER", "BENCH", "Calvin-Ridley", "Strategy"]
-  },
-  {
-    question: "Why is DeAndre Hopkins (BENCH) on your bench?",
-    answer: "Baltimore Ravens WR4. Only 2 targets per game. Too crowded - Zay Flowers, Mark Andrews. Droppable for better upside.",
-    tags: ["MY-ROSTER", "BENCH", "DeAndre-Hopkins", "BAL"]
-  },
-  {
-    question: "Should you drop DeAndre Hopkins for waiver wire pickup?",
-    answer: "YES - only 2 targets/game as WR4. Ravens run-heavy. Better options on waivers. Drop for RB handcuff or upside WR.",
-    tags: ["MY-ROSTER", "BENCH", "DeAndre-Hopkins", "Waiver-Wire"]
-  },
+  // TE - Sam LaPorta
+  { question: "Who is YOUR starting TE?", answer: "Sam LaPorta (Detroit Lions)", tags: ["MY-ROSTER", "TE"] },
+  { question: "What's Sam LaPorta's weekly target range?", answer: "5-7 targets per game", tags: ["MY-ROSTER", "TE", "Volume"] },
+  { question: "When is Sam LaPorta's bye week?", answer: "Week 8", tags: ["MY-ROSTER", "TE", "Bye"] },
+  { question: "Why is Sam LaPorta elite?", answer: "Top-3 TE in high-powered Lions offense", tags: ["MY-ROSTER", "TE"] },
 
-  // Kicker & Defense
-  {
-    question: "Why is Harrison Butker (YOUR K) elite?",
-    answer: "Kansas City Chiefs kicker. Bye Week 10. Best offense in NFL = scoring opportunities. Elite accuracy. Top-3 kicker.",
-    tags: ["MY-ROSTER", "K", "Harrison-Butker", "KC"]
-  },
-  {
-    question: "Why are the Minnesota Vikings (YOUR DEF) a good play?",
-    answer: "Bye Week 6. Strong pass rush. Creates turnovers. Matchup-dependent streaming option. Solid floor.",
-    tags: ["MY-ROSTER", "DEF", "Minnesota-Vikings"]
-  },
+  // FLEX - Woody Marks
+  { question: "Who is Woody Marks?", answer: "Houston Texans RB - YOUR FLEX1", tags: ["MY-ROSTER", "FLEX", "RB"] },
+  { question: "What was Woody Marks' Week 4 breakout?", answer: "21 touches - emerged as viable option", tags: ["MY-ROSTER", "FLEX", "Breakout"] },
+  { question: "When is Woody Marks' bye week?", answer: "Week 6", tags: ["MY-ROSTER", "FLEX", "Bye"] },
+
+  // FLEX - Javonte Williams
+  { question: "Who is YOUR FLEX2?", answer: "Javonte Williams (Denver Broncos)", tags: ["MY-ROSTER", "FLEX", "RB"] },
+  { question: "What's Javonte Williams' average touches per game?", answer: "19.8 touches per game", tags: ["MY-ROSTER", "FLEX", "Volume"] },
+  { question: "How many TDs does Javonte Williams have?", answer: "4 TDs", tags: ["MY-ROSTER", "FLEX", "TDs"] },
+  { question: "When is Javonte Williams' bye week?", answer: "Week 10", tags: ["MY-ROSTER", "FLEX", "Bye"] },
+
+  // Bench
+  { question: "Who is DK Metcalf's team?", answer: "Seattle Seahawks (YOUR BENCH)", tags: ["MY-ROSTER", "BENCH", "WR"] },
+  { question: "When is DK Metcalf's bye week?", answer: "Week 5", tags: ["MY-ROSTER", "BENCH", "Bye"] },
+  { question: "What type of player is DK Metcalf?", answer: "Boom/bust - big plays or nothing", tags: ["MY-ROSTER", "BENCH"] },
+
+  { question: "Who is Rhamondre Stevenson's team?", answer: "New England Patriots (YOUR BENCH)", tags: ["MY-ROSTER", "BENCH", "RB"] },
+  { question: "What's the problem with Rhamondre Stevenson?", answer: "Lead back but Patriots offense is bad", tags: ["MY-ROSTER", "BENCH"] },
+
+  { question: "Who is Calvin Ridley's team?", answer: "Tennessee Titans (YOUR BENCH)", tags: ["MY-ROSTER", "BENCH", "WR"] },
+  { question: "What's Calvin Ridley's issue?", answer: "Titans have inconsistent QB play", tags: ["MY-ROSTER", "BENCH"] },
+
+  { question: "How many targets per game does DeAndre Hopkins get?", answer: "Only 2 targets per game", tags: ["MY-ROSTER", "BENCH", "Low-Volume"] },
+  { question: "What's DeAndre Hopkins' role on Ravens?", answer: "WR4 - behind Zay Flowers and Mark Andrews", tags: ["MY-ROSTER", "BENCH"] },
+  { question: "Should you drop DeAndre Hopkins?", answer: "Yes - 2 targets/game is droppable for better upside", tags: ["MY-ROSTER", "BENCH", "Drop"] },
+
+  // K & DEF
+  { question: "Who is YOUR kicker?", answer: "Harrison Butker (Kansas City Chiefs)", tags: ["MY-ROSTER", "K"] },
+  { question: "When is Harrison Butker's bye?", answer: "Week 10", tags: ["MY-ROSTER", "K", "Bye"] },
+  { question: "What makes Butker elite?", answer: "Chiefs offense creates most scoring opportunities", tags: ["MY-ROSTER", "K"] },
+  { question: "What is YOUR defense?", answer: "Minnesota Vikings", tags: ["MY-ROSTER", "DEF"] },
+  { question: "When is Vikings defense bye?", answer: "Week 6", tags: ["MY-ROSTER", "DEF", "Bye"] },
 
   // Roster Strategy
-  {
-    question: "What's the biggest bye week concern for YOUR roster?",
-    answer: "Week 8 = DISASTER. Goff, Kyren, Kupp, LaPorta ALL on bye. Need bench depth. Plan ahead!",
-    tags: ["MY-ROSTER", "Strategy", "Bye-Weeks"]
-  },
-  {
-    question: "Which bench player should you try to trade away?",
-    answer: "DeAndre Hopkins (2 targets/game, WR4) or Calvin Ridley (bad QB play). Package with RB depth for upgrade at WR2.",
-    tags: ["MY-ROSTER", "Strategy", "Trading"]
-  },
-  {
-    question: "What's your roster's biggest strength?",
-    answer: "Elite RB depth: Cook, Kyren, Javonte, Woody. Can flex RBs weekly. Strong RB core wins leagues.",
-    tags: ["MY-ROSTER", "Strategy", "Strengths"]
-  },
-  {
-    question: "What's your roster's biggest weakness?",
-    answer: "WR depth after Jefferson/Kupp. Bench WRs (DK, Ridley, Hopkins) unreliable. Consider trading RB depth for WR upgrade.",
-    tags: ["MY-ROSTER", "Strategy", "Weaknesses"]
-  },
-  {
-    question: "Who on your roster has the highest trade value?",
-    answer: "James Cook (RB1 in elite offense) or Justin Jefferson (elite WR when healthy). Could fetch WR1 + RB2 package.",
-    tags: ["MY-ROSTER", "Strategy", "Trading"]
-  },
-  {
-    question: "What waiver wire position should you target?",
-    answer: "WR depth! Drop Hopkins, target high-upside WRs. Your RB room is solid. Need WR insurance for Jefferson/Kupp bye/injury.",
-    tags: ["MY-ROSTER", "Strategy", "Waiver-Wire"]
-  }
+  { question: "What's YOUR biggest bye week problem?", answer: "Week 8 - Goff, Kyren, Kupp, and LaPorta ALL on bye", tags: ["MY-ROSTER", "Bye-Week-Hell"] },
+  { question: "What's YOUR roster's biggest strength?", answer: "Elite RB depth with 4 startable backs", tags: ["MY-ROSTER", "Strength"] },
+  { question: "What's YOUR roster's biggest weakness?", answer: "WR depth after Jefferson and Kupp", tags: ["MY-ROSTER", "Weakness"] },
+  { question: "Which of YOUR bench players should you trade?", answer: "DeAndre Hopkins or Calvin Ridley", tags: ["MY-ROSTER", "Trade-Away"] },
+  { question: "What position should YOU target on waivers?", answer: "WR depth - drop Hopkins for high-upside WR", tags: ["MY-ROSTER", "Waiver-Wire"] },
+  { question: "Who on YOUR roster has highest trade value?", answer: "James Cook or Justin Jefferson", tags: ["MY-ROSTER", "Trade-Value"] }
+];
+
+export const defenseQuestions = [
+  { question: "What makes a defense valuable in fantasy?", answer: "Sacks, turnovers, TDs, and low points allowed", tags: ["Defense", "Scoring"] },
+  { question: "When should you draft a defense?", answer: "Last 2 rounds", tags: ["Defense", "Draft"] },
+  { question: "What is 'streaming defenses'?", answer: "Picking up defense each week that plays worst offense", tags: ["Defense", "Streaming"] },
+  { question: "Is streaming defenses better than keeping one?", answer: "Yes - works better than keeping same defense all year", tags: ["Defense", "Streaming"] },
+  { question: "Which teams should you stream defenses against?", answer: "Panthers, Giants, Patriots - teams with bad offenses", tags: ["Defense", "Streaming", "2025"] },
+  { question: "When should you add playoff week defenses?", answer: "Weeks 12-13 to secure good playoff matchups", tags: ["Defense", "Playoffs"] },
+  { question: "Are defensive touchdowns common?", answer: "No - they're boom plays, not consistent strategy", tags: ["Defense", "TDs"] }
 ];

@@ -10,30 +10,18 @@ export function generateAllFlashcards() {
   console.log('🔍 [generateAllFlashcards] Starting generation...');
   const cards = [];
 
-  // Generate player cards for all positions
+  // Generate player cards - new structure with multiple cards per player
   console.log('🔍 [generateAllFlashcards] Processing players2025:', Object.keys(players2025));
   Object.entries(players2025).forEach(([position, playersList]) => {
     console.log(`🔍 [generateAllFlashcards] Processing ${position}: ${playersList.length} players`);
     playersList.forEach(player => {
-      // Card 1: Stats/achievements question
-      cards.push({
-        question: `What were ${player.name}'s key achievements in 2024?`,
-        answer: player.stats,
-        tags: [...player.tags, position.toUpperCase()]
-      });
-
-      // Card 2: Fantasy outlook question
-      cards.push({
-        question: `What is ${player.name}'s fantasy football outlook for 2025?`,
-        answer: player.fantasy,
-        tags: [...player.tags, position.toUpperCase()]
-      });
-
-      // Card 3: Team association
-      cards.push({
-        question: `Which team does ${player.name} play for?`,
-        answer: player.team,
-        tags: [...player.tags, 'Teams', position.toUpperCase()]
+      // Each player now has their own array of cards
+      player.cards.forEach(card => {
+        cards.push({
+          question: card.q,
+          answer: card.a,
+          tags: card.tags
+        });
       });
     });
   });
@@ -128,6 +116,7 @@ export function getFlashcardStats() {
     strategyCards: fantasyStrategy.length,
     teamCards: teams2025.length,
     defenseCards: defenseQuestions.length,
+    rosterCards: myRosterCards.length,
     categories: [...tags].sort()
   };
 }
