@@ -4,6 +4,7 @@ import { isDue } from './utils/fsrs';
 import Header from './components/Header';
 import Stats from './components/Stats';
 import MCQCard from './components/MCQCard';
+import ScheduleInsights from './components/ScheduleInsights';
 
 export default function MCQApp() {
   const { cards, loading, updateCard, getDueCards, getStats, getCardsByDifficulty, getAllCardsByDifficulty } = useMCQ();
@@ -132,6 +133,11 @@ export default function MCQApp() {
         </div>
 
         <Stats stats={stats} />
+
+        {/* FSRS Schedule Insights */}
+        {!isStudying && cards.length > 0 && (
+          <ScheduleInsights cards={cards} />
+        )}
 
         {isStudying ? (
           <div className="mb-12 space-y-6">

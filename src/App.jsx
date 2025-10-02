@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Stats from './components/Stats';
 import Flashcard from './components/Flashcard';
 import AddCardModal from './components/AddCardModal';
+import ScheduleInsights from './components/ScheduleInsights';
 
 export default function App() {
   const { cards, loading, addCard, updateCard, getDueCards, getStats, getCardsByDifficulty } = useCards();
@@ -86,6 +87,11 @@ export default function App() {
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
         <Header />
         <Stats stats={stats} />
+
+        {/* FSRS Schedule Insights */}
+        {!isStudying && cards.length > 0 && (
+          <ScheduleInsights cards={cards} />
+        )}
 
         {isStudying ? (
           <div className="mb-12 space-y-6">
