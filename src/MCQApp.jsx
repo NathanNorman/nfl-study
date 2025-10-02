@@ -84,6 +84,16 @@ export default function MCQApp() {
     }
   };
 
+  const handleStopQuiz = () => {
+    if (confirm('Stop quiz and return to menu? Your progress will be saved.')) {
+      setIsStudying(false);
+      setCurrentCardIndex(0);
+      setDueCards([]);
+      setIsReviewingWrong(false);
+      setWrongAnswers([]);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -124,16 +134,24 @@ export default function MCQApp() {
               </div>
             )}
 
-            {/* Progress bar with score */}
+            {/* Progress bar with score and exit */}
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-purple-200 font-semibold">
                   Question {currentCardIndex + 1} of {dueCards.length}
                   {isReviewingWrong && <span className="text-orange-300 ml-2">(Review)</span>}
                 </span>
-                <span className="text-purple-300 text-sm font-medium">
-                  Score: {score.correct}/{score.total} ({score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0}%)
-                </span>
+                <div className="flex items-center gap-4">
+                  <span className="text-purple-300 text-sm font-medium">
+                    Score: {score.correct}/{score.total} ({score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0}%)
+                  </span>
+                  <button
+                    onClick={handleStopQuiz}
+                    className="text-purple-400 hover:text-white px-3 py-1 rounded-lg hover:bg-white/10 transition-all text-sm font-semibold"
+                  >
+                    ✕ Stop
+                  </button>
+                </div>
               </div>
               <div className="h-3 bg-white/10 rounded-full overflow-hidden">
                 <div

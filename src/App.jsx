@@ -57,6 +57,14 @@ export default function App() {
     }
   };
 
+  const handleStopStudying = () => {
+    if (confirm('Stop studying and return to menu? Your progress will be saved.')) {
+      setIsStudying(false);
+      setCurrentCardIndex(0);
+      setDueCards([]);
+    }
+  };
+
   const handleAddCard = async (question, answer, tags) => {
     await addCard(question, answer, tags);
     setShowAddModal(false);
@@ -81,15 +89,23 @@ export default function App() {
 
         {isStudying ? (
           <div className="mb-12 space-y-6">
-            {/* Progress bar */}
+            {/* Progress bar with exit button */}
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-purple-200 font-semibold">
                   Card {currentCardIndex + 1} of {dueCards.length}
                 </span>
-                <span className="text-purple-300 text-sm font-medium">
-                  {Math.round(((currentCardIndex + 1) / dueCards.length) * 100)}% Complete
-                </span>
+                <div className="flex items-center gap-4">
+                  <span className="text-purple-300 text-sm font-medium">
+                    {Math.round(((currentCardIndex + 1) / dueCards.length) * 100)}% Complete
+                  </span>
+                  <button
+                    onClick={handleStopStudying}
+                    className="text-purple-400 hover:text-white px-3 py-1 rounded-lg hover:bg-white/10 transition-all text-sm font-semibold"
+                  >
+                    ✕ Stop
+                  </button>
+                </div>
               </div>
               <div className="h-3 bg-white/10 rounded-full overflow-hidden">
                 <div
