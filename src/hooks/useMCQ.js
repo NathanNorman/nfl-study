@@ -86,7 +86,16 @@ export function useMCQ() {
     return due;
   }
 
-  function getCardsByDifficulty(difficulty) {
+  function getCardsByDifficulty(difficulty, onlyDue = false) {
+    let filtered = cards.filter(card => card.difficulty === difficulty);
+    if (onlyDue) {
+      filtered = filtered.filter(isDue);
+    }
+    return filtered;
+  }
+
+  function getAllCardsByDifficulty(difficulty) {
+    // Get all cards regardless of due date (for review mode)
     return cards.filter(card => card.difficulty === difficulty);
   }
 
@@ -109,6 +118,7 @@ export function useMCQ() {
     updateCard,
     getDueCards,
     getCardsByDifficulty,
+    getAllCardsByDifficulty,
     getStats
   };
 }

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useMCQ } from './hooks/useMCQ';
+import { isDue } from './utils/fsrs';
 import Header from './components/Header';
 import Stats from './components/Stats';
 import MCQCard from './components/MCQCard';
 
 export default function MCQApp() {
-  const { cards, loading, updateCard, getDueCards, getStats, getCardsByDifficulty } = useMCQ();
+  const { cards, loading, updateCard, getDueCards, getStats, getCardsByDifficulty, getAllCardsByDifficulty } = useMCQ();
   const [isStudying, setIsStudying] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [dueCards, setDueCards] = useState([]);
@@ -13,19 +14,30 @@ export default function MCQApp() {
   const [wrongAnswers, setWrongAnswers] = useState([]); // Leitner system - track wrong answers
   const [isReviewingWrong, setIsReviewingWrong] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [reviewMode, setReviewMode] = useState(false); // Review all regardless of due date
 
   const stats = getStats();
 
-  const startStudy = (difficulty = 'all') => {
+  const startStudy = (difficulty = 'all', reviewAll = false) => {
     let due;
-    if (difficulty === 'all') {
-      due = getDueCards();
+    if (reviewAll) {
+      // Review mode: get all cards regardless of due date
+      if (difficulty === 'all') {
+        due = cards;
+      } else {
+        due = getAllCardsByDifficulty(difficulty);
+      }
     } else {
-      due = getCardsByDifficulty(difficulty);
+      // Normal mode: only due cards
+      if (difficulty === 'all') {
+        due = getDueCards();
+      } else {
+        due = getCardsByDifficulty(difficulty).filter(isDue);
+      }
     }
 
     if (due.length === 0) {
-      alert(`No ${difficulty} cards available!`);
+      alert(`No ${difficulty} cards ${reviewAll ? 'available' : 'due'}!`);
       return;
     }
     setDueCards(due);
@@ -34,6 +46,7 @@ export default function MCQApp() {
     setScore({ correct: 0, total: 0 });
     setWrongAnswers([]); // Reset wrong answers
     setIsReviewingWrong(false);
+    setReviewMode(reviewAll);
   };
 
   const handleAnswer = async (isCorrect) => {
@@ -219,39 +232,75 @@ export default function MCQApp() {
               </div>
             ) : (
               <>
+                {/* Mode Toggle */}
+                <div className="flex justify-center gap-4 mb-6">
+                  <button
+                    onClick={() => setReviewMode(false)}
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                      !reviewMode
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                        : 'glass-card text-purple-200 hover:bg-white/10'
+                    }`}
+                  >
+                    ⚡ Study Due Cards
+                  </button>
+                  <button
+                    onClick={() => setReviewMode(true)}
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                      reviewMode
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                        : 'glass-card text-purple-200 hover:bg-white/10'
+                    }`}
+                  >
+                    🔄 Review All Cards
+                  </button>
+                </div>
+
                 {/* Difficulty Selector */}
-                <div className="flex justify-center gap-4 mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
                   <DifficultyButton
                     level="all"
                     emoji="📚"
                     label="All Levels"
-                    count={stats.due}
+                    count={reviewMode ? cards.length : stats.due}
+                    dueCount={stats.due}
+                    totalCount={cards.length}
+                    reviewMode={reviewMode}
                     selected={selectedDifficulty === 'all'}
-                    onClick={() => { setSelectedDifficulty('all'); startStudy('all'); }}
+                    onClick={() => { setSelectedDifficulty('all'); startStudy('all', reviewMode); }}
                   />
                   <DifficultyButton
                     level="beginner"
                     emoji="🌱"
                     label="Beginner"
-                    count={getCardsByDifficulty('beginner').length}
+                    count={reviewMode ? getAllCardsByDifficulty('beginner').length : getCardsByDifficulty('beginner').filter(isDue).length}
+                    dueCount={getCardsByDifficulty('beginner').filter(isDue).length}
+                    totalCount={getAllCardsByDifficulty('beginner').length}
+                    reviewMode={reviewMode}
                     selected={selectedDifficulty === 'beginner'}
-                    onClick={() => { setSelectedDifficulty('beginner'); startStudy('beginner'); }}
+                    onClick={() => { setSelectedDifficulty('beginner'); startStudy('beginner', reviewMode); }}
                   />
                   <DifficultyButton
                     level="intermediate"
                     emoji="⚡"
                     label="Intermediate"
-                    count={getCardsByDifficulty('intermediate').length}
+                    count={reviewMode ? getAllCardsByDifficulty('intermediate').length : getCardsByDifficulty('intermediate').filter(isDue).length}
+                    dueCount={getCardsByDifficulty('intermediate').filter(isDue).length}
+                    totalCount={getAllCardsByDifficulty('intermediate').length}
+                    reviewMode={reviewMode}
                     selected={selectedDifficulty === 'intermediate'}
-                    onClick={() => { setSelectedDifficulty('intermediate'); startStudy('intermediate'); }}
+                    onClick={() => { setSelectedDifficulty('intermediate'); startStudy('intermediate', reviewMode); }}
                   />
                   <DifficultyButton
                     level="advanced"
                     emoji="🔥"
                     label="Advanced"
-                    count={getCardsByDifficulty('advanced').length}
+                    count={reviewMode ? getAllCardsByDifficulty('advanced').length : getCardsByDifficulty('advanced').filter(isDue).length}
+                    dueCount={getCardsByDifficulty('advanced').filter(isDue).length}
+                    totalCount={getAllCardsByDifficulty('advanced').length}
+                    reviewMode={reviewMode}
                     selected={selectedDifficulty === 'advanced'}
-                    onClick={() => { setSelectedDifficulty('advanced'); startStudy('advanced'); }}
+                    onClick={() => { setSelectedDifficulty('advanced'); startStudy('advanced', reviewMode); }}
                   />
                 </div>
               </>
@@ -279,17 +328,26 @@ export default function MCQApp() {
   );
 }
 
-function DifficultyButton({ level, emoji, label, count, selected, onClick }) {
+function DifficultyButton({ level, emoji, label, count, dueCount, totalCount, reviewMode, selected, onClick }) {
   return (
     <button
       onClick={onClick}
+      disabled={count === 0}
       className={`glass-card px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 flex flex-col items-center gap-2 ${
-        selected ? 'ring-2 ring-purple-400 bg-purple-500/20' : 'hover:bg-white/10'
+        selected ? 'ring-2 ring-purple-400 bg-purple-500/20' :
+        count === 0 ? 'opacity-40 cursor-not-allowed' :
+        'hover:bg-white/10'
       }`}
     >
       <span className="text-3xl">{emoji}</span>
       <span className="text-white text-sm">{label}</span>
-      <span className="text-purple-300 text-xs">{count} cards</span>
+      <span className="text-purple-300 text-xs">
+        {reviewMode ? (
+          <>{count} total</>
+        ) : (
+          <>{count} due {dueCount < totalCount && `(${totalCount} total)`}</>
+        )}
+      </span>
     </button>
   );
 }
