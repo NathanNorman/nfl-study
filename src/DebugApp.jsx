@@ -18,6 +18,7 @@ export default function DebugApp() {
   const [filter, setFilter] = useState('all');
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showGoodCards, setShowGoodCards] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -103,11 +104,22 @@ export default function DebugApp() {
     URL.revokeObjectURL(url);
   }
 
-  const filteredCards = filter === 'all'
-    ? cards
-    : filter === 'unreviewed'
-    ? cards.filter(card => !reviews[card.id])
-    : cards.filter(card => reviews[card.id] === filter);
+  // Filter cards based on selected filter
+  let filteredCards;
+  if (filter === 'all') {
+    // Show all except 'good' cards (unless showGoodCards is true)
+    filteredCards = cards.filter(card => {
+      const review = reviews[card.id];
+      if (review === 'good' && !showGoodCards) return false;
+      return true;
+    });
+  } else if (filter === 'unreviewed') {
+    filteredCards = cards.filter(card => !reviews[card.id]);
+  } else {
+    filteredCards = cards.filter(card => reviews[card.id] === filter);
+  }
+
+  const goodCards = cards.filter(card => reviews[card.id] === 'good');
 
   if (loading) {
     return (
@@ -218,6 +230,29 @@ export default function DebugApp() {
 
       {/* Cards List */}
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Good Cards Collapsible Section */}
+        {goodCards.length > 0 && filter === 'all' && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setShowGoodCards(!showGoodCards)}
+              className="w-full px-4 py-3 flex items-center justify-between hover:bg-green-100 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{showGoodCards ? '▼' : '▶'}</span>
+                <span className="font-semibold text-green-900">
+                  ✓ Good Cards ({goodCards.length})
+                </span>
+                <span className="text-sm text-green-700">
+                  {showGoodCards ? 'Click to collapse' : 'Click to expand and review'}
+                </span>
+              </div>
+              <span className="text-xs text-green-600 font-medium">
+                {showGoodCards ? 'EXPANDED' : 'COLLAPSED'}
+              </span>
+            </button>
+          </div>
+        )}
+
         <div className="space-y-3">
           {filteredCards.map((card) => {
             const currentReview = reviews[card.id];
