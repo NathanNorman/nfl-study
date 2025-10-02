@@ -73,7 +73,11 @@ export function useCards() {
       if (card.id === cardId) {
         const scheduledCard = scheduleCard(card, rating);
         console.log('🔍 [updateCard] Card rescheduled. Next due:', scheduledCard.due);
-        return scheduledCard;
+        // Preserve difficulty field
+        return {
+          ...scheduledCard,
+          difficulty: card.difficulty
+        };
       }
       return card;
     });
