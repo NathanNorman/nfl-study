@@ -1,6 +1,7 @@
 import { players2025 } from './players2025';
 import { fantasyStrategy } from './fantasyStrategy';
 import { teams2025, defenseQuestions } from './teams2025';
+import { myRosterCards } from './myRoster';
 
 /**
  * Generate all flashcards from player and strategy data
@@ -64,6 +65,16 @@ export function generateAllFlashcards() {
       question: def.question,
       answer: def.answer,
       tags: def.tags
+    });
+  });
+
+  // Add personalized roster cards
+  console.log('🔍 [generateAllFlashcards] Adding', myRosterCards.length, 'MY ROSTER cards');
+  myRosterCards.forEach(card => {
+    cards.push({
+      question: card.question,
+      answer: card.answer,
+      tags: card.tags
     });
   });
 
