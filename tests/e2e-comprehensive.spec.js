@@ -23,12 +23,12 @@ test.describe('NFL Study - Comprehensive Feature Tests', () => {
     await expect(page.locator('button:has-text("Intermediate")')).toBeVisible();
     await expect(page.locator('button:has-text("Advanced")')).toBeVisible();
 
-    // Verify card counts
+    // Verify card counts (updated after quality improvements)
     const allLevelsText = await page.locator('button:has-text("All Levels")').textContent();
-    expect(allLevelsText).toContain('323');
+    expect(allLevelsText).toContain('311'); // Was 323, reduced by 12 after removing low-value cards
 
     const beginnerText = await page.locator('button:has-text("Beginner")').textContent();
-    expect(beginnerText).toContain('66');
+    expect(beginnerText).toContain('59'); // Was 66, reduced by 7 after removing abbreviation cards
 
     console.log('✅ All 4 difficulty buttons present with correct counts');
   });
