@@ -7,6 +7,10 @@ import { allPlayerMCQs } from './players2025MCQ';
 import { strategy2025MCQs } from './strategy2025MCQ';
 import { allTeamsMCQs } from './teams2025MCQ';
 import { advancedMCQ } from './advancedMCQ';
+import { intermediatePlayerMCQ } from './intermediatePlayerMCQ';
+import { intermediateConceptsMCQ } from './intermediateConceptsMCQ';
+import { extendedRosterMCQ } from './extendedRosterMCQ';
+import { additionalPlayersMCQ } from './additionalPlayersMCQ';
 
 /**
  * Shuffle array
@@ -45,6 +49,10 @@ export function generateMCQByDifficulty() {
     ...tagMCQDifficulty(playersMCQ, 'intermediate'),
     ...tagMCQDifficulty(teamsMCQ, 'intermediate'),
     ...tagMCQDifficulty(myRosterMCQ, 'intermediate'),
+    ...intermediatePlayerMCQ, // Detailed player knowledge (handcuffs, context, etc.)
+    ...intermediateConceptsMCQ, // FAAB, waiver wire, roster management
+    ...extendedRosterMCQ, // Extended personal roster MCQs
+    ...additionalPlayersMCQ, // Additional player-specific MCQs and defense
     ...allPlayerMCQs.filter(m => m.difficulty === 'intermediate' || !m.difficulty),
     ...allTeamsMCQs.filter(m => m.difficulty === 'intermediate')
   ];
