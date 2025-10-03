@@ -3,6 +3,7 @@ import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateFlashcardsByDifficulty } from '../data/generateByDifficulty';
 import { groupAndShuffleByCategory } from '../utils/shuffle';
+import { filterByPrerequisites } from '../utils/prerequisites';
 
 export function useCards() {
   const [cards, setCards] = useState([]);
@@ -97,17 +98,33 @@ export function useCards() {
   function getDueCards() {
     const due = cards.filter(isDue);
     console.log('🔍 [getDueCards] Found', due.length, 'due cards out of', cards.length, 'total');
+
+    // Filter out cards with unmastered prerequisites
+    const available = filterByPrerequisites(due, cards);
+    const locked = due.length - available.length;
+    if (locked > 0) {
+      console.log('🔒 [getDueCards] Locked', locked, 'cards (prerequisites not mastered)');
+    }
+
     // Group by category and shuffle within categories
-    const grouped = groupAndShuffleByCategory(due);
-    console.log('🔍 [getDueCards] Grouped and shuffled into categories');
+    const grouped = groupAndShuffleByCategory(available);
+    console.log('🔍 [getDueCards] Grouped and shuffled', available.length, 'available cards into categories');
     return grouped;
   }
 
   function getCardsByDifficulty(difficulty) {
     const filtered = cards.filter(card => card.difficulty === difficulty);
+
+    // Filter out cards with unmastered prerequisites
+    const available = filterByPrerequisites(filtered, cards);
+    const locked = filtered.length - available.length;
+    if (locked > 0) {
+      console.log('🔒 [getCardsByDifficulty] Locked', locked, 'cards (prerequisites not mastered)');
+    }
+
     // Group by category and shuffle within categories
-    const grouped = groupAndShuffleByCategory(filtered);
-    console.log('🔍 [getCardsByDifficulty] Grouped and shuffled', filtered.length, 'cards');
+    const grouped = groupAndShuffleByCategory(available);
+    console.log('🔍 [getCardsByDifficulty] Grouped and shuffled', available.length, 'available cards');
     return grouped;
   }
 

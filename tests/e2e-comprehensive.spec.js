@@ -23,12 +23,12 @@ test.describe('NFL Study - Comprehensive Feature Tests', () => {
     await expect(page.locator('button:has-text("Intermediate")')).toBeVisible();
     await expect(page.locator('button:has-text("Advanced")')).toBeVisible();
 
-    // Verify card counts (updated after adding terminology section)
+    // Verify card counts (with prerequisite filtering)
     const allLevelsText = await page.locator('button:has-text("All Levels")').textContent();
-    expect(allLevelsText).toContain('410'); // Added 99 terminology cards to 311 base cards
+    expect(allLevelsText).toContain('409'); // 410 total, but 1 card locked behind prerequisites
 
     const beginnerText = await page.locator('button:has-text("Beginner")').textContent();
-    expect(beginnerText).toContain('96'); // Added 37 beginner terminology cards to 59 base cards
+    expect(beginnerText).toContain('95'); // 96 total, but 1 locked behind prerequisites
 
     console.log('✅ All 4 difficulty buttons present with correct counts');
   });

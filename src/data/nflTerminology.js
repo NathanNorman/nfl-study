@@ -5,17 +5,16 @@
 
 // OFFENSIVE TERMINOLOGY
 export const offensiveTerms = [
-  // Beginner
-  { question: "What is a 'snap'?", answer: "When the center passes the ball between his legs to start a play", tags: ["Terminology", "Offense", "Snap"], difficulty: "beginner" },
-  { question: "What is 'play action'?", answer: "When the QB fakes a handoff to the RB before passing", tags: ["Terminology", "Offense", "Play-Action"], difficulty: "beginner" },
-  { question: "What is a 'screen pass'?", answer: "Short pass to RB or WR with blockers in front", tags: ["Terminology", "Offense", "Screen"], difficulty: "beginner" },
-  { question: "What is 'audible'?", answer: "When QB changes the play at the line of scrimmage", tags: ["Terminology", "Offense", "Audible"], difficulty: "beginner" },
-  { question: "What is 'hard count'?", answer: "QB uses voice inflection to try to draw defense offsides", tags: ["Terminology", "Offense", "Hard-Count"], difficulty: "beginner" },
-  { question: "What is a 'draw play'?", answer: "QB drops back like a pass, then hands off to RB (tricks defense)", tags: ["Terminology", "Offense", "Draw"], difficulty: "beginner" },
-  { question: "What is 'play-action'?", answer: "QB fakes a handoff to sell the run, then passes", tags: ["Terminology", "Offense", "Play-Action"], difficulty: "beginner" },
+  // Beginner - Foundation terms
+  { question: "What is a 'snap'?", answer: "When the center passes the ball between his legs to start a play", tags: ["Terminology", "Offense", "Snap"], difficulty: "beginner", defines: "snap" },
+  { question: "What is 'play action'?", answer: "When the QB fakes a handoff to the RB before passing", tags: ["Terminology", "Offense", "Play-Action"], difficulty: "beginner", defines: "play-action" },
+  { question: "What is a 'screen pass'?", answer: "Short pass to RB or WR with blockers in front", tags: ["Terminology", "Offense", "Screen"], difficulty: "beginner", defines: "screen-pass" },
+  { question: "What is 'audible'?", answer: "When QB changes the play at the line of scrimmage", tags: ["Terminology", "Offense", "Audible"], difficulty: "beginner", defines: "audible" },
+  { question: "What is 'hard count'?", answer: "QB uses voice inflection to try to draw defense offsides", tags: ["Terminology", "Offense", "Hard-Count"], difficulty: "beginner", defines: "hard-count" },
+  { question: "What is a 'draw play'?", answer: "QB drops back like a pass, then hands off to RB (tricks defense)", tags: ["Terminology", "Offense", "Draw"], difficulty: "beginner", defines: "draw-play" },
 
-  // Intermediate
-  { question: "What is 'RPO'?", answer: "Run-Pass Option - QB reads defense and chooses run or pass", tags: ["Terminology", "Offense", "RPO"], difficulty: "intermediate" },
+  // Intermediate - Uses beginner concepts
+  { question: "What is 'RPO'?", answer: "Run-Pass Option - QB reads defense and chooses run or pass", tags: ["Terminology", "Offense", "RPO"], difficulty: "intermediate", defines: "rpo" },
   { question: "What is 'pre-snap motion'?", answer: "Offensive player moving before the snap to create matchup advantages", tags: ["Terminology", "Offense", "Motion"], difficulty: "intermediate" },
   { question: "What is 'max protect'?", answer: "Using extra blockers (RB, TE) to protect QB for deep pass", tags: ["Terminology", "Offense", "Protection"], difficulty: "intermediate" },
   { question: "What is 'empty backfield'?", answer: "No RB behind QB - all 5 eligible receivers spread out", tags: ["Terminology", "Offense", "Empty"], difficulty: "intermediate" },
