@@ -8,6 +8,7 @@ import { players2025 } from './players2025';
 import { fantasyStrategy } from './fantasyStrategy';
 import { teams2025, defenseQuestions } from './teams2025';
 import { myRosterCards } from './myRoster';
+import { terminologyByDifficulty } from './nflTerminology';
 
 /**
  * Generate flashcards organized by difficulty level
@@ -17,13 +18,15 @@ export function generateFlashcardsByDifficulty() {
     ...footballBasics,
     ...positionBasics,
     ...formationBasics,
-    ...routeBasics
+    ...routeBasics,
+    ...terminologyByDifficulty.beginner
   ];
 
   const intermediate = [
     ...intermediatePlayerCards,
     ...intermediateConcepts,
-    ...myRosterCards // Your roster is intermediate level
+    ...myRosterCards, // Your roster is intermediate level
+    ...terminologyByDifficulty.intermediate
   ];
 
   // Tag existing content as intermediate (player/team knowledge)
@@ -61,7 +64,8 @@ export function generateFlashcardsByDifficulty() {
 
   const advanced = [
     ...advancedAnalytics,
-    ...deepStrategy
+    ...deepStrategy,
+    ...terminologyByDifficulty.advanced
   ];
 
   return {
