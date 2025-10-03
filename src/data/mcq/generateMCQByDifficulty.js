@@ -5,6 +5,8 @@ import { teamsMCQ } from './teamsMCQ';
 import { myRosterMCQ } from './myRosterMCQ';
 import { allPlayerMCQs } from './players2025MCQ';
 import { strategy2025MCQs } from './strategy2025MCQ';
+import { allTeamsMCQs } from './teams2025MCQ';
+import { advancedMCQ } from './advancedMCQ';
 
 /**
  * Shuffle array
@@ -34,25 +36,26 @@ function tagMCQDifficulty(mcqs, difficulty) {
  */
 export function generateMCQByDifficulty() {
   const beginner = [
-    ...footballBasicsMCQ // Already tagged as beginner
+    ...footballBasicsMCQ, // Already tagged as beginner
+    ...allPlayerMCQs.filter(m => m.difficulty === 'beginner'),
+    ...allTeamsMCQs.filter(m => m.difficulty === 'beginner')
   ];
 
   const intermediate = [
     ...tagMCQDifficulty(playersMCQ, 'intermediate'),
     ...tagMCQDifficulty(teamsMCQ, 'intermediate'),
     ...tagMCQDifficulty(myRosterMCQ, 'intermediate'),
-    ...allPlayerMCQs.filter(m => m.difficulty === 'intermediate' || !m.difficulty)
+    ...allPlayerMCQs.filter(m => m.difficulty === 'intermediate' || !m.difficulty),
+    ...allTeamsMCQs.filter(m => m.difficulty === 'intermediate')
   ];
 
   const advanced = [
     ...tagMCQDifficulty(strategyMCQ, 'advanced'),
     ...strategy2025MCQs,
-    ...allPlayerMCQs.filter(m => m.difficulty === 'advanced')
+    ...advancedMCQ, // Advanced analytics and deep strategy
+    ...allPlayerMCQs.filter(m => m.difficulty === 'advanced'),
+    ...allTeamsMCQs.filter(m => m.difficulty === 'advanced')
   ];
-
-  // Add beginner-level questions from new player MCQs
-  const beginnerPlayerMCQs = allPlayerMCQs.filter(m => m.difficulty === 'beginner');
-  beginner.push(...beginnerPlayerMCQs);
 
   const all = [...beginner, ...intermediate, ...advanced];
 
