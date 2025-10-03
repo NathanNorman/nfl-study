@@ -3,6 +3,7 @@ import { storage } from '../utils/storage';
 import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateMCQByDifficulty } from '../data/mcq/generateMCQByDifficulty';
 import { groupAndShuffleByCategory, shuffleArray } from '../utils/shuffle';
+import { filterByPrerequisites } from '../utils/prerequisites';
 
 export function useMCQ() {
   const [cards, setCards] = useState([]);
@@ -33,7 +34,13 @@ export function useMCQ() {
 
         // Convert MCQ to FSRS cards
         loadedCards = mcqQuestions.map(mcq => {
-          const fsrsCard = createCard(mcq.question, mcq.correctAnswer, mcq.tags);
+          const fsrsCard = createCard(
+            mcq.question,
+            mcq.correctAnswer,
+            mcq.tags,
+            mcq.defines,
+            mcq.prerequisites
+          );
           return {
             ...fsrsCard,
             options: mcq.options,
@@ -84,8 +91,16 @@ export function useMCQ() {
   function getDueCards() {
     const due = cards.filter(isDue);
     console.log('🔍 [useMCQ.getDueCards] Found', due.length, 'due MCQ cards');
+
+    // Filter out cards with unmastered prerequisites
+    const available = filterByPrerequisites(due, cards);
+    const locked = due.length - available.length;
+    if (locked > 0) {
+      console.log('🔒 [useMCQ.getDueCards] Locked', locked, 'MCQ cards (prerequisites not mastered)');
+    }
+
     // Group by category and shuffle within categories
-    const grouped = groupAndShuffleByCategory(due);
+    const grouped = groupAndShuffleByCategory(available);
     // Shuffle answer choices for each card
     return grouped.map(card => ({
       ...card,
@@ -125,11 +140,22 @@ export function useMCQ() {
       card.state === 2 && card.stability > 21
     );
 
-    return {
+    // Calculate locked cards
+    const allDueCards = cards.filter(isDue);
+    const locked = allDueCards.length - dueCards.length;
+
+    const stats = {
       total: cards.length,
       due: dueCards.length,
-      mastered: masteredCards.length
+      mastered: masteredCards.length,
+      locked: locked
     };
+
+    if (locked > 0) {
+      console.log('🔒 [useMCQ.getStats]', locked, 'MCQ cards locked (prerequisites not mastered)');
+    }
+
+    return stats;
   }
 
   return {

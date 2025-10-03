@@ -168,7 +168,7 @@ test.describe('NFL Study - Comprehensive Feature Tests', () => {
     // Review button should now be highlighted (gradient background)
     // All levels button should show total count
     const allLevelsText = await page.locator('button:has-text("All Levels")').textContent();
-    expect(allLevelsText).toContain('78'); // Total MCQs
+    expect(allLevelsText).toContain('163'); // Total MCQs (vastly expanded)
 
     console.log('✅ Review All Cards mode accessible');
   });

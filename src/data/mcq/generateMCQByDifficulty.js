@@ -3,6 +3,8 @@ import { playersMCQ } from './playersMCQ';
 import { strategyMCQ } from './strategyMCQ';
 import { teamsMCQ } from './teamsMCQ';
 import { myRosterMCQ } from './myRosterMCQ';
+import { allPlayerMCQs } from './players2025MCQ';
+import { strategy2025MCQs } from './strategy2025MCQ';
 
 /**
  * Shuffle array
@@ -38,12 +40,19 @@ export function generateMCQByDifficulty() {
   const intermediate = [
     ...tagMCQDifficulty(playersMCQ, 'intermediate'),
     ...tagMCQDifficulty(teamsMCQ, 'intermediate'),
-    ...tagMCQDifficulty(myRosterMCQ, 'intermediate')
+    ...tagMCQDifficulty(myRosterMCQ, 'intermediate'),
+    ...allPlayerMCQs.filter(m => m.difficulty === 'intermediate' || !m.difficulty)
   ];
 
   const advanced = [
-    ...tagMCQDifficulty(strategyMCQ, 'advanced') // Strategy is advanced level
+    ...tagMCQDifficulty(strategyMCQ, 'advanced'),
+    ...strategy2025MCQs,
+    ...allPlayerMCQs.filter(m => m.difficulty === 'advanced')
   ];
+
+  // Add beginner-level questions from new player MCQs
+  const beginnerPlayerMCQs = allPlayerMCQs.filter(m => m.difficulty === 'beginner');
+  beginner.push(...beginnerPlayerMCQs);
 
   const all = [...beginner, ...intermediate, ...advanced];
 
