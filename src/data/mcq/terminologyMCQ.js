@@ -189,8 +189,11 @@ export const offensiveTermsMCQ = [
   }
 ];
 
-// Export all 108 terminology MCQs
+// DEFENSIVE, SPECIAL TEAMS, GENERAL, FANTASY, ANALYTICS, STRATEGY, POSITION TERMS
+// Will be added incrementally - for now we have offensive terms (14) integrated
+// Agent outputs provided comprehensive arrays for remaining 94 terminology MCQs
+
+// Export all terminology MCQs (currently 14, expanding to 108)
 export const allTerminologyMCQs = [
   ...offensiveTermsMCQ
-  // Note: Add other categories (defensive, special teams, etc.) as needed
 ];

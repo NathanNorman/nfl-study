@@ -11,6 +11,7 @@ import { intermediatePlayerMCQ } from './intermediatePlayerMCQ';
 import { intermediateConceptsMCQ } from './intermediateConceptsMCQ';
 import { extendedRosterMCQ } from './extendedRosterMCQ';
 import { additionalPlayersMCQ } from './additionalPlayersMCQ';
+import { comprehensiveTerminologyMCQs } from './comprehensiveTerminologyMCQ';
 
 /**
  * Shuffle array
@@ -42,7 +43,8 @@ export function generateMCQByDifficulty() {
   const beginner = [
     ...footballBasicsMCQ, // Already tagged as beginner
     ...allPlayerMCQs.filter(m => m.difficulty === 'beginner'),
-    ...allTeamsMCQs.filter(m => m.difficulty === 'beginner')
+    ...allTeamsMCQs.filter(m => m.difficulty === 'beginner'),
+    ...comprehensiveTerminologyMCQs.filter(m => m.difficulty === 'beginner')
   ];
 
   const intermediate = [
@@ -54,7 +56,8 @@ export function generateMCQByDifficulty() {
     ...extendedRosterMCQ, // Extended personal roster MCQs
     ...additionalPlayersMCQ, // Additional player-specific MCQs and defense
     ...allPlayerMCQs.filter(m => m.difficulty === 'intermediate' || !m.difficulty),
-    ...allTeamsMCQs.filter(m => m.difficulty === 'intermediate')
+    ...allTeamsMCQs.filter(m => m.difficulty === 'intermediate'),
+    ...comprehensiveTerminologyMCQs.filter(m => m.difficulty === 'intermediate')
   ];
 
   const advanced = [
@@ -62,7 +65,8 @@ export function generateMCQByDifficulty() {
     ...strategy2025MCQs,
     ...advancedMCQ, // Advanced analytics and deep strategy
     ...allPlayerMCQs.filter(m => m.difficulty === 'advanced'),
-    ...allTeamsMCQs.filter(m => m.difficulty === 'advanced')
+    ...allTeamsMCQs.filter(m => m.difficulty === 'advanced'),
+    ...comprehensiveTerminologyMCQs.filter(m => m.difficulty === 'advanced')
   ];
 
   const all = [...beginner, ...intermediate, ...advanced];
