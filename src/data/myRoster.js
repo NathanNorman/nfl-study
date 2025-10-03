@@ -19,7 +19,7 @@ export const myRosterCards = [
   { question: "Who is YOUR RB2?", answer: "Kyren Williams (LA Rams)", tags: ["MY-ROSTER", "RB"] },
   { question: "What's Kyren Williams' weekly touch range?", answer: "15-18 touches per game", tags: ["MY-ROSTER", "RB", "Volume"] },
   { question: "When is Kyren Williams' bye week?", answer: "Week 8", tags: ["MY-ROSTER", "RB", "Bye"] },
-  { question: "What's Kyren Williams' strength?", answer: "High TD rate - red zone specialist", tags: ["MY-ROSTER", "RB", "TDs"] },
+  { question: "What's Kyren Williams' strength?", answer: "High TD rate - red zone specialist", tags: ["MY-ROSTER", "RB", "TDs"], prerequisites: ["red-zone", "rb"] },
 
   // WR1 - Justin Jefferson
   { question: "Who is YOUR WR1?", answer: "Justin Jefferson (Minnesota Vikings)", tags: ["MY-ROSTER", "WR"] },
@@ -53,7 +53,7 @@ export const myRosterCards = [
   // Bench
   { question: "Who is DK Metcalf's team?", answer: "Seattle Seahawks (YOUR BENCH)", tags: ["MY-ROSTER", "BENCH", "WR"] },
   { question: "When is DK Metcalf's bye week?", answer: "Week 5", tags: ["MY-ROSTER", "BENCH", "Bye"] },
-  { question: "What type of player is DK Metcalf?", answer: "Boom/bust - big plays or nothing", tags: ["MY-ROSTER", "BENCH"] },
+  { question: "What type of player is DK Metcalf?", answer: "Boom/bust - big plays or nothing", tags: ["MY-ROSTER", "BENCH"], prerequisites: ["boom-bust", "wr"] },
 
   { question: "Who is Rhamondre Stevenson's team?", answer: "New England Patriots (YOUR BENCH)", tags: ["MY-ROSTER", "BENCH", "RB"] },
   { question: "What's the problem with Rhamondre Stevenson?", answer: "Lead back but Patriots offense is bad", tags: ["MY-ROSTER", "BENCH"] },

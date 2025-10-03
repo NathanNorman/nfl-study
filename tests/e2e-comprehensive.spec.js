@@ -25,7 +25,7 @@ test.describe('NFL Study - Comprehensive Feature Tests', () => {
 
     // Verify card counts (with prerequisite filtering)
     const allLevelsText = await page.locator('button:has-text("All Levels")').textContent();
-    expect(allLevelsText).toContain('409'); // 410 total, but 1 card locked behind prerequisites
+    expect(allLevelsText).toContain('370'); // Due cards (43 locked by prerequisites)
 
     const beginnerText = await page.locator('button:has-text("Beginner")').textContent();
     expect(beginnerText).toContain('95'); // 96 total, but 1 locked behind prerequisites

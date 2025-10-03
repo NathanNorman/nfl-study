@@ -9,7 +9,7 @@ export { Rating, State };
 /**
  * Create a new card
  */
-export function createCard(question, answer, tags = []) {
+export function createCard(question, answer, tags = [], defines = null, prerequisites = []) {
   console.log('🔍 [createCard] Creating new card:', question.substring(0, 50) + '...');
   const card = createEmptyCard();
   console.log('🔍 [createCard] Empty card created:', card);
@@ -19,6 +19,8 @@ export function createCard(question, answer, tags = []) {
     question,
     answer,
     tags,
+    defines,
+    prerequisites,
     createdAt: new Date().toISOString()
   };
   console.log('🔍 [createCard] ✅ Card created with ID:', newCard.id);
@@ -50,6 +52,8 @@ export function scheduleCard(card, rating) {
     question: card.question,
     answer: card.answer,
     tags: card.tags,
+    defines: card.defines,
+    prerequisites: card.prerequisites,
     id: card.id,
     createdAt: card.createdAt
   };

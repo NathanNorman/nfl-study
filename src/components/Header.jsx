@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Header({ totalCards = 413 }) {
   return (
     <header className="text-center mb-12 relative">
       <div className="absolute inset-0 blur-3xl opacity-30">
@@ -23,7 +23,7 @@ export default function Header() {
         <div className="mt-6 flex items-center justify-center gap-3 text-sm text-purple-300">
           <div className="flex items-center gap-2 glass px-4 py-2 rounded-full">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span>207 Flashcards</span>
+            <span>{totalCards} Flashcards</span>
           </div>
           <div className="flex items-center gap-2 glass px-4 py-2 rounded-full">
             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>

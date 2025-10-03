@@ -49,6 +49,12 @@ Uses the official [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) l
 - See card states (New, Learning, Review, Relearning)
 - Track due dates for upcoming reviews
 
+### 🔒 **Intelligent Prerequisites System**
+- Learn foundational concepts before advanced applications
+- Cards automatically unlock as you master prerequisites
+- 145+ concept definitions with smart dependency chains
+- Natural learning progression from basics to expert level
+
 ### 🎨 **Modern UI/UX**
 - Fast, responsive interface built with React 19 + Vite
 - Beautiful Tailwind CSS 4 styling
@@ -225,6 +231,30 @@ The algorithm uses your ratings to calculate optimal review intervals, maximizin
 3. **Be honest with ratings**: Accurate ratings = optimal learning
 4. **Review insights**: Check FSRS Schedule Insights to plan future sessions
 5. **Consistency matters**: Daily reviews (even 10 minutes) beat long cram sessions
+
+### Understanding the Prerequisite System
+
+The app includes an intelligent prerequisite system that ensures you learn foundational concepts before advanced applications:
+
+**How It Works:**
+- **Definition Cards**: 145+ cards teach core concepts (e.g., "What is target share?")
+- **Dependent Cards**: Advanced cards require mastering prerequisites first
+- **Automatic Unlocking**: As you master concepts, dependent cards automatically become available
+- **Visual Feedback**: The app shows a 🔒 locked card count when prerequisites aren't met
+
+**Example Learning Path:**
+```
+1. Study "What is target share?" → Master it (stability > 7 days)
+2. Cards like "What's CeeDee Lamb's target share?" automatically unlock
+3. Study "What is dual-threat QB?" → Master it
+4. QB evaluation cards like "Why is Jalen Hurts elite?" unlock
+```
+
+**Benefits:**
+- 🎓 Natural learning progression from basics to expert level
+- 🧩 Concepts build on each other logically
+- 🚫 Prevents confusion from advanced terminology before learning basics
+- ✅ More effective retention through proper sequencing
 
 ### Managing Your Cards
 

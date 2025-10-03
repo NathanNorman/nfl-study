@@ -85,7 +85,7 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
-        <Header />
+        <Header totalCards={stats.total} />
         <Stats stats={stats} />
 
         {/* FSRS Schedule Insights */}
@@ -233,7 +233,7 @@ export default function App() {
 
         {/* Footer */}
         <div className="text-center mt-16 text-purple-400 text-sm">
-          <p>Powered by FSRS Algorithm • 207 Flashcards • 2024-2025 Season</p>
+          <p>Powered by FSRS Algorithm • {stats.total} Flashcards • 2024-2025 Season</p>
         </div>
       </div>
 

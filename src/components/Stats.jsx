@@ -1,32 +1,55 @@
 export default function Stats({ stats }) {
+  const hasLockedCards = stats.locked && stats.locked > 0;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <StatCard
-        label="Total Cards"
-        value={stats.total}
-        icon="📚"
-        color="from-blue-500 to-cyan-500"
-        delay="0"
-      />
-      <StatCard
-        label="Due Today"
-        value={stats.due}
-        icon="⚡"
-        color="from-purple-500 to-pink-500"
-        delay="100"
-      />
-      <StatCard
-        label="Mastered"
-        value={stats.mastered}
-        icon="🏆"
-        color="from-amber-500 to-orange-500"
-        delay="200"
-      />
-    </div>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <StatCard
+          label="Total Cards"
+          value={stats.total}
+          max={stats.total}
+          icon="📚"
+          color="from-blue-500 to-cyan-500"
+          delay="0"
+        />
+        <StatCard
+          label="Due Today"
+          value={stats.due}
+          max={stats.total}
+          icon="⚡"
+          color="from-purple-500 to-pink-500"
+          delay="100"
+        />
+        <StatCard
+          label="Mastered"
+          value={stats.mastered}
+          max={stats.total}
+          icon="🏆"
+          color="from-amber-500 to-orange-500"
+          delay="200"
+        />
+      </div>
+
+      {hasLockedCards && (
+        <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+          <div className="flex items-center gap-3 text-yellow-900">
+            <span className="text-2xl">🔒</span>
+            <div>
+              <div className="font-semibold">
+                {stats.locked} cards locked
+              </div>
+              <div className="text-sm text-yellow-700">
+                Learn prerequisite concepts to unlock these cards
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-function StatCard({ label, value, icon, color, delay }) {
+function StatCard({ label, value, max, icon, color, delay }) {
   return (
     <div
       className="glass-card rounded-2xl p-6 card-hover group relative overflow-hidden"
@@ -57,7 +80,7 @@ function StatCard({ label, value, icon, color, delay }) {
         <div className="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
           <div
             className={`h-full bg-gradient-to-r ${color} transition-all duration-1000`}
-            style={{width: `${Math.min((value / 207) * 100, 100)}%`}}
+            style={{width: `${Math.min((value / max) * 100, 100)}%`}}
           ></div>
         </div>
       </div>

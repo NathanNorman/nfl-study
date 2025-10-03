@@ -11,7 +11,7 @@ export const players2025 = {
       cards: [
         { q: "Who won the 2024 NFL MVP?", a: "Josh Allen (Buffalo Bills)", tags: ["QB", "MVP", "2024"] },
         { q: "What historic stat line did Josh Allen achieve in 2024?", a: "First player ever with 25+ pass TDs, 10+ rush TDs, and fewer than 10 INTs", tags: ["QB", "MVP", "2024", "Historic"] },
-        { q: "What makes Josh Allen the #1 fantasy QB for 2025?", a: "Elite dual-threat ability - elite passer AND rusher", tags: ["QB", "2025", "Elite"] }
+        { q: "What makes Josh Allen the #1 fantasy QB for 2025?", a: "Elite dual-threat ability - elite passer AND rusher", tags: ["QB", "2025", "Elite"], prerequisites: ["dual-threat-qb", "qb"] }
       ]
     },
     {
@@ -27,7 +27,7 @@ export const players2025 = {
       name: "Joe Burrow",
       team: "Cincinnati Bengals",
       cards: [
-        { q: "Why is Joe Burrow's 2025 outlook elite?", a: "Elite passing volume with Ja'Marr Chase connection", tags: ["QB", "2025", "Elite"] }
+        { q: "Why is Joe Burrow's 2025 outlook elite?", a: "Elite passing volume with Ja'Marr Chase connection", tags: ["QB", "2025", "Elite"], prerequisites: ["qb", "wr"] }
       ]
     },
     {
@@ -36,7 +36,7 @@ export const players2025 = {
       cards: [
         { q: "Who won Super Bowl LIX MVP?", a: "Jalen Hurts", tags: ["QB", "Super-Bowl", "MVP", "2025"] },
         { q: "What did Jalen Hurts do in Super Bowl LIX?", a: "300+ total yards, 3 TDs in Eagles' 40-22 win", tags: ["QB", "Super-Bowl", "2025"] },
-        { q: "Why is Jalen Hurts a top-5 QB for 2025?", a: "Super Bowl champion with elite dual-threat ability", tags: ["QB", "2025", "Elite", "Champion"] }
+        { q: "Why is Jalen Hurts a top-5 QB for 2025?", a: "Super Bowl champion with elite dual-threat ability", tags: ["QB", "2025", "Elite", "Champion"], prerequisites: ["dual-threat-qb", "qb"] }
       ]
     },
     {
@@ -46,7 +46,7 @@ export const players2025 = {
         { q: "Who won 2024 Offensive Rookie of the Year?", a: "Jayden Daniels (Washington Commanders)", tags: ["QB", "OROY", "2024"] },
         { q: "What historic rookie stat did Jayden Daniels achieve?", a: "First rookie ever with 3,500+ pass yards AND 800+ rush yards", tags: ["QB", "OROY", "2024", "Historic"] },
         { q: "How many first-place votes did Jayden Daniels get for OROY?", a: "48 of 49 votes (Brock Bowers got 1)", tags: ["QB", "OROY", "2024"] },
-        { q: "What's Jayden Daniels' 2025 fantasy outlook?", a: "Elite QB1 potential in Year 2 as dual-threat", tags: ["QB", "2025", "Breakout"] }
+        { q: "What's Jayden Daniels' 2025 fantasy outlook?", a: "Elite QB1 potential in Year 2 as dual-threat", tags: ["QB", "2025", "Breakout"], prerequisites: ["dual-threat-qb", "qb"] }
       ]
     },
     {
@@ -81,7 +81,7 @@ export const players2025 = {
       name: "Bijan Robinson",
       team: "Atlanta Falcons",
       cards: [
-        { q: "What's Bijan Robinson's 2025 fantasy ranking?", a: "Top-3 RB with bellcow usage", tags: ["RB", "2025", "Elite"] },
+        { q: "What's Bijan Robinson's 2025 fantasy ranking?", a: "Top-3 RB with bellcow usage", tags: ["RB", "2025", "Elite"], prerequisites: ["bellcow-rb", "rb"] },
         { q: "What year is it for Bijan Robinson?", a: "Year 3 - breakout complete", tags: ["RB", "2025"] }
       ]
     },
@@ -90,7 +90,7 @@ export const players2025 = {
       team: "Detroit Lions",
       cards: [
         { q: "What's Jahmyr Gibbs' role with the Lions?", a: "Shares backfield with David Montgomery", tags: ["RB", "2025", "Timeshare"] },
-        { q: "Despite timeshare, why is Jahmyr Gibbs top-5 RB?", a: "Elite big-play ability and PPR value", tags: ["RB", "2025", "Elite", "PPR"] }
+        { q: "Despite timeshare, why is Jahmyr Gibbs top-5 RB?", a: "Elite big-play ability and PPR value", tags: ["RB", "2025", "Elite", "PPR"], prerequisites: ["ppr", "rb"] }
       ]
     },
     {
@@ -105,7 +105,7 @@ export const players2025 = {
       name: "Kyren Williams",
       team: "Los Angeles Rams",
       cards: [
-        { q: "What's Kyren Williams' specialty?", a: "Red zone TD machine", tags: ["RB", "2025", "TDs"] },
+        { q: "What's Kyren Williams' specialty?", a: "Red zone TD machine", tags: ["RB", "2025", "TDs"], prerequisites: ["red-zone", "rb"] },
         { q: "What's Kyren Williams' 2025 fantasy outlook?", a: "RB1 potential as lead back", tags: ["RB", "2025"] }
       ]
     }
@@ -125,8 +125,8 @@ export const players2025 = {
       name: "CeeDee Lamb",
       team: "Dallas Cowboys",
       cards: [
-        { q: "What's CeeDee Lamb's target share?", a: "Massive - elite volume in Cowboys offense", tags: ["WR", "2025", "Volume"] },
-        { q: "What's CeeDee Lamb's 2025 ranking?", a: "Top-3 WR - safe floor with high target volume", tags: ["WR", "2025", "Elite"] }
+        { q: "What's CeeDee Lamb's target share?", a: "Massive - elite volume in Cowboys offense", tags: ["WR", "2025", "Volume"], prerequisites: ["target-share", "wr"] },
+        { q: "What's CeeDee Lamb's 2025 ranking?", a: "Top-3 WR - safe floor with high target volume", tags: ["WR", "2025", "Elite"], prerequisites: ["floor", "target-share", "wr"] }
       ]
     },
     {
@@ -149,7 +149,7 @@ export const players2025 = {
       name: "Malik Nabers",
       team: "New York Giants",
       cards: [
-        { q: "What did Malik Nabers do as a rookie in 2024?", a: "Elite target share - rookie sensation", tags: ["WR", "2024", "Rookie"] },
+        { q: "What did Malik Nabers do as a rookie in 2024?", a: "Elite target share - rookie sensation", tags: ["WR", "2024", "Rookie"], prerequisites: ["target-share", "wr"] },
         { q: "What's Malik Nabers' 2025 outlook?", a: "Top-10 WR in Year 2 breakout", tags: ["WR", "2025", "Sophomore", "Breakout"] }
       ]
     },
@@ -169,7 +169,7 @@ export const players2025 = {
       team: "Detroit Lions",
       cards: [
         { q: "What's Sam LaPorta's 2025 TE ranking?", a: "Top-2 TE in elite Lions offense", tags: ["TE", "2025", "Elite"] },
-        { q: "Why is Sam LaPorta so consistent?", a: "Elite offense gives him high volume and red zone targets", tags: ["TE", "2025"] }
+        { q: "Why is Sam LaPorta so consistent?", a: "Elite offense gives him high volume and red zone targets", tags: ["TE", "2025"], prerequisites: ["red-zone", "te"] }
       ]
     },
     {
@@ -184,7 +184,7 @@ export const players2025 = {
       name: "Trey McBride",
       team: "Arizona Cardinals",
       cards: [
-        { q: "What's Trey McBride's strength?", a: "High target share and volume", tags: ["TE", "2025", "Volume"] },
+        { q: "What's Trey McBride's strength?", a: "High target share and volume", tags: ["TE", "2025", "Volume"], prerequisites: ["target-share", "te"] },
         { q: "What's Trey McBride's 2025 TE ranking?", a: "Top-3 TE - young and improving", tags: ["TE", "2025", "Elite"] }
       ]
     }

@@ -35,7 +35,13 @@ export function useCards() {
 
         console.log('🔍 [loadCards] Converting to FSRS cards...');
         loadedCards = flashcards.map(card => {
-          const fsrsCard = createCard(card.question, card.answer, card.tags);
+          const fsrsCard = createCard(
+            card.question,
+            card.answer,
+            card.tags,
+            card.defines,
+            card.prerequisites
+          );
           return {
             ...fsrsCard,
             difficulty: card.difficulty || 'intermediate'
@@ -61,12 +67,16 @@ export function useCards() {
     }
   }
 
-  async function addCard(question, answer, tags = []) {
-    const newCard = createCard(question, answer, tags);
-    const updatedCards = [...cards, newCard];
+  async function addCard(question, answer, tags = [], difficulty = 'intermediate', defines = null, prerequisites = []) {
+    const newCard = createCard(question, answer, tags, defines, prerequisites);
+    const fullCard = {
+      ...newCard,
+      difficulty
+    };
+    const updatedCards = [...cards, fullCard];
     setCards(updatedCards);
     await storage.saveCards(updatedCards);
-    return newCard;
+    return fullCard;
   }
 
   async function updateCard(cardId, rating) {
@@ -134,12 +144,20 @@ export function useCards() {
       card.state === 2 && card.stability > 21
     );
 
+    // Calculate locked cards (cards that are due but filtered out by prerequisites)
+    const allDueCards = cards.filter(isDue);
+    const locked = allDueCards.length - dueCards.length;
+
     const stats = {
       total: cards.length,
       due: dueCards.length,
-      mastered: masteredCards.length
+      mastered: masteredCards.length,
+      locked: locked
     };
     console.log('🔍 [getStats] Stats:', stats);
+    if (locked > 0) {
+      console.log('🔒 [getStats]', locked, 'cards locked (prerequisites not mastered)');
+    }
     return stats;
   }
 

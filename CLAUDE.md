@@ -75,6 +75,14 @@ The app uses the official FSRS algorithm to schedule card reviews:
    - If empty, auto-generates 380+ cards from data files
    - Maintains FSRS metadata across sessions
    - Filters by due date and difficulty level
+   - **Prerequisite filtering**: Locks cards until required concepts are mastered
+
+5. **Prerequisite System** (`src/utils/prerequisites.js`):
+   - Enforces learning progression by locking advanced cards
+   - Definition cards have `defines: "concept-id"` field
+   - Dependent cards have `prerequisites: ["concept-id"]` array
+   - Cards unlock when prerequisites reach mastery (stability > 7)
+   - 145+ concept definitions with intelligent dependency chains
 
 ### Two Study Modes
 
@@ -132,6 +140,8 @@ IndexedDB stores cards with this structure:
   answer: string,          // Card back
   tags: string[],          // Categorization
   difficulty: string,      // 'beginner' | 'intermediate' | 'advanced'
+  defines: string | null,  // Concept ID this card teaches (e.g., "target-share")
+  prerequisites: string[], // Required concept IDs (e.g., ["ppr", "rb"])
   // FSRS metadata:
   due: Date,               // Next review date
   stability: number,       // Memory stability
@@ -145,6 +155,45 @@ IndexedDB stores cards with this structure:
   createdAt: string        // Card creation date
 }
 ```
+
+## Prerequisite System
+
+### How It Works
+
+The app enforces intelligent learning progression using a prerequisite system:
+
+**Definition Cards** teach concepts and have a `defines` field:
+```javascript
+{
+  question: "What is target share?",
+  answer: "Percentage of team's targets going to a receiver",
+  defines: "target-share",
+  tags: ["Terminology", "Analytics"],
+  difficulty: "intermediate"
+}
+```
+
+**Dependent Cards** use those concepts and have a `prerequisites` field:
+```javascript
+{
+  q: "What's CeeDee Lamb's target share?",
+  a: "Massive - elite volume in Cowboys offense",
+  prerequisites: ["target-share", "wr"],
+  tags: ["WR", "2025", "Volume"]
+}
+```
+
+**Filtering Logic:**
+1. When cards load, `filterByPrerequisites(cards, allCards)` is called
+2. For each card with prerequisites, system checks if ALL prerequisite concepts are mastered
+3. Mastery = Card has `state: 2` (Review) AND `stability > 7` (FSRS retention metric)
+4. Cards with unmastered prerequisites are filtered out
+5. Console logs: "🔒 Locked X cards (prerequisites not mastered)"
+
+**Current State:**
+- 145+ concept definitions across terminology and basics
+- 40+ prerequisite relationships actively enforcing progression
+- ~20 cards currently locked awaiting prerequisite mastery
 
 ## Testing Strategy
 
