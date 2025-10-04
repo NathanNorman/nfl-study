@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
 
 function DifficultyBadge({ difficulty }) {
+  if (!difficulty || typeof difficulty !== 'string') {
+    return null; // Don't render if difficulty is missing or invalid
+  }
+
   const config = {
     beginner: { color: 'from-green-500 to-emerald-500', emoji: '🌱' },
     intermediate: { color: 'from-blue-500 to-cyan-500', emoji: '⚡' },
     advanced: { color: 'from-red-500 to-orange-500', emoji: '🔥' }
   };
 
-  const { color, emoji } = config[difficulty] || config.intermediate;
+  const normalizedDifficulty = difficulty.toLowerCase();
+  const { color, emoji } = config[normalizedDifficulty] || config.intermediate;
 
   return (
     <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
-      <span>{emoji} {difficulty.toUpperCase()}</span>
+      <span>{emoji} {normalizedDifficulty.toUpperCase()}</span>
     </div>
   );
 }
@@ -22,10 +27,11 @@ export default function MCQCard({ card, onAnswer }) {
 
   // Reset when card changes
   useEffect(() => {
+    if (!card || !card.question) return;
     console.log('🔍 [MCQCard] Card changed, resetting. Card:', card.question.substring(0, 50));
     setSelectedOption(null);
     setShowResult(false);
-  }, [card.question]);
+  }, [card?.question]);
 
   const handleOptionClick = (option) => {
     if (showResult) return; // Prevent changing answer after submission
@@ -67,7 +73,7 @@ export default function MCQCard({ card, onAnswer }) {
 
         {/* Options */}
         <div className="space-y-3">
-          {card.options.map((option, index) => {
+          {card.options && Array.isArray(card.options) && card.options.map((option, index) => {
             const isThisCorrect = option === card.correctAnswer;
             const isSelected = option === selectedOption;
 

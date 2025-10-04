@@ -216,6 +216,13 @@ export default function App() {
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
+            href="/modules.html"
+            className="glass-card hover:bg-white/10 text-purple-200 hover:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 card-hover flex items-center gap-3"
+          >
+            <span className="text-2xl">📚</span>
+            <span>Module Mode</span>
+          </a>
+          <a
             href="/mcq.html"
             className="glass-card hover:bg-white/10 text-purple-200 hover:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 card-hover flex items-center gap-3"
           >

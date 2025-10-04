@@ -12,6 +12,16 @@ export const storage = {
     console.log('🔍 [storage.getCards] Fetching from IndexedDB...');
     const cards = await localforage.getItem('cards');
     console.log('🔍 [storage.getCards] Retrieved:', cards ? cards.length : 0, 'cards');
+
+    // Convert date strings back to Date objects
+    if (cards && cards.length > 0) {
+      return cards.map(card => ({
+        ...card,
+        due: card.due ? new Date(card.due) : new Date(),
+        lastReview: card.lastReview ? new Date(card.lastReview) : null
+      }));
+    }
+
     return cards || [];
   },
 
@@ -25,6 +35,16 @@ export const storage = {
     console.log('🔍 [storage.getItem] Fetching key:', key);
     const value = await localforage.getItem(key);
     console.log('🔍 [storage.getItem] Retrieved:', value ? 'data found' : 'no data');
+
+    // If it's card data, convert date strings to Date objects
+    if (value && Array.isArray(value) && key.includes('card')) {
+      return value.map(item => ({
+        ...item,
+        due: item.due ? new Date(item.due) : new Date(),
+        lastReview: item.lastReview ? new Date(item.lastReview) : null
+      }));
+    }
+
     return value;
   },
 

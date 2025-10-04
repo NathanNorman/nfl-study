@@ -6,10 +6,11 @@ export default function Flashcard({ card, onRate }) {
 
   // Reset showAnswer when card changes
   useEffect(() => {
+    if (!card) return;
     console.log('🔍 [Flashcard] Card changed, resetting showAnswer. Card ID:', card.id);
     setShowAnswer(false);
     setFlipped(false);
-  }, [card.id]);
+  }, [card?.id]);
 
   const handleShowAnswer = () => {
     setFlipped(true);
@@ -34,7 +35,7 @@ export default function Flashcard({ card, onRate }) {
               )}
             </div>
 
-            <div className="text-2xl md:text-3xl leading-relaxed font-medium text-white px-4">
+            <div data-testid="card-question" className="text-2xl md:text-3xl leading-relaxed font-medium text-white px-4">
               {card.question}
             </div>
 
@@ -156,7 +157,7 @@ function DifficultyBadge({ difficulty }) {
 
   return (
     <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
-      <span>{emoji} {difficulty.toUpperCase()}</span>
+      <span>{emoji} {difficulty?.toUpperCase() || 'UNKNOWN'}</span>
     </div>
   );
 }

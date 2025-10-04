@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { generateFlashcardsByDifficulty } from './data/generateByDifficulty';
+import { generateMCQByDifficulty } from './data/mcq/generateMCQByDifficulty';
 import localforage from 'localforage';
 
 const REVIEW_CATEGORIES = [
@@ -16,6 +17,7 @@ export default function DebugApp() {
   const [cards, setCards] = useState([]);
   const [reviews, setReviews] = useState({});
   const [filter, setFilter] = useState('all');
+  const [cardType, setCardType] = useState('all'); // 'all', 'flashcard', 'mcq'
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [showGoodCards, setShowGoodCards] = useState(false);
@@ -30,12 +32,29 @@ export default function DebugApp() {
 
   async function loadData() {
     // Load all flashcards
-    const organized = generateFlashcardsByDifficulty();
-    const allCards = organized.all.map((card, index) => ({
+    const flashcards = generateFlashcardsByDifficulty();
+    const flashcardsList = flashcards.all.map((card, index) => ({
       ...card,
-      id: `${card.difficulty}-${index}`,
+      id: `flashcard-${card.difficulty}-${index}`,
+      type: 'flashcard',
       index
     }));
+
+    // Load all MCQs
+    const mcqs = generateMCQByDifficulty();
+    const mcqsList = mcqs.all.map((mcq, index) => ({
+      question: mcq.question,
+      answer: mcq.correctAnswer,
+      options: mcq.options,
+      difficulty: mcq.difficulty || 'intermediate',
+      tags: mcq.tags || [],
+      id: `mcq-${mcq.difficulty || 'intermediate'}-${index}`,
+      type: 'mcq',
+      index
+    }));
+
+    // Combine all cards
+    const allCards = [...flashcardsList, ...mcqsList];
     setCards(allCards);
 
     // Load existing reviews
@@ -104,19 +123,26 @@ export default function DebugApp() {
     URL.revokeObjectURL(url);
   }
 
-  // Filter cards based on selected filter
-  let filteredCards;
+  // Filter cards based on selected filter and card type
+  let filteredCards = cards;
+
+  // Apply card type filter
+  if (cardType !== 'all') {
+    filteredCards = filteredCards.filter(card => card.type === cardType);
+  }
+
+  // Apply review filter
   if (filter === 'all') {
     // Show all except 'good' cards (unless showGoodCards is true)
-    filteredCards = cards.filter(card => {
+    filteredCards = filteredCards.filter(card => {
       const review = reviews[card.id];
       if (review === 'good' && !showGoodCards) return false;
       return true;
     });
   } else if (filter === 'unreviewed') {
-    filteredCards = cards.filter(card => !reviews[card.id]);
+    filteredCards = filteredCards.filter(card => !reviews[card.id]);
   } else {
-    filteredCards = cards.filter(card => reviews[card.id] === filter);
+    filteredCards = filteredCards.filter(card => reviews[card.id] === filter);
   }
 
   const goodCards = cards.filter(card => reviews[card.id] === 'good');
@@ -138,7 +164,7 @@ export default function DebugApp() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">🐛 Debug Mode - Card Review</h1>
               <p className="text-sm text-gray-600 mt-1">
-                Review all {stats.total} flashcards and categorize them for improvement
+                Review all {stats.total} cards (flashcards + MCQs) and categorize them for improvement
               </p>
             </div>
             <div className="flex gap-2">
@@ -195,15 +221,43 @@ export default function DebugApp() {
             </div>
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-2 mt-4 overflow-x-auto">
+          {/* Card Type Filter */}
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={() => setCardType('all')}
+              className={`px-3 py-1.5 rounded text-sm font-medium ${
+                cardType === 'all' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              All Cards
+            </button>
+            <button
+              onClick={() => setCardType('flashcard')}
+              className={`px-3 py-1.5 rounded text-sm font-medium ${
+                cardType === 'flashcard' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              📚 Flashcards
+            </button>
+            <button
+              onClick={() => setCardType('mcq')}
+              className={`px-3 py-1.5 rounded text-sm font-medium ${
+                cardType === 'mcq' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ✅ MCQs
+            </button>
+          </div>
+
+          {/* Review Filters */}
+          <div className="flex gap-2 mt-3 overflow-x-auto">
             <button
               onClick={() => setFilter('all')}
               className={`px-3 py-1.5 rounded text-sm font-medium whitespace-nowrap ${
                 filter === 'all' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              All ({cards.length})
+              All
             </button>
             <button
               onClick={() => setFilter('unreviewed')}
@@ -278,6 +332,11 @@ export default function DebugApp() {
                         <span className="text-xs font-semibold text-gray-500 uppercase">
                           {card.difficulty}
                         </span>
+                        <span className={`text-xs px-2 py-0.5 rounded ${
+                          card.type === 'mcq' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          {card.type === 'mcq' ? '✅ MCQ' : '📚 Flashcard'}
+                        </span>
                         <span className="text-xs text-gray-400">#{card.index + 1}</span>
                         {card.tags && card.tags.length > 0 && (
                           <span className="text-xs text-gray-500">
@@ -288,6 +347,21 @@ export default function DebugApp() {
                       <div className="text-sm font-semibold text-gray-900 mb-2">
                         Q: {card.question}
                       </div>
+                      {card.type === 'mcq' && card.options && (
+                        <div className="text-sm text-gray-700 mb-2 space-y-1">
+                          {card.options.map((option, idx) => (
+                            <div
+                              key={idx}
+                              className={`px-3 py-1.5 rounded ${
+                                option === card.answer ? 'bg-green-100 font-semibold' : 'bg-gray-50'
+                              }`}
+                            >
+                              {String.fromCharCode(65 + idx)}) {option}
+                              {option === card.answer && ' ✓'}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div className="text-sm text-gray-700 bg-gray-50 p-3 rounded">
                         A: {card.answer}
                       </div>
