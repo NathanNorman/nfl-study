@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    // Target modern browsers (matches Vite defaults)
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // React support
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+
+    // Strict type checking (RECOMMENDED)
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // Module resolution
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    // Emit config
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+
+    // Paths
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", ".claude-work"]
+}

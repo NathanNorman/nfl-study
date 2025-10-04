@@ -1,4 +1,5 @@
 import { fsrs, generatorParameters, Rating, State, createEmptyCard } from 'ts-fsrs';
+import type { Flashcard, FSRSRating } from '../types';
 
 // Initialize FSRS with default parameters
 const params = generatorParameters();
@@ -9,11 +10,17 @@ export { Rating, State };
 /**
  * Create a new card
  */
-export function createCard(question, answer, tags = [], defines = null, prerequisites = []) {
+export function createCard(
+  question: string,
+  answer: string,
+  tags: string[] = [],
+  defines?: string,
+  prerequisites: string[] = []
+): Flashcard {
   console.log('🔍 [createCard] Creating new card:', question.substring(0, 50) + '...');
   const card = createEmptyCard();
   console.log('🔍 [createCard] Empty card created:', card);
-  const newCard = {
+  const newCard: Flashcard = {
     ...card,
     id: Date.now() + Math.random(),
     question,
@@ -30,7 +37,7 @@ export function createCard(question, answer, tags = [], defines = null, prerequi
 /**
  * Schedule next review based on rating
  */
-export function scheduleCard(card, rating) {
+export function scheduleCard(card: Flashcard, rating: FSRSRating): Flashcard {
   console.log('🔍 [scheduleCard] Scheduling card with rating:', rating);
   console.log('🔍 [scheduleCard] Card before:', { id: card.id, due: card.due, state: card.state });
 
@@ -43,10 +50,10 @@ export function scheduleCard(card, rating) {
     2: scheduling[Rating.Hard],
     3: scheduling[Rating.Good],
     4: scheduling[Rating.Easy]
-  };
+  } as const;
 
   const result = ratingMap[rating];
-  const scheduledCard = {
+  const scheduledCard: Flashcard = {
     ...card,
     ...result.card,
     question: card.question,
@@ -67,7 +74,7 @@ export function scheduleCard(card, rating) {
 /**
  * Check if card is due for review
  */
-export function isDue(card) {
+export function isDue(card: Flashcard): boolean {
   const now = new Date();
   return new Date(card.due) <= now;
 }
@@ -75,8 +82,8 @@ export function isDue(card) {
 /**
  * Get card state as string
  */
-export function getStateString(state) {
-  const states = {
+export function getStateString(state: State): string {
+  const states: Record<State, string> = {
     [State.New]: 'New',
     [State.Learning]: 'Learning',
     [State.Review]: 'Review',
