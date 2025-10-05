@@ -1,4 +1,13 @@
-export default function Stats({ stats }) {
+interface StatsProps {
+  stats: {
+    total: number;
+    due: number;
+    mastered: number;
+    locked: number;
+  };
+}
+
+export default function Stats({ stats }: StatsProps) {
   const hasLockedCards = stats.locked && stats.locked > 0;
 
   return (
@@ -49,7 +58,16 @@ export default function Stats({ stats }) {
   );
 }
 
-function StatCard({ label, value, max, icon, color, delay }) {
+interface StatCardProps {
+  label: string;
+  value: number;
+  max: number;
+  icon: string;
+  color: string;
+  delay: string;
+}
+
+function StatCard({ label, value, max, icon, color, delay }: StatCardProps) {
   return (
     <div
       className="glass-card rounded-2xl p-6 card-hover group relative overflow-hidden"

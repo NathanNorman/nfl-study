@@ -1,13 +1,19 @@
 import { useState } from 'react';
 
-export default function AddCardModal({ isOpen, onClose, onAdd }) {
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [tags, setTags] = useState('');
+interface AddCardModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (question: string, answer: string, tags: string[]) => void;
+}
+
+export default function AddCardModal({ isOpen, onClose, onAdd }: AddCardModalProps) {
+  const [question, setQuestion] = useState<string>('');
+  const [answer, setAnswer] = useState<string>('');
+  const [tags, setTags] = useState<string>('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const tagArray = tags.split(',').map(t => t.trim()).filter(Boolean);
     onAdd(question, answer, tagArray);

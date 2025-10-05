@@ -1,6 +1,11 @@
 import { formatDistanceToNow, format } from 'date-fns';
+import type { Flashcard } from '../types';
 
-export default function ScheduleInsights({ cards }) {
+interface ScheduleInsightsProps {
+  cards: Flashcard[];
+}
+
+export default function ScheduleInsights({ cards }: ScheduleInsightsProps) {
   if (!cards || cards.length === 0) return null;
 
   // Calculate insights

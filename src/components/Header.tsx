@@ -1,4 +1,8 @@
-export default function Header({ totalCards = 413 }) {
+interface HeaderProps {
+  totalCards?: number;
+}
+
+export default function Header({ totalCards = 413 }: HeaderProps) {
   return (
     <header className="text-center mb-12 relative">
       <div className="absolute inset-0 blur-3xl opacity-30">
