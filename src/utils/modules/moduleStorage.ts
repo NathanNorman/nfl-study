@@ -152,9 +152,9 @@ export async function initializeModuleProgress(moduleId: string, moduleDefinitio
     return existing;
   }
 
-  const initialProgress = {
+  const initialProgress: ModuleProgress = {
     moduleId,
-    state: 'notStarted',
+    state: 'notStarted' as const,
 
     progress: {
       flashcards: {

@@ -5,19 +5,20 @@ import Stats from './components/Stats';
 import Flashcard from './components/Flashcard';
 import AddCardModal from './components/AddCardModal';
 import ScheduleInsights from './components/ScheduleInsights';
+import type { Flashcard as FlashcardType, DifficultyLevel, FSRSRating } from './types';
 
 export default function App() {
   const { cards, loading, addCard, updateCard, getDueCards, getStats, getCardsByDifficulty } = useCards();
-  const [isStudying, setIsStudying] = useState(false);
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [dueCards, setDueCards] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [isStudying, setIsStudying] = useState<boolean>(false);
+  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
+  const [dueCards, setDueCards] = useState<FlashcardType[]>([]);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'all' | DifficultyLevel>('all');
 
   const stats = getStats();
 
-  const startStudy = (difficulty = 'all') => {
-    let due;
+  const startStudy = (difficulty: 'all' | DifficultyLevel = 'all') => {
+    let due: FlashcardType[];
     if (difficulty === 'all') {
       due = getDueCards();
     } else {
@@ -33,8 +34,9 @@ export default function App() {
     setIsStudying(true);
   };
 
-  const handleRate = async (rating) => {
+  const handleRate = async (rating: FSRSRating) => {
     const currentCard = dueCards[currentCardIndex];
+    if (!currentCard) return;
     await updateCard(currentCard.id, rating);
 
     if (currentCardIndex < dueCards.length - 1) {
@@ -66,7 +68,7 @@ export default function App() {
     }
   };
 
-  const handleAddCard = async (question, answer, tags) => {
+  const handleAddCard = async (question: string, answer: string, tags: string[]) => {
     await addCard(question, answer, tags);
     setShowAddModal(false);
   };
@@ -150,10 +152,12 @@ export default function App() {
               </button>
             </div>
 
-            <Flashcard
-              card={dueCards[currentCardIndex]}
-              onRate={handleRate}
-            />
+            {dueCards[currentCardIndex] && (
+              <Flashcard
+                card={dueCards[currentCardIndex]}
+                onRate={handleRate}
+              />
+            )}
           </div>
         ) : (
           <>
@@ -253,7 +257,16 @@ export default function App() {
   );
 }
 
-function DifficultyButton({ level, emoji, label, count, selected, onClick }) {
+interface DifficultyButtonProps {
+  level?: 'all' | DifficultyLevel;
+  emoji: string;
+  label: string;
+  count: number;
+  selected: boolean;
+  onClick: () => void;
+}
+
+function DifficultyButton({ emoji, label, count, selected, onClick }: DifficultyButtonProps) {
   return (
     <button
       onClick={onClick}

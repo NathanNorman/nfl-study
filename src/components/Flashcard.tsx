@@ -134,7 +134,16 @@ export default function Flashcard({ card, onRate }: FlashcardProps) {
   );
 }
 
-function RatingButton({ onClick, color, hoverColor, label, emoji, description }) {
+interface RatingButtonProps {
+  onClick: () => void;
+  color: string;
+  hoverColor: string;
+  label: string;
+  emoji: string;
+  description: string;
+}
+
+function RatingButton({ onClick, color, hoverColor, label, emoji, description }: RatingButtonProps) {
   return (
     <button
       onClick={onClick}

@@ -46,7 +46,7 @@ export default function AddCardModal({ isOpen, onClose, onAdd }: AddCardModalPro
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               className="w-full px-4 py-4 glass rounded-xl text-white placeholder-purple-400/50 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-200 resize-none"
-              rows="3"
+              rows={3}
               placeholder="What's the question?"
               required
             />
@@ -60,7 +60,7 @@ export default function AddCardModal({ isOpen, onClose, onAdd }: AddCardModalPro
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               className="w-full px-4 py-4 glass rounded-xl text-white placeholder-purple-400/50 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-200 resize-none"
-              rows="3"
+              rows={3}
               placeholder="What's the answer?"
               required
             />
