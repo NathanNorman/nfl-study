@@ -15,12 +15,10 @@ const moduleStore = localforage.createInstance({
 
 /**
  * Get progress for a specific module
- * @param {String} moduleId - Module ID
- * @returns {Promise<Object|null>} - Module progress object or null
  */
-export async function getModuleProgress(moduleId) {
+export async function getModuleProgress(moduleId: string): Promise<ModuleProgress | null> {
   try {
-    const progress = await moduleStore.getItem(moduleId);
+    const progress = await moduleStore.getItem<ModuleProgress>(moduleId);
     return progress;
   } catch (error) {
     console.error(`Error getting module progress for ${moduleId}:`, error);
@@ -30,13 +28,12 @@ export async function getModuleProgress(moduleId) {
 
 /**
  * Get progress for all modules
- * @returns {Promise<Object>} - Map of moduleId -> progress object
  */
-export async function getAllModulesProgress() {
+export async function getAllModulesProgress(): Promise<ModuleProgressMap> {
   try {
-    const allProgress = {};
+    const allProgress: ModuleProgressMap = {};
     await moduleStore.iterate((value, key) => {
-      allProgress[key] = value;
+      allProgress[key] = value as ModuleProgress;
     });
     return allProgress;
   } catch (error) {
@@ -47,11 +44,8 @@ export async function getAllModulesProgress() {
 
 /**
  * Save module progress
- * @param {String} moduleId - Module ID
- * @param {Object} progressData - Progress data to save
- * @returns {Promise<boolean>} - Success status
  */
-export async function saveModuleProgress(moduleId, progressData) {
+export async function saveModuleProgress(moduleId: string, progressData: ModuleProgress): Promise<boolean> {
   try {
     await moduleStore.setItem(moduleId, progressData);
     console.log(`✅ Saved progress for module: ${moduleId}`, progressData);
@@ -64,18 +58,15 @@ export async function saveModuleProgress(moduleId, progressData) {
 
 /**
  * Update module progress (merges with existing)
- * @param {String} moduleId - Module ID
- * @param {Object} updates - Fields to update
- * @returns {Promise<Object|null>} - Updated progress object
  */
-export async function updateModuleProgress(moduleId, updates) {
+export async function updateModuleProgress(moduleId: string, updates: Partial<ModuleProgress>): Promise<ModuleProgress | null> {
   try {
     const existing = await getModuleProgress(moduleId);
-    const updated = {
-      ...existing,
+    const updated: ModuleProgress = {
+      ...(existing || {} as ModuleProgress),
       ...updates,
       lastUpdatedAt: new Date().toISOString()
-    };
+    } as ModuleProgress;
 
     await saveModuleProgress(moduleId, updated);
     return updated;
@@ -87,10 +78,8 @@ export async function updateModuleProgress(moduleId, updates) {
 
 /**
  * Mark module as started
- * @param {String} moduleId - Module ID
- * @returns {Promise<Object|null>}
  */
-export async function startModule(moduleId) {
+export async function startModule(moduleId: string): Promise<ModuleProgress | null> {
   const now = new Date().toISOString();
 
   return updateModuleProgress(moduleId, {
@@ -102,10 +91,8 @@ export async function startModule(moduleId) {
 
 /**
  * Mark module as completed
- * @param {String} moduleId - Module ID
- * @returns {Promise<Object|null>}
  */
-export async function completeModule(moduleId) {
+export async function completeModule(moduleId: string): Promise<ModuleProgress | null> {
   const now = new Date().toISOString();
 
   return updateModuleProgress(moduleId, {
@@ -117,10 +104,8 @@ export async function completeModule(moduleId) {
 
 /**
  * Mark module as skipped
- * @param {String} moduleId - Module ID
- * @returns {Promise<Object|null>}
  */
-export async function skipModule(moduleId) {
+export async function skipModule(moduleId: string): Promise<ModuleProgress | null> {
   const now = new Date().toISOString();
 
   return updateModuleProgress(moduleId, {
@@ -131,10 +116,8 @@ export async function skipModule(moduleId) {
 
 /**
  * Reset module progress
- * @param {String} moduleId - Module ID
- * @returns {Promise<boolean>}
  */
-export async function resetModule(moduleId) {
+export async function resetModule(moduleId: string): Promise<boolean> {
   try {
     await moduleStore.removeItem(moduleId);
     console.log(`🔄 Reset module: ${moduleId}`);
@@ -147,9 +130,8 @@ export async function resetModule(moduleId) {
 
 /**
  * Reset ALL module progress
- * @returns {Promise<boolean>}
  */
-export async function resetAllModules() {
+export async function resetAllModules(): Promise<boolean> {
   try {
     await moduleStore.clear();
     console.log('🔄 Reset all module progress');
@@ -162,11 +144,8 @@ export async function resetAllModules() {
 
 /**
  * Initialize module progress if it doesn't exist
- * @param {String} moduleId - Module ID
- * @param {Object} moduleDefinition - Module definition from moduleDefinitions.js
- * @returns {Promise<Object>}
  */
-export async function initializeModuleProgress(moduleId, moduleDefinition) {
+export async function initializeModuleProgress(moduleId: string, moduleDefinition: Module): Promise<ModuleProgress> {
   const existing = await getModuleProgress(moduleId);
 
   if (existing) {
@@ -209,11 +188,8 @@ export async function initializeModuleProgress(moduleId, moduleDefinition) {
 
 /**
  * Update time spent in module
- * @param {String} moduleId - Module ID
- * @param {Number} additionalSeconds - Seconds to add
- * @returns {Promise<Object|null>}
  */
-export async function updateTimeSpent(moduleId, additionalSeconds) {
+export async function updateTimeSpent(moduleId: string, additionalSeconds: number): Promise<ModuleProgress | null> {
   try {
     const existing = await getModuleProgress(moduleId);
     const currentTimeSpent = existing?.timeSpent || 0;
@@ -228,14 +204,22 @@ export async function updateTimeSpent(moduleId, additionalSeconds) {
   }
 }
 
+export interface ModuleStatistics {
+  total: number;
+  notStarted: number;
+  inProgress: number;
+  completed: number;
+  skipped: number;
+  totalTimeSpent: number;
+}
+
 /**
  * Get module statistics across all modules
- * @returns {Promise<Object>}
  */
-export async function getModuleStatistics() {
+export async function getModuleStatistics(): Promise<ModuleStatistics | null> {
   try {
     const allProgress = await getAllModulesProgress();
-    const stats = {
+    const stats: ModuleStatistics = {
       total: 0,
       notStarted: 0,
       inProgress: 0,
@@ -246,7 +230,10 @@ export async function getModuleStatistics() {
 
     Object.values(allProgress).forEach(progress => {
       stats.total++;
-      stats[progress.state]++;
+      if (progress.state === 'notStarted') stats.notStarted++;
+      if (progress.state === 'inProgress') stats.inProgress++;
+      if (progress.state === 'completed') stats.completed++;
+      if (progress.state === 'skipped') stats.skipped++;
       stats.totalTimeSpent += progress.timeSpent || 0;
     });
 
@@ -259,9 +246,8 @@ export async function getModuleStatistics() {
 
 /**
  * Export module progress as JSON
- * @returns {Promise<String>}
  */
-export async function exportModuleProgress() {
+export async function exportModuleProgress(): Promise<string> {
   try {
     const allProgress = await getAllModulesProgress();
     return JSON.stringify(allProgress, null, 2);
@@ -273,12 +259,10 @@ export async function exportModuleProgress() {
 
 /**
  * Import module progress from JSON
- * @param {String} jsonData - JSON string of module progress
- * @returns {Promise<boolean>}
  */
-export async function importModuleProgress(jsonData) {
+export async function importModuleProgress(jsonData: string): Promise<boolean> {
   try {
-    const data = JSON.parse(jsonData);
+    const data = JSON.parse(jsonData) as ModuleProgressMap;
 
     for (const [moduleId, progress] of Object.entries(data)) {
       await saveModuleProgress(moduleId, progress);
