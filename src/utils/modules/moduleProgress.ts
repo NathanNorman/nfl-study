@@ -3,22 +3,18 @@
  * Calculate module completion, mastery, and progress metrics
  */
 
+import type { Flashcard, MCQCard, Module, ModuleProgress, ModuleProgressMetrics, ModuleState } from '../../types';
+
 /**
  * Calculate module progress from card data
- * @param {String} moduleId - Module ID
- * @param {Array} flashcards - All flashcards (filtered by module if needed)
- * @param {Array} mcqs - All MCQs (filtered by module if needed)
- * @param {Array} flashcardIdsInModule - Question texts of flashcards in this module
- * @param {Array} mcqIdsInModule - Question texts of MCQs in this module
- * @returns {Object} - Progress object with flashcard/MCQ metrics
  */
 export function calculateModuleProgress(
-  moduleId,
-  flashcards = [],
-  mcqs = [],
-  flashcardIdsInModule = [],
-  mcqIdsInModule = []
-) {
+  moduleId: string,
+  flashcards: Flashcard[] = [],
+  mcqs: MCQCard[] = [],
+  flashcardIdsInModule: string[] = [],
+  mcqIdsInModule: string[] = []
+): ModuleProgressMetrics {
   console.log('🔍 [calculateModuleProgress] Input:', {
     moduleId,
     totalFlashcardsProvided: flashcards.length,
@@ -94,7 +90,7 @@ export function calculateModuleProgress(
     ? Math.round((mcqCorrect / mcqAttempted) * 100 * 100) / 100
     : 0;
 
-  const result = {
+  const result: ModuleProgressMetrics = {
     flashcards: {
       total: flashcardTotal,
       studied: flashcardStudied,
@@ -115,11 +111,8 @@ export function calculateModuleProgress(
 
 /**
  * Check if module is complete based on mastery threshold
- * @param {Object} progress - Progress object from calculateModuleProgress
- * @param {Number} threshold - Mastery threshold (default 80%)
- * @returns {boolean}
  */
-export function isModuleComplete(progress, threshold = 80) {
+export function isModuleComplete(progress: ModuleProgressMetrics, threshold: number = 80): boolean {
   if (!progress || !progress.flashcards) return false;
 
   // Module is complete when 80%+ flashcards are mastered
@@ -128,38 +121,32 @@ export function isModuleComplete(progress, threshold = 80) {
 
 /**
  * Check if module is skipped
- * @param {Object} moduleProgress - Module progress object from storage
- * @returns {boolean}
  */
-export function isModuleSkipped(moduleProgress) {
+export function isModuleSkipped(moduleProgress?: ModuleProgress): boolean {
   return moduleProgress?.state === 'skipped';
 }
 
 /**
  * Check if module is in progress
- * @param {Object} moduleProgress - Module progress object from storage
- * @returns {boolean}
  */
-export function isModuleInProgress(moduleProgress) {
+export function isModuleInProgress(moduleProgress?: ModuleProgress): boolean {
   return moduleProgress?.state === 'inProgress';
 }
 
 /**
  * Check if module has been started
- * @param {Object} moduleProgress - Module progress object from storage
- * @returns {boolean}
  */
-export function isModuleStarted(moduleProgress) {
+export function isModuleStarted(moduleProgress?: ModuleProgress): boolean {
   return moduleProgress?.state !== 'notStarted' && moduleProgress?.state !== undefined;
 }
 
 /**
  * Determine module state based on progress
- * @param {Object} progress - Progress object from calculateModuleProgress
- * @param {Object} existingModuleProgress - Existing module progress from storage
- * @returns {String} - 'notStarted' | 'inProgress' | 'completed' | 'skipped'
  */
-export function determineModuleState(progress, existingModuleProgress) {
+export function determineModuleState(
+  progress: ModuleProgressMetrics,
+  existingModuleProgress?: ModuleProgress
+): ModuleState {
   // If explicitly skipped, keep that state
   if (existingModuleProgress?.state === 'skipped') {
     return 'skipped';
@@ -186,33 +173,33 @@ export function determineModuleState(progress, existingModuleProgress) {
 
 /**
  * Calculate time spent in module (placeholder - requires tracking)
- * @param {Object} moduleProgress - Module progress object from storage
- * @returns {Number} - Time spent in seconds
  */
-export function getTimeSpent(moduleProgress) {
+export function getTimeSpent(moduleProgress?: ModuleProgress): number {
   return moduleProgress?.timeSpent || 0;
 }
 
 /**
  * Get completion percentage (0-100)
  * Based on flashcard study progress (cards studied / total cards)
- * @param {Object} progress - Progress object from calculateModuleProgress
- * @returns {Number}
  */
-export function getCompletionPercent(progress) {
+export function getCompletionPercent(progress: ModuleProgressMetrics): number {
   if (!progress || !progress.flashcards) return 0;
   const { total, studied } = progress.flashcards;
   if (total === 0) return 0;
   return Math.round((studied / total) * 100 * 100) / 100;
 }
 
+export interface StateDisplay {
+  icon: string;
+  label: string;
+  color: string;
+}
+
 /**
  * Get module state display info
- * @param {String} state - Module state
- * @returns {Object} - {icon, label, color}
  */
-export function getStateDisplay(state) {
-  const displays = {
+export function getStateDisplay(state: ModuleState): StateDisplay {
+  const displays: Record<ModuleState, StateDisplay> = {
     notStarted: {
       icon: '⚪',
       label: 'Not Started',
@@ -240,11 +227,8 @@ export function getStateDisplay(state) {
 
 /**
  * Estimate time remaining in module
- * @param {Object} module - Module definition
- * @param {Object} progress - Progress object from calculateModuleProgress
- * @returns {Number} - Estimated minutes remaining
  */
-export function estimateTimeRemaining(module, progress) {
+export function estimateTimeRemaining(module: Module, progress: ModuleProgressMetrics): number {
   if (!progress || !progress.flashcards) return module.estimatedMinutes || 0;
 
   const percentComplete = progress.flashcards.masteredPercent;

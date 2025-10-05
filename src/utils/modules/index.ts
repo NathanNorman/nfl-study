@@ -11,7 +11,7 @@ export {
   getModulesByLevel,
   getModulesByDifficulty,
   getModuleCount
-} from '../../data/modules/moduleDefinitions.js';
+} from '../../data/modules/moduleDefinitions';
 
 // Module card mappings
 export {
@@ -20,7 +20,7 @@ export {
   getCardsForModule,
   getModulesForCard,
   getModuleMappingStats
-} from '../../data/modules/cardModuleMappings.js';
+} from '../../data/modules/cardModuleMappings';
 
 // Module progress tracking
 export {
@@ -34,7 +34,7 @@ export {
   getCompletionPercent,
   getStateDisplay,
   estimateTimeRemaining
-} from './moduleProgress.js';
+} from './moduleProgress';
 
 // Module unlock logic
 export {
@@ -45,7 +45,7 @@ export {
   getMissingPrerequisites,
   getLockedModulesWithPrerequisites,
   canForceUnlock
-} from './moduleUnlock.js';
+} from './moduleUnlock';
 
 // Module storage (IndexedDB)
 export {
@@ -63,4 +63,4 @@ export {
   getModuleStatistics,
   exportModuleProgress,
   importModuleProgress
-} from './moduleStorage.js';
+} from './moduleStorage';

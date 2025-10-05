@@ -4,6 +4,8 @@
  */
 
 import localforage from 'localforage';
+import type { ModuleProgress, Module } from '../../types';
+import type { ModuleProgressMap } from './moduleUnlock';
 
 // Create a separate instance for module progress
 const moduleStore = localforage.createInstance({
