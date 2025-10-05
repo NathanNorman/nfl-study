@@ -4,20 +4,36 @@ import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateMCQByDifficulty } from '../data/mcq/generateMCQByDifficulty';
 import { groupAndShuffleByCategory, shuffleArray } from '../utils/shuffle';
 import { filterByPrerequisites } from '../utils/prerequisites';
+import type { MCQCard, DifficultyLevel } from '../types';
 
-export function useMCQ() {
-  const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(true);
+export interface UseMCQReturn {
+  cards: MCQCard[];
+  loading: boolean;
+  updateCard: (cardId: number, isCorrect: boolean) => Promise<void>;
+  getDueCards: () => MCQCard[];
+  getCardsByDifficulty: (difficulty: DifficultyLevel, onlyDue?: boolean) => MCQCard[];
+  getAllCardsByDifficulty: (difficulty: DifficultyLevel) => MCQCard[];
+  getStats: () => {
+    total: number;
+    due: number;
+    mastered: number;
+    locked: number;
+  };
+}
+
+export function useMCQ(): UseMCQReturn {
+  const [cards, setCards] = useState<MCQCard[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadCards();
   }, []);
 
-  async function loadCards() {
+  async function loadCards(): Promise<void> {
     console.log('🔍 [useMCQ.loadCards] Starting MCQ card load...');
     try {
       console.log('🔍 [useMCQ.loadCards] Calling storage.getCards()...');
-      let loadedCards = await storage.getItem('mcq-cards');
+      let loadedCards = await storage.getItem<MCQCard[]>('mcq-cards');
       console.log('🔍 [useMCQ.loadCards] Storage returned:', loadedCards ? loadedCards.length : 0, 'cards');
 
       // Load MCQ flashcards if empty
@@ -45,8 +61,8 @@ export function useMCQ() {
             ...fsrsCard,
             options: mcq.options,
             correctAnswer: mcq.correctAnswer,
-            difficulty: mcq.difficulty || 'intermediate',
-            type: 'mcq'
+            difficultyLevel: mcq.difficulty || 'intermediate',
+            type: 'mcq' as const
           };
         });
 
@@ -64,7 +80,7 @@ export function useMCQ() {
     }
   }
 
-  async function updateCard(cardId, isCorrect) {
+  async function updateCard(cardId: number, isCorrect: boolean): Promise<void> {
     console.log('🔍 [useMCQ.updateCard] Updating card:', cardId, '| Correct:', isCorrect);
 
     // Convert correct/incorrect to FSRS rating (1-4)
@@ -77,7 +93,7 @@ export function useMCQ() {
           ...scheduledCard,
           options: card.options,
           correctAnswer: card.correctAnswer,
-          type: 'mcq'
+          type: 'mcq' as const
         };
       }
       return card;
@@ -88,7 +104,7 @@ export function useMCQ() {
     console.log('🔍 [useMCQ.updateCard] ✅ Update complete');
   }
 
-  function getDueCards() {
+  function getDueCards(): MCQCard[] {
     const due = cards.filter(isDue);
     console.log('🔍 [useMCQ.getDueCards] Found', due.length, 'due MCQ cards');
 
@@ -108,8 +124,8 @@ export function useMCQ() {
     }));
   }
 
-  function getCardsByDifficulty(difficulty, onlyDue = false) {
-    let filtered = cards.filter(card => card.difficulty === difficulty);
+  function getCardsByDifficulty(difficulty: DifficultyLevel, onlyDue: boolean = false): MCQCard[] {
+    let filtered = cards.filter(card => card.difficultyLevel === difficulty);
     if (onlyDue) {
       filtered = filtered.filter(isDue);
     }
@@ -122,9 +138,9 @@ export function useMCQ() {
     }));
   }
 
-  function getAllCardsByDifficulty(difficulty) {
+  function getAllCardsByDifficulty(difficulty: DifficultyLevel): MCQCard[] {
     // Get all cards regardless of due date (for review mode)
-    const filtered = cards.filter(card => card.difficulty === difficulty);
+    const filtered = cards.filter(card => card.difficultyLevel === difficulty);
     // Group by category and shuffle within categories
     const grouped = groupAndShuffleByCategory(filtered);
     // Shuffle answer choices for each card

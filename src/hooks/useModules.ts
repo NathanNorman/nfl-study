@@ -15,14 +15,34 @@ import {
   updateModuleProgress,
   initializeModuleProgress,
   getCardsForModule
-} from '../utils/modules/index.js';
-import { storage } from '../utils/storage.js';
+} from '../utils/modules/index';
+import { storage } from '../utils/storage';
+import type { Module, ModuleProgress, Flashcard, MCQCard } from '../types';
+import type { ModuleProgressMap } from '../utils/modules/moduleUnlock';
 
-export function useModules() {
-  const [modules] = useState(MODULE_DEFINITIONS);
-  const [modulesProgress, setModulesProgress] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [currentModuleId, setCurrentModuleId] = useState(null);
+export interface UseModulesReturn {
+  modules: Module[];
+  modulesProgress: ModuleProgressMap;
+  loading: boolean;
+  currentModuleId: string | null;
+
+  // Actions
+  startModule: (moduleId: string) => Promise<boolean>;
+  continueModule: (moduleId: string) => Promise<boolean>;
+  skipModule: (moduleId: string) => Promise<boolean>;
+  completeModule: (moduleId: string) => Promise<boolean>;
+  updateModuleProgress: (moduleId: string) => Promise<void>;
+  exitModule: () => void;
+
+  // Helpers
+  getCurrentModule: () => Module | undefined;
+}
+
+export function useModules(): UseModulesReturn {
+  const [modules] = useState<Module[]>(MODULE_DEFINITIONS);
+  const [modulesProgress, setModulesProgress] = useState<ModuleProgressMap>({});
+  const [loading, setLoading] = useState<boolean>(true);
+  const [currentModuleId, setCurrentModuleId] = useState<string | null>(null);
 
   // Load module progress from IndexedDB on mount
   useEffect(() => {
@@ -33,7 +53,8 @@ export function useModules() {
 
         // Initialize any modules that don't have progress yet
         for (const module of modules) {
-          if (!progress[module.id]) {
+          const moduleProgress = progress[module.id];
+          if (!moduleProgress) {
             await initializeModuleProgress(module.id, module);
           }
         }
@@ -52,7 +73,7 @@ export function useModules() {
   }, [modules]);
 
   // Start a module
-  const handleStartModule = useCallback(async (moduleId) => {
+  const handleStartModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await startModule(moduleId);
       setModulesProgress(prev => ({
@@ -68,13 +89,13 @@ export function useModules() {
   }, []);
 
   // Continue studying a module (same as start, but semantic difference)
-  const handleContinueModule = useCallback(async (moduleId) => {
+  const handleContinueModule = useCallback(async (moduleId: string): Promise<boolean> => {
     setCurrentModuleId(moduleId);
     return true;
   }, []);
 
   // Skip a module
-  const handleSkipModule = useCallback(async (moduleId) => {
+  const handleSkipModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await skipModule(moduleId);
       setModulesProgress(prev => ({
@@ -89,7 +110,7 @@ export function useModules() {
   }, []);
 
   // Manually mark module as complete
-  const handleCompleteModule = useCallback(async (moduleId) => {
+  const handleCompleteModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await completeModule(moduleId);
       setModulesProgress(prev => ({
@@ -106,7 +127,7 @@ export function useModules() {
   // Update module progress based on card study
   // NOTE: We ignore the cards passed in and always reload from IndexedDB
   // to ensure we have the latest reps/state after rating
-  const updateModuleProgressFromCards = useCallback(async (moduleId) => {
+  const updateModuleProgressFromCards = useCallback(async (moduleId: string): Promise<void> => {
     try {
       console.log('🔄 [useModules] Updating progress for module:', moduleId);
 
@@ -114,7 +135,7 @@ export function useModules() {
       // The cards in React state may be stale after rating
       console.log('🔄 [useModules] Reloading fresh cards from IndexedDB...');
       const freshFlashcards = await storage.getCards();
-      const freshMCQs = await storage.getItem('mcq-cards') || [];
+      const freshMCQs = await storage.getItem<MCQCard[]>('mcq-cards') || [];
       console.log('✅ [useModules] Reloaded fresh cards - flashcards:', freshFlashcards.length, 'MCQs:', freshMCQs.length);
 
       // Log sample of FRESH card reps to verify they're updated
