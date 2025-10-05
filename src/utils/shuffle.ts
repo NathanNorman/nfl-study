@@ -1,12 +1,19 @@
+import type { Flashcard } from '../types';
+
 /**
  * Fisher-Yates shuffle algorithm
  * Randomizes array order in-place
  */
-export function shuffleArray(array) {
+export function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const temp = shuffled[i];
+    const swapItem = shuffled[j];
+    if (temp !== undefined && swapItem !== undefined) {
+      shuffled[i] = swapItem;
+      shuffled[j] = temp;
+    }
   }
   return shuffled;
 }
@@ -15,9 +22,9 @@ export function shuffleArray(array) {
  * Group cards by their primary category (first tag after difficulty level)
  * Then shuffle cards within each category
  */
-export function groupAndShuffleByCategory(cards) {
+export function groupAndShuffleByCategory(cards: Flashcard[]): Flashcard[] {
   // Group by primary category
-  const grouped = {};
+  const grouped: Record<string, Flashcard[]> = {};
 
   cards.forEach(card => {
     // Get primary category (first non-difficulty tag)
@@ -32,28 +39,39 @@ export function groupAndShuffleByCategory(cards) {
   });
 
   // Shuffle within each category
-  const shuffledGroups = {};
+  const shuffledGroups: Record<string, Flashcard[]> = {};
   Object.keys(grouped).forEach(category => {
-    shuffledGroups[category] = shuffleArray(grouped[category]);
+    const categoryCards = grouped[category];
+    if (categoryCards) {
+      shuffledGroups[category] = shuffleArray(categoryCards);
+    }
   });
 
   // Return in a consistent category order (alphabetical), but cards within are shuffled
   const sortedCategories = Object.keys(shuffledGroups).sort();
-  const result = [];
+  const result: Flashcard[] = [];
 
   sortedCategories.forEach(category => {
-    result.push(...shuffledGroups[category]);
+    const categoryCards = shuffledGroups[category];
+    if (categoryCards) {
+      result.push(...categoryCards);
+    }
   });
 
   return result;
+}
+
+export interface MCQChoice {
+  text: string;
+  isCorrect: boolean;
 }
 
 /**
  * Shuffle MCQ answer choices
  * Returns shuffled array of {text, isCorrect} objects
  */
-export function shuffleMCQChoices(correctAnswer, wrongAnswers) {
-  const choices = [
+export function shuffleMCQChoices(correctAnswer: string, wrongAnswers: string[]): MCQChoice[] {
+  const choices: MCQChoice[] = [
     { text: correctAnswer, isCorrect: true },
     ...wrongAnswers.map(answer => ({ text: answer, isCorrect: false }))
   ];

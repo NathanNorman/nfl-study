@@ -11,14 +11,28 @@
  */
 
 import { State } from './fsrs';
+import type { Flashcard } from '../types';
+
+export interface PrerequisiteStatus {
+  id: string;
+  exists: boolean;
+  mastered: boolean;
+  question: string | null;
+  state?: number;
+  stability?: number;
+  dueDate?: Date;
+}
+
+export interface PrerequisitesInfo {
+  hasPrerequisites: boolean;
+  all: PrerequisiteStatus[];
+  allMastered?: boolean;
+}
 
 /**
  * Check if a card's prerequisites are mastered
- * @param {Object} card - The card to check
- * @param {Array} allCards - All cards in the system
- * @returns {boolean} - True if all prerequisites are mastered
  */
-export function arePrerequisitesMastered(card, allCards) {
+export function arePrerequisitesMastered(card: Flashcard, allCards: Flashcard[]): boolean {
   // No prerequisites = always available
   if (!card.prerequisites || card.prerequisites.length === 0) {
     return true;
@@ -45,36 +59,27 @@ export function arePrerequisitesMastered(card, allCards) {
 
 /**
  * Filter cards to only show those with mastered prerequisites
- * @param {Array} cards - Cards to filter
- * @param {Array} allCards - All cards (needed to check prerequisites)
- * @returns {Array} - Filtered cards
  */
-export function filterByPrerequisites(cards, allCards) {
+export function filterByPrerequisites(cards: Flashcard[], allCards: Flashcard[]): Flashcard[] {
   return cards.filter(card => arePrerequisitesMastered(card, allCards));
 }
 
 /**
  * Get locked cards (prerequisites not yet mastered)
- * @param {Array} cards - Cards to check
- * @param {Array} allCards - All cards
- * @returns {Array} - Cards that are locked
  */
-export function getLockedCards(cards, allCards) {
+export function getLockedCards(cards: Flashcard[], allCards: Flashcard[]): Flashcard[] {
   return cards.filter(card => !arePrerequisitesMastered(card, allCards));
 }
 
 /**
  * Get prerequisites status for a card
- * @param {Object} card - Card to check
- * @param {Array} allCards - All cards
- * @returns {Object} - Status of each prerequisite
  */
-export function getPrerequisiteStatus(card, allCards) {
+export function getPrerequisiteStatus(card: Flashcard, allCards: Flashcard[]): PrerequisitesInfo {
   if (!card.prerequisites || card.prerequisites.length === 0) {
     return { hasPrerequisites: false, all: [] };
   }
 
-  const status = card.prerequisites.map(prereqId => {
+  const status: PrerequisiteStatus[] = card.prerequisites.map(prereqId => {
     const prereqCard = allCards.find(c => c.defines === prereqId);
 
     if (!prereqCard) {
@@ -161,4 +166,4 @@ export const CONCEPTS = {
   REGRESSION: 'regression',
   ZERO_RB: 'zero-rb',
   STACKING: 'stacking'
-};
+} as const;
