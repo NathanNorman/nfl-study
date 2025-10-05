@@ -73,6 +73,7 @@ export interface Module {
   flashcardIds: string[];
   mcqIds: string[];
   tags: string[];
+  objectives: string[];
 }
 
 // ========================================
