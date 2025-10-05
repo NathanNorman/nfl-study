@@ -1,29 +1,38 @@
 import { useState, useEffect } from 'react';
+import type { MCQCard as MCQCardType, DifficultyLevel } from '../types';
 
-function DifficultyBadge({ difficulty }) {
-  if (!difficulty || typeof difficulty !== 'string') {
-    return null; // Don't render if difficulty is missing or invalid
+interface DifficultyBadgeProps {
+  difficulty?: DifficultyLevel;
+}
+
+function DifficultyBadge({ difficulty }: DifficultyBadgeProps) {
+  if (!difficulty) {
+    return null;
   }
 
-  const config = {
+  const config: Record<DifficultyLevel, { color: string; emoji: string }> = {
     beginner: { color: 'from-green-500 to-emerald-500', emoji: '🌱' },
     intermediate: { color: 'from-blue-500 to-cyan-500', emoji: '⚡' },
     advanced: { color: 'from-red-500 to-orange-500', emoji: '🔥' }
   };
 
-  const normalizedDifficulty = difficulty.toLowerCase();
-  const { color, emoji } = config[normalizedDifficulty] || config.intermediate;
+  const { color, emoji } = config[difficulty] || config.intermediate;
 
   return (
     <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
-      <span>{emoji} {normalizedDifficulty.toUpperCase()}</span>
+      <span>{emoji} {difficulty.toUpperCase()}</span>
     </div>
   );
 }
 
-export default function MCQCard({ card, onAnswer }) {
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showResult, setShowResult] = useState(false);
+interface MCQCardProps {
+  card: MCQCardType;
+  onAnswer: (isCorrect: boolean) => void;
+}
+
+export default function MCQCard({ card, onAnswer }: MCQCardProps) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [showResult, setShowResult] = useState<boolean>(false);
 
   // Reset when card changes
   useEffect(() => {
@@ -61,8 +70,8 @@ export default function MCQCard({ card, onAnswer }) {
                 Multiple Choice
               </span>
             </div>
-            {card.difficulty && (
-              <DifficultyBadge difficulty={card.difficulty} />
+            {card.difficultyLevel && (
+              <DifficultyBadge difficulty={card.difficultyLevel} />
             )}
           </div>
 

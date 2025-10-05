@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
+import type { Flashcard as FlashcardType, FSRSRating, DifficultyLevel } from '../types';
 
-export default function Flashcard({ card, onRate }) {
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [flipped, setFlipped] = useState(false);
+interface FlashcardProps {
+  card: FlashcardType;
+  onRate: (rating: FSRSRating) => void;
+}
+
+export default function Flashcard({ card, onRate }: FlashcardProps) {
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [flipped, setFlipped] = useState<boolean>(false);
 
   // Reset showAnswer when card changes
   useEffect(() => {
@@ -30,8 +36,8 @@ export default function Flashcard({ card, onRate }) {
                   Question
                 </span>
               </div>
-              {card.difficulty && (
-                <DifficultyBadge difficulty={card.difficulty} />
+              {card.difficultyLevel && (
+                <DifficultyBadge difficulty={card.difficultyLevel} />
               )}
             </div>
 
@@ -146,14 +152,18 @@ function RatingButton({ onClick, color, hoverColor, label, emoji, description })
   );
 }
 
-function DifficultyBadge({ difficulty }) {
-  const config = {
+interface DifficultyBadgeProps {
+  difficulty: DifficultyLevel;
+}
+
+function DifficultyBadge({ difficulty }: DifficultyBadgeProps) {
+  const config: Record<DifficultyLevel, { color: string; label: string; emoji: string }> = {
     beginner: { color: 'from-green-500 to-emerald-500', label: '📗 Beginner', emoji: '🌱' },
     intermediate: { color: 'from-blue-500 to-cyan-500', label: '📘 Intermediate', emoji: '⚡' },
     advanced: { color: 'from-red-500 to-orange-500', label: '📕 Advanced', emoji: '🔥' }
   };
 
-  const { color, label, emoji } = config[difficulty] || config.intermediate;
+  const { color, emoji } = config[difficulty] || config.intermediate;
 
   return (
     <div className={`inline-block px-3 py-1 bg-gradient-to-r ${color} rounded-full text-white text-xs font-bold`}>
