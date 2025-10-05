@@ -4,16 +4,40 @@ import { createCard, scheduleCard, isDue } from '../utils/fsrs';
 import { generateFlashcardsByDifficulty } from '../data/generateByDifficulty';
 import { groupAndShuffleByCategory } from '../utils/shuffle';
 import { filterByPrerequisites } from '../utils/prerequisites';
+import type { Flashcard, DifficultyLevel, FSRSRating } from '../types';
 
-export function useCards() {
-  const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(true);
+export interface UseCardsReturn {
+  cards: Flashcard[];
+  loading: boolean;
+  addCard: (
+    question: string,
+    answer: string,
+    tags?: string[],
+    difficulty?: DifficultyLevel,
+    defines?: string,
+    prerequisites?: string[]
+  ) => Promise<Flashcard>;
+  updateCard: (cardId: number, rating: FSRSRating) => Promise<void>;
+  deleteCard: (cardId: number) => Promise<void>;
+  getDueCards: () => Flashcard[];
+  getCardsByDifficulty: (difficulty: DifficultyLevel) => Flashcard[];
+  getStats: () => {
+    total: number;
+    due: number;
+    mastered: number;
+    locked: number;
+  };
+}
+
+export function useCards(): UseCardsReturn {
+  const [cards, setCards] = useState<Flashcard[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadCards();
   }, []);
 
-  async function loadCards() {
+  async function loadCards(): Promise<void> {
     console.log('🔍 [loadCards] Starting card load...');
     try {
       console.log('🔍 [loadCards] Calling storage.getCards()...');
@@ -44,7 +68,7 @@ export function useCards() {
           );
           return {
             ...fsrsCard,
-            difficulty: card.difficulty || 'intermediate'
+            difficultyLevel: card.difficulty || 'intermediate'
           };
         });
         console.log('🔍 [loadCards] Converted to', loadedCards.length, 'FSRS cards');
@@ -60,18 +84,27 @@ export function useCards() {
       console.log('🔍 [loadCards] ✅ Load complete!');
     } catch (error) {
       console.error('❌ [loadCards] ERROR:', error);
-      console.error('❌ [loadCards] Stack:', error.stack);
+      if (error instanceof Error) {
+        console.error('❌ [loadCards] Stack:', error.stack);
+      }
     } finally {
       console.log('🔍 [loadCards] Setting loading to false');
       setLoading(false);
     }
   }
 
-  async function addCard(question, answer, tags = [], difficulty = 'intermediate', defines = null, prerequisites = []) {
+  async function addCard(
+    question: string,
+    answer: string,
+    tags: string[] = [],
+    difficulty: DifficultyLevel = 'intermediate',
+    defines?: string,
+    prerequisites: string[] = []
+  ): Promise<Flashcard> {
     const newCard = createCard(question, answer, tags, defines, prerequisites);
-    const fullCard = {
+    const fullCard: Flashcard = {
       ...newCard,
-      difficulty
+      difficultyLevel: difficulty
     };
     const updatedCards = [...cards, fullCard];
     setCards(updatedCards);
@@ -79,16 +112,16 @@ export function useCards() {
     return fullCard;
   }
 
-  async function updateCard(cardId, rating) {
+  async function updateCard(cardId: number, rating: FSRSRating): Promise<void> {
     console.log('🔍 [updateCard] Rating card:', cardId, 'with rating:', rating);
     const updatedCards = cards.map(card => {
       if (card.id === cardId) {
         const scheduledCard = scheduleCard(card, rating);
         console.log('🔍 [updateCard] Card rescheduled. Next due:', scheduledCard.due);
-        // Preserve difficulty field
+        // Preserve difficultyLevel field
         return {
           ...scheduledCard,
-          difficulty: card.difficulty
+          difficultyLevel: card.difficultyLevel
         };
       }
       return card;
@@ -99,13 +132,13 @@ export function useCards() {
     console.log('🔍 [updateCard] ✅ Update complete');
   }
 
-  async function deleteCard(cardId) {
+  async function deleteCard(cardId: number): Promise<void> {
     const updatedCards = cards.filter(card => card.id !== cardId);
     setCards(updatedCards);
     await storage.saveCards(updatedCards);
   }
 
-  function getDueCards() {
+  function getDueCards(): Flashcard[] {
     const due = cards.filter(isDue);
     console.log('🔍 [getDueCards] Found', due.length, 'due cards out of', cards.length, 'total');
 
@@ -122,8 +155,8 @@ export function useCards() {
     return grouped;
   }
 
-  function getCardsByDifficulty(difficulty) {
-    const filtered = cards.filter(card => card.difficulty === difficulty);
+  function getCardsByDifficulty(difficulty: DifficultyLevel): Flashcard[] {
+    const filtered = cards.filter(card => card.difficultyLevel === difficulty);
 
     // Filter out cards with unmastered prerequisites
     const available = filterByPrerequisites(filtered, cards);
