@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react';
 import { generateFlashcardsByDifficulty } from './data/generateByDifficulty';
 import { generateMCQByDifficulty } from './data/mcq/generateMCQByDifficulty';
+import { GeneratedFlashcard, GeneratedMCQ, DifficultyLevel } from './types';
 import localforage from 'localforage';
 
-const REVIEW_CATEGORIES = [
+type ReviewCategory = 'too-easy' | 'low-value' | 'missing-info' | 'missing-definition' | 'good';
+
+interface ReviewCategoryDef {
+  id: ReviewCategory;
+  label: string;
+  color: string;
+}
+
+const REVIEW_CATEGORIES: ReviewCategoryDef[] = [
   { id: 'too-easy', label: 'Too Easy - Refactor', color: 'bg-blue-100 hover:bg-blue-200 text-blue-800' },
   { id: 'low-value', label: 'Low Value - Remove', color: 'bg-red-100 hover:bg-red-200 text-red-800' },
   { id: 'missing-info', label: 'Not Enough Info', color: 'bg-yellow-100 hover:bg-yellow-200 text-yellow-800' },
@@ -13,14 +22,52 @@ const REVIEW_CATEGORIES = [
 
 const STORAGE_KEY = 'debug-card-reviews';
 
+interface DebugCard {
+  id: string;
+  question: string;
+  answer: string;
+  options?: string[];
+  difficulty: DifficultyLevel;
+  tags: string[];
+  type: 'flashcard' | 'mcq';
+  index: number;
+}
+
+interface Reviews {
+  [cardId: string]: ReviewCategory;
+}
+
+interface Stats {
+  total: number;
+  reviewed: number;
+  'too-easy': number;
+  'low-value': number;
+  'missing-info': number;
+  'missing-definition': number;
+  'good': number;
+  'unreviewed': number;
+}
+
+type FilterType = 'all' | 'unreviewed' | ReviewCategory;
+type CardTypeFilter = 'all' | 'flashcard' | 'mcq';
+
 export default function DebugApp() {
-  const [cards, setCards] = useState([]);
-  const [reviews, setReviews] = useState({});
-  const [filter, setFilter] = useState('all');
-  const [cardType, setCardType] = useState('all'); // 'all', 'flashcard', 'mcq'
-  const [stats, setStats] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [showGoodCards, setShowGoodCards] = useState(false);
+  const [cards, setCards] = useState<DebugCard[]>([]);
+  const [reviews, setReviews] = useState<Reviews>({});
+  const [filter, setFilter] = useState<FilterType>('all');
+  const [cardType, setCardType] = useState<CardTypeFilter>('all');
+  const [stats, setStats] = useState<Stats>({
+    total: 0,
+    reviewed: 0,
+    'too-easy': 0,
+    'low-value': 0,
+    'missing-info': 0,
+    'missing-definition': 0,
+    'good': 0,
+    'unreviewed': 0
+  });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showGoodCards, setShowGoodCards] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -33,32 +80,35 @@ export default function DebugApp() {
   async function loadData() {
     // Load all flashcards
     const flashcards = generateFlashcardsByDifficulty();
-    const flashcardsList = flashcards.all.map((card, index) => ({
-      ...card,
-      id: `flashcard-${card.difficulty}-${index}`,
-      type: 'flashcard',
+    const flashcardsList: DebugCard[] = flashcards.all.map((card: GeneratedFlashcard, index: number) => ({
+      question: card.question,
+      answer: card.answer,
+      tags: card.tags,
+      difficulty: card.difficulty || 'intermediate',
+      id: `flashcard-${card.difficulty || 'intermediate'}-${index}`,
+      type: 'flashcard' as const,
       index
     }));
 
     // Load all MCQs
     const mcqs = generateMCQByDifficulty();
-    const mcqsList = mcqs.all.map((mcq, index) => ({
+    const mcqsList: DebugCard[] = mcqs.all.map((mcq: GeneratedMCQ, index: number) => ({
       question: mcq.question,
       answer: mcq.correctAnswer,
       options: mcq.options,
       difficulty: mcq.difficulty || 'intermediate',
       tags: mcq.tags || [],
       id: `mcq-${mcq.difficulty || 'intermediate'}-${index}`,
-      type: 'mcq',
+      type: 'mcq' as const,
       index
     }));
 
     // Combine all cards
-    const allCards = [...flashcardsList, ...mcqsList];
+    const allCards: DebugCard[] = [...flashcardsList, ...mcqsList];
     setCards(allCards);
 
     // Load existing reviews
-    const savedReviews = await localforage.getItem(STORAGE_KEY) || {};
+    const savedReviews = (await localforage.getItem<Reviews>(STORAGE_KEY)) || {};
     setReviews(savedReviews);
     setLoading(false);
   }
@@ -87,7 +137,7 @@ export default function DebugApp() {
     setStats(stats);
   }
 
-  async function handleReview(cardId, category) {
+  async function handleReview(cardId: string, category: ReviewCategory) {
     const newReviews = { ...reviews, [cardId]: category };
     setReviews(newReviews);
     await localforage.setItem(STORAGE_KEY, newReviews);
@@ -104,7 +154,7 @@ export default function DebugApp() {
     const exportData = {
       timestamp: new Date().toISOString(),
       reviews,
-      cards: cards.filter(card => reviews[card.id]).map(card => ({
+      cards: cards.filter(card => reviews[card.id]).map((card: DebugCard) => ({
         id: card.id,
         question: card.question,
         answer: card.answer,
@@ -124,28 +174,28 @@ export default function DebugApp() {
   }
 
   // Filter cards based on selected filter and card type
-  let filteredCards = cards;
+  let filteredCards: DebugCard[] = cards;
 
   // Apply card type filter
   if (cardType !== 'all') {
-    filteredCards = filteredCards.filter(card => card.type === cardType);
+    filteredCards = filteredCards.filter((card: DebugCard) => card.type === cardType);
   }
 
   // Apply review filter
   if (filter === 'all') {
     // Show all except 'good' cards (unless showGoodCards is true)
-    filteredCards = filteredCards.filter(card => {
+    filteredCards = filteredCards.filter((card: DebugCard) => {
       const review = reviews[card.id];
       if (review === 'good' && !showGoodCards) return false;
       return true;
     });
   } else if (filter === 'unreviewed') {
-    filteredCards = filteredCards.filter(card => !reviews[card.id]);
+    filteredCards = filteredCards.filter((card: DebugCard) => !reviews[card.id]);
   } else {
-    filteredCards = filteredCards.filter(card => reviews[card.id] === filter);
+    filteredCards = filteredCards.filter((card: DebugCard) => reviews[card.id] === filter);
   }
 
-  const goodCards = cards.filter(card => reviews[card.id] === 'good');
+  const goodCards: DebugCard[] = cards.filter((card: DebugCard) => reviews[card.id] === 'good');
 
   if (loading) {
     return (
@@ -308,13 +358,13 @@ export default function DebugApp() {
         )}
 
         <div className="space-y-3">
-          {filteredCards.map((card) => {
+          {filteredCards.map((card: DebugCard) => {
             const currentReview = reviews[card.id];
-            const difficultyEmoji = {
+            const difficultyEmoji: string = {
               beginner: '🌱',
               intermediate: '⚡',
               advanced: '🔥'
-            }[card.difficulty];
+            }[card.difficulty] || '⚡';
 
             return (
               <div
@@ -349,7 +399,7 @@ export default function DebugApp() {
                       </div>
                       {card.type === 'mcq' && card.options && (
                         <div className="text-sm text-gray-700 mb-2 space-y-1">
-                          {card.options.map((option, idx) => (
+                          {card.options.map((option: string, idx: number) => (
                             <div
                               key={idx}
                               className={`px-3 py-1.5 rounded ${

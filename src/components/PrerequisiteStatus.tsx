@@ -1,10 +1,16 @@
 import { getPrerequisiteStatus } from '../utils/prerequisites';
+import type { Flashcard } from '../types';
+
+interface PrerequisiteStatusProps {
+  card: Flashcard;
+  allCards: Flashcard[];
+}
 
 /**
  * Shows prerequisite status for a card
  * Displays which concepts need to be mastered before this card is available
  */
-export default function PrerequisiteStatus({ card, allCards }) {
+export default function PrerequisiteStatus({ card, allCards }: PrerequisiteStatusProps) {
   if (!card) return null;
 
   const status = getPrerequisiteStatus(card, allCards);

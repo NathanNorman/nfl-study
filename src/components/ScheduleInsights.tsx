@@ -13,7 +13,8 @@ export default function ScheduleInsights({ cards }: ScheduleInsightsProps) {
   const dueNow = cards.filter(c => new Date(c.due) <= now);
   const dueToday = cards.filter(c => {
     const due = new Date(c.due);
-    const today = new Date().setHours(23, 59, 59, 999);
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
     return due <= today;
   });
   const dueTomorrow = cards.filter(c => {
@@ -24,7 +25,7 @@ export default function ScheduleInsights({ cards }: ScheduleInsightsProps) {
     const dayAfter = new Date();
     dayAfter.setDate(dayAfter.getDate() + 2);
     dayAfter.setHours(0, 0, 0, 0);
-    return due > new Date() && due >= dayAfter.setHours(0, 0, 0, 0) && due <= tomorrow;
+    return due > now && due >= dayAfter && due <= tomorrow;
   });
   const dueThisWeek = cards.filter(c => {
     const due = new Date(c.due);
@@ -41,7 +42,7 @@ export default function ScheduleInsights({ cards }: ScheduleInsightsProps) {
 
   // Find next due card
   const futureCards = cards.filter(c => new Date(c.due) > now);
-  const nextDue = futureCards.sort((a, b) => new Date(a.due) - new Date(b.due))[0];
+  const nextDue = futureCards.sort((a, b) => new Date(a.due).getTime() - new Date(b.due).getTime())[0];
 
   return (
     <div className="glass-card rounded-2xl p-6 mb-8">
@@ -78,7 +79,13 @@ export default function ScheduleInsights({ cards }: ScheduleInsightsProps) {
   );
 }
 
-function InsightCard({ label, value, color }) {
+interface InsightCardProps {
+  label: string;
+  value: number;
+  color: string;
+}
+
+function InsightCard({ label, value, color }: InsightCardProps) {
   return (
     <div className="glass px-4 py-3 rounded-xl text-center">
       <div className={`text-2xl font-black ${color}`}>{value}</div>
@@ -87,7 +94,14 @@ function InsightCard({ label, value, color }) {
   );
 }
 
-function StateCard({ label, value, emoji, color }) {
+interface StateCardProps {
+  label: string;
+  value: number;
+  emoji: string;
+  color: string;
+}
+
+function StateCard({ label, value, emoji, color }: StateCardProps) {
   return (
     <div className="glass px-4 py-3 rounded-xl text-center">
       <div className="text-xl mb-1">{emoji}</div>

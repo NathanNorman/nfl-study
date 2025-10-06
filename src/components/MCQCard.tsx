@@ -27,7 +27,7 @@ function DifficultyBadge({ difficulty }: DifficultyBadgeProps) {
 
 interface MCQCardProps {
   card: MCQCardType;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (selectedOption: string) => void;
 }
 
 export default function MCQCard({ card, onAnswer }: MCQCardProps) {
@@ -42,7 +42,7 @@ export default function MCQCard({ card, onAnswer }: MCQCardProps) {
     setShowResult(false);
   }, [card?.question]);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option: string) => {
     if (showResult) return; // Prevent changing answer after submission
 
     setSelectedOption(option);
@@ -53,7 +53,7 @@ export default function MCQCard({ card, onAnswer }: MCQCardProps) {
 
     // Auto-advance after showing result
     setTimeout(() => {
-      onAnswer(isCorrect);
+      onAnswer(option);
     }, 1500);
   };
 

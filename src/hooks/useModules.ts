@@ -17,7 +17,7 @@ import {
   getCardsForModule
 } from '../utils/modules/index';
 import { storage } from '../utils/storage';
-import type { Module, ModuleProgress, Flashcard, MCQCard } from '../types';
+import type { Module, MCQCard } from '../types';
 import type { ModuleProgressMap } from '../utils/modules/moduleUnlock';
 
 export interface UseModulesReturn {
@@ -76,10 +76,12 @@ export function useModules(): UseModulesReturn {
   const handleStartModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await startModule(moduleId);
-      setModulesProgress(prev => ({
-        ...prev,
-        [moduleId]: updated
-      }));
+      if (updated) {
+        setModulesProgress(prev => ({
+          ...prev,
+          [moduleId]: updated
+        }));
+      }
       setCurrentModuleId(moduleId);
       return true;
     } catch (error) {
@@ -98,10 +100,12 @@ export function useModules(): UseModulesReturn {
   const handleSkipModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await skipModule(moduleId);
-      setModulesProgress(prev => ({
-        ...prev,
-        [moduleId]: updated
-      }));
+      if (updated) {
+        setModulesProgress(prev => ({
+          ...prev,
+          [moduleId]: updated
+        }));
+      }
       return true;
     } catch (error) {
       console.error(`Error skipping module ${moduleId}:`, error);
@@ -113,10 +117,12 @@ export function useModules(): UseModulesReturn {
   const handleCompleteModule = useCallback(async (moduleId: string): Promise<boolean> => {
     try {
       const updated = await completeModule(moduleId);
-      setModulesProgress(prev => ({
-        ...prev,
-        [moduleId]: updated
-      }));
+      if (updated) {
+        setModulesProgress(prev => ({
+          ...prev,
+          [moduleId]: updated
+        }));
+      }
       return true;
     } catch (error) {
       console.error(`Error completing module ${moduleId}:`, error);

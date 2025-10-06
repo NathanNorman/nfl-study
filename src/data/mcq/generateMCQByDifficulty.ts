@@ -1,4 +1,4 @@
-import type { GeneratedMCQ, OrganizedFlashcards } from '../../types';
+import type { GeneratedMCQ } from '../../types';
 import { footballBasicsMCQ } from '../beginner/footballBasicsMCQ';
 import { playersMCQ } from './playersMCQ';
 import { strategyMCQ } from './strategyMCQ';
@@ -14,6 +14,8 @@ import { extendedRosterMCQ } from './extendedRosterMCQ';
 import { additionalPlayersMCQ } from './additionalPlayersMCQ';
 import { comprehensiveTerminologyMCQs } from './comprehensiveTerminologyMCQ';
 
+import type { DifficultyLevel } from '../../types';
+
 /**
  * Shuffle array
  */
@@ -21,7 +23,12 @@ function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const temp = shuffled[i];
+    const swapItem = shuffled[j];
+    if (temp !== undefined && swapItem !== undefined) {
+      shuffled[i] = swapItem;
+      shuffled[j] = temp;
+    }
   }
   return shuffled;
 }
@@ -29,7 +36,7 @@ function shuffleArray<T>(array: T[]): T[] {
 /**
  * Add difficulty tags to existing MCQs
  */
-function tagMCQDifficulty(mcqs: GeneratedMCQ[], difficulty: string): GeneratedMCQ[] {
+function tagMCQDifficulty(mcqs: GeneratedMCQ[], difficulty: DifficultyLevel): GeneratedMCQ[] {
   return mcqs.map(mcq => ({
     ...mcq,
     difficulty: mcq.difficulty || difficulty,
@@ -37,10 +44,26 @@ function tagMCQDifficulty(mcqs: GeneratedMCQ[], difficulty: string): GeneratedMC
   }));
 }
 
+export interface OrganizedMCQs {
+  all: GeneratedMCQ[];
+  beginner: {
+    cards: GeneratedMCQ[];
+    count: number;
+  };
+  intermediate: {
+    cards: GeneratedMCQ[];
+    count: number;
+  };
+  advanced: {
+    cards: GeneratedMCQ[];
+    count: number;
+  };
+}
+
 /**
  * Generate MCQs organized by difficulty
  */
-export function generateMCQByDifficulty(): OrganizedFlashcards<GeneratedMCQ> {
+export function generateMCQByDifficulty(): OrganizedMCQs {
   const beginner = [
     ...footballBasicsMCQ, // Already tagged as beginner
     ...allPlayerMCQs.filter(m => m.difficulty === 'beginner'),
@@ -100,6 +123,9 @@ export function generateMCQByDifficulty(): OrganizedFlashcards<GeneratedMCQ> {
  */
 export function getMCQByDifficulty(difficulty: 'beginner' | 'intermediate' | 'advanced' | 'all'): GeneratedMCQ[] {
   const organized = generateMCQByDifficulty();
+  if (difficulty === 'all') {
+    return organized.all;
+  }
   return organized[difficulty]?.cards || [];
 }
 

@@ -6,12 +6,19 @@
 import { useState, useEffect } from 'react';
 import Flashcard from '../components/Flashcard';
 import { getCardsForModule } from '../utils/modules/index.js';
-import { isDue } from '../utils/fsrs';
+import type { Module, Flashcard as FlashcardType, FSRSRating } from '../types';
 
-export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, onUpdateProgress }) {
-  const [moduleCards, setModuleCards] = useState([]);
+interface ModuleStudyPageProps {
+  module: Module | null;
+  cards: FlashcardType[];
+  onUpdateCard: (cardId: number, rating: FSRSRating) => Promise<void>;
+  onExit: () => void;
+  onUpdateProgress?: (moduleId: string) => void;
+}
+
+export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, onUpdateProgress }: ModuleStudyPageProps) {
+  const [moduleCards, setModuleCards] = useState<FlashcardType[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
 
   // Snapshot cards when module starts - don't re-filter during study session
   // NOTE: Only depends on module.id, NOT on cards array. This prevents re-filtering
@@ -29,8 +36,13 @@ export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, o
     setCurrentCardIndex(0);
   }, [module?.id]); // Only re-filter when module changes, not when cards reload
 
-  const handleRate = async (rating) => {
+  const handleRate = async (rating: FSRSRating) => {
     const currentCard = moduleCards[currentCardIndex];
+    if (!currentCard) {
+      console.error('No current card to rate');
+      return;
+    }
+
     await onUpdateCard(currentCard.id, rating);
 
     // Update module progress immediately after rating
@@ -41,10 +53,9 @@ export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, o
     // Move to next card
     if (currentCardIndex < moduleCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-      setIsFlipped(false);
     } else {
       // Completed all cards in module
-      alert(`🎉 You've completed all cards in ${module.name}!`);
+      alert(`🎉 You've completed all cards in ${module?.name || 'this module'}!`);
       onExit();
     }
   };
@@ -52,14 +63,12 @@ export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, o
   const handlePrevious = () => {
     if (currentCardIndex > 0) {
       setCurrentCardIndex(currentCardIndex - 1);
-      setIsFlipped(false);
     }
   };
 
   const handleNext = () => {
     if (currentCardIndex < moduleCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-      setIsFlipped(false);
     }
   };
 
@@ -168,10 +177,12 @@ export default function ModuleStudyPage({ module, cards, onUpdateCard, onExit, o
         </div>
 
         {/* Flashcard */}
-        <Flashcard
-          card={moduleCards[currentCardIndex]}
-          onRate={handleRate}
-        />
+        {moduleCards[currentCardIndex] && (
+          <Flashcard
+            card={moduleCards[currentCardIndex]}
+            onRate={handleRate}
+          />
+        )}
 
         {/* Module Info Footer */}
         <div className="mt-8 text-center text-purple-300/60 text-sm">

@@ -6,11 +6,19 @@
 import { useState, useEffect } from 'react';
 import MCQCard from '../components/MCQCard';
 import { getCardsForModule } from '../utils/modules/index.js';
-import { isDue } from '../utils/fsrs';
+import type { MCQCard as MCQCardType, Module } from '../types';
 
-export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUpdateProgress }) {
-  const [moduleMCQs, setModuleMCQs] = useState([]);
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+interface ModuleMCQPageProps {
+  module: Module | null;
+  mcqs: MCQCardType[];
+  onUpdateCard: (cardId: number, rating: number) => Promise<void>;
+  onExit: () => void;
+  onUpdateProgress?: (moduleId: string) => void;
+}
+
+export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUpdateProgress }: ModuleMCQPageProps) {
+  const [moduleMCQs, setModuleMCQs] = useState<MCQCardType[]>([]);
+  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
 
   // Snapshot MCQs when module starts - don't re-filter during study session
   // NOTE: Only depends on module.id, NOT on mcqs array. This prevents the list from
@@ -27,8 +35,10 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
     setCurrentCardIndex(0);
   }, [module?.id]); // Only re-filter when module changes, not when mcqs reload
 
-  const handleAnswer = async (selectedOption) => {
+  const handleAnswer = async (selectedOption: string) => {
     const currentCard = moduleMCQs[currentCardIndex];
+    if (!currentCard) return;
+
     const isCorrect = selectedOption === currentCard.correctAnswer;
     const rating = isCorrect ? 4 : 1; // Easy if correct, Again if wrong
 
@@ -44,7 +54,7 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
       if (currentCardIndex < moduleMCQs.length - 1) {
         setCurrentCardIndex(currentCardIndex + 1);
       } else {
-        alert(`🎉 You've completed all MCQs in ${module.name}!`);
+        alert(`🎉 You've completed all MCQs in ${module?.name ?? 'this module'}!`);
         onExit();
       }
     }, 1000);
@@ -88,13 +98,13 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
               📚 Modules
             </button>
             <span>›</span>
-            <span className="text-white font-semibold">{module.icon} {module.name} (MCQ)</span>
+            <span className="text-white font-semibold">{module?.icon} {module?.name} (MCQ)</span>
           </div>
 
           <h1 className="text-4xl font-black gradient-text shine mb-2">
-            {module.name}
+            {module?.name}
           </h1>
-          <p className="text-purple-200">{module.description}</p>
+          <p className="text-purple-200">{module?.description}</p>
         </header>
 
         {/* Progress Bar */}
@@ -124,16 +134,18 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
         </div>
 
         {/* MCQ Card */}
-        <MCQCard
-          card={moduleMCQs[currentCardIndex]}
-          onAnswer={handleAnswer}
-        />
+        {moduleMCQs[currentCardIndex] && (
+          <MCQCard
+            card={moduleMCQs[currentCardIndex]}
+            onAnswer={handleAnswer}
+          />
+        )}
 
         {/* Module Info Footer */}
         <div className="mt-8 text-center text-purple-300/60 text-sm">
           <p>
-            Module {module.order} of 8 • {module.difficulty ? module.difficulty.charAt(0).toUpperCase() + module.difficulty.slice(1) : 'N/A'} •
-            {' '}~{module.estimatedMinutes} min
+            Module {module?.order ?? 0} of 8 • {module?.difficulty ? module.difficulty.charAt(0).toUpperCase() + module.difficulty.slice(1) : 'N/A'} •
+            {' '}~{module?.estimatedMinutes ?? 0} min
           </p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import type { Flashcard } from '../types';
+import type { ContentItem } from '../types';
 
 /**
  * Fisher-Yates shuffle algorithm
@@ -22,9 +22,9 @@ export function shuffleArray<T>(array: T[]): T[] {
  * Group cards by their primary category (first tag after difficulty level)
  * Then shuffle cards within each category
  */
-export function groupAndShuffleByCategory(cards: Flashcard[]): Flashcard[] {
+export function groupAndShuffleByCategory<T extends ContentItem>(cards: T[]): T[] {
   // Group by primary category
-  const grouped: Record<string, Flashcard[]> = {};
+  const grouped: Record<string, T[]> = {};
 
   cards.forEach(card => {
     // Get primary category (first non-difficulty tag)
@@ -39,7 +39,7 @@ export function groupAndShuffleByCategory(cards: Flashcard[]): Flashcard[] {
   });
 
   // Shuffle within each category
-  const shuffledGroups: Record<string, Flashcard[]> = {};
+  const shuffledGroups: Record<string, T[]> = {};
   Object.keys(grouped).forEach(category => {
     const categoryCards = grouped[category];
     if (categoryCards) {
@@ -49,7 +49,7 @@ export function groupAndShuffleByCategory(cards: Flashcard[]): Flashcard[] {
 
   // Return in a consistent category order (alphabetical), but cards within are shuffled
   const sortedCategories = Object.keys(shuffledGroups).sort();
-  const result: Flashcard[] = [];
+  const result: T[] = [];
 
   sortedCategories.forEach(category => {
     const categoryCards = shuffledGroups[category];

@@ -22,7 +22,6 @@ export default function ModulesApp() {
     startModule,
     continueModule,
     skipModule,
-    completeModule,
     exitModule,
     updateModuleProgress,
     getCurrentModule
@@ -32,7 +31,7 @@ export default function ModulesApp() {
   const [studyMode, setStudyMode] = useState('flashcard'); // 'flashcard' or 'mcq'
 
   // Handle module selection - flashcards
-  const handleSelectModule = async (moduleId) => {
+  const handleSelectModule = async (moduleId: string) => {
     const progress = modulesProgress[moduleId];
     if (progress?.state === 'inProgress' || progress?.state === 'completed') {
       await continueModule(moduleId);
@@ -44,7 +43,7 @@ export default function ModulesApp() {
   };
 
   // Handle module selection - MCQs
-  const handleSelectModuleMCQ = async (moduleId) => {
+  const handleSelectModuleMCQ = async (moduleId: string) => {
     const progress = modulesProgress[moduleId];
     if (progress?.state === 'inProgress' || progress?.state === 'completed') {
       await continueModule(moduleId);
@@ -83,7 +82,7 @@ export default function ModulesApp() {
     if (studyMode === 'mcq') {
       return (
         <ModuleMCQPage
-          module={getCurrentModule()}
+          module={getCurrentModule() ?? null}
           mcqs={mcqs}
           onUpdateCard={updateMCQ}
           onExit={handleExitStudy}
@@ -94,7 +93,7 @@ export default function ModulesApp() {
 
     return (
       <ModuleStudyPage
-        module={getCurrentModule()}
+        module={getCurrentModule() ?? null}
         cards={cards}
         onUpdateCard={updateCard}
         onExit={handleExitStudy}
@@ -112,7 +111,6 @@ export default function ModulesApp() {
       onSelectModule={handleSelectModule}
       onSelectModuleMCQ={handleSelectModuleMCQ}
       onSkipModule={skipModule}
-      onCompleteModule={completeModule}
     />
   );
 }

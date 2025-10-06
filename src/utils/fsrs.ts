@@ -1,5 +1,5 @@
 import { fsrs, generatorParameters, Rating, State, createEmptyCard } from 'ts-fsrs';
-import type { Flashcard, FSRSRating } from '../types';
+import type { Flashcard, FSRSRating, ContentItem } from '../types';
 
 // Initialize FSRS with default parameters
 const params = generatorParameters();
@@ -74,7 +74,7 @@ export function scheduleCard(card: Flashcard, rating: FSRSRating): Flashcard {
 /**
  * Check if card is due for review
  */
-export function isDue(card: Flashcard): boolean {
+export function isDue<T extends ContentItem>(card: T): boolean {
   const now = new Date();
   return new Date(card.due) <= now;
 }

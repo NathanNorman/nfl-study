@@ -9,7 +9,7 @@ import type { MCQCard, DifficultyLevel } from '../types';
 export interface UseMCQReturn {
   cards: MCQCard[];
   loading: boolean;
-  updateCard: (cardId: number, isCorrect: boolean) => Promise<void>;
+  updateCard: (cardId: number, rating: number) => Promise<void>;
   getDueCards: () => MCQCard[];
   getCardsByDifficulty: (difficulty: DifficultyLevel, onlyDue?: boolean) => MCQCard[];
   getAllCardsByDifficulty: (difficulty: DifficultyLevel) => MCQCard[];
@@ -49,7 +49,7 @@ export function useMCQ(): UseMCQReturn {
         });
 
         // Convert MCQ to FSRS cards
-        loadedCards = mcqQuestions.map(mcq => {
+        loadedCards = mcqQuestions.map((mcq): MCQCard => {
           const fsrsCard = createCard(
             mcq.question,
             mcq.correctAnswer,
@@ -71,7 +71,7 @@ export function useMCQ(): UseMCQReturn {
         console.log('🔍 [useMCQ.loadCards] ✅ Saved to storage');
       }
 
-      setCards(loadedCards);
+      setCards(loadedCards || []);
       console.log('🔍 [useMCQ.loadCards] ✅ Load complete!');
     } catch (error) {
       console.error('❌ [useMCQ.loadCards] ERROR:', error);
@@ -80,19 +80,17 @@ export function useMCQ(): UseMCQReturn {
     }
   }
 
-  async function updateCard(cardId: number, isCorrect: boolean): Promise<void> {
-    console.log('🔍 [useMCQ.updateCard] Updating card:', cardId, '| Correct:', isCorrect);
+  async function updateCard(cardId: number, rating: number): Promise<void> {
+    console.log('🔍 [useMCQ.updateCard] Updating card:', cardId, '| Rating:', rating);
 
-    // Convert correct/incorrect to FSRS rating (1-4)
-    const rating = isCorrect ? 3 : 1; // Good if correct, Again if incorrect
-
-    const updatedCards = cards.map(card => {
+    const updatedCards = cards.map((card): MCQCard => {
       if (card.id === cardId) {
-        const scheduledCard = scheduleCard(card, rating);
+        const scheduledCard = scheduleCard(card as any, rating as 1 | 2 | 3 | 4);
         return {
           ...scheduledCard,
           options: card.options,
           correctAnswer: card.correctAnswer,
+          difficultyLevel: card.difficultyLevel,
           type: 'mcq' as const
         };
       }

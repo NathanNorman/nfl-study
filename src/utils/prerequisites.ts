@@ -11,7 +11,7 @@
  */
 
 import { State } from './fsrs';
-import type { Flashcard } from '../types';
+import type { ContentItem } from '../types';
 
 export interface PrerequisiteStatus {
   id: string;
@@ -32,7 +32,7 @@ export interface PrerequisitesInfo {
 /**
  * Check if a card's prerequisites are mastered
  */
-export function arePrerequisitesMastered(card: Flashcard, allCards: Flashcard[]): boolean {
+export function arePrerequisitesMastered<T extends ContentItem>(card: T, allCards: T[]): boolean {
   // No prerequisites = always available
   if (!card.prerequisites || card.prerequisites.length === 0) {
     return true;
@@ -60,26 +60,26 @@ export function arePrerequisitesMastered(card: Flashcard, allCards: Flashcard[])
 /**
  * Filter cards to only show those with mastered prerequisites
  */
-export function filterByPrerequisites(cards: Flashcard[], allCards: Flashcard[]): Flashcard[] {
+export function filterByPrerequisites<T extends ContentItem>(cards: T[], allCards: T[]): T[] {
   return cards.filter(card => arePrerequisitesMastered(card, allCards));
 }
 
 /**
  * Get locked cards (prerequisites not yet mastered)
  */
-export function getLockedCards(cards: Flashcard[], allCards: Flashcard[]): Flashcard[] {
+export function getLockedCards<T extends ContentItem>(cards: T[], allCards: T[]): T[] {
   return cards.filter(card => !arePrerequisitesMastered(card, allCards));
 }
 
 /**
  * Get prerequisites status for a card
  */
-export function getPrerequisiteStatus(card: Flashcard, allCards: Flashcard[]): PrerequisitesInfo {
+export function getPrerequisiteStatus<T extends ContentItem>(card: T, allCards: T[]): PrerequisitesInfo {
   if (!card.prerequisites || card.prerequisites.length === 0) {
     return { hasPrerequisites: false, all: [] };
   }
 
-  const status: PrerequisiteStatus[] = card.prerequisites.map(prereqId => {
+  const status: PrerequisiteStatus[] = card.prerequisites.map((prereqId: string) => {
     const prereqCard = allCards.find(c => c.defines === prereqId);
 
     if (!prereqCard) {

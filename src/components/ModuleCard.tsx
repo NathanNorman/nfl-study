@@ -1,7 +1,21 @@
+import type { Module, ModuleProgress } from '../types';
+
 /**
  * MODULE CARD COMPONENT
  * Clean, Duolingo-inspired card design with strong visual hierarchy
  */
+
+interface ModuleCardProps {
+  module: Module;
+  progress: ModuleProgress | null;
+  isLocked: boolean;
+  missingPrerequisites?: Module[];
+  onStart: () => void;
+  onContinue: () => void;
+  onSkip: () => void;
+  onStartMCQ: () => void;
+  onContinueMCQ: () => void;
+}
 
 export default function ModuleCard({
   module,
@@ -11,10 +25,9 @@ export default function ModuleCard({
   onStart,
   onContinue,
   onSkip,
-  onComplete,
   onStartMCQ,
   onContinueMCQ
-}) {
+}: ModuleCardProps) {
   const state = progress?.state || 'notStarted';
 
   // Calculate studied percent (cards attempted / total cards)

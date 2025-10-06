@@ -3,7 +3,18 @@
  * Vertical learning path with visual connections (Duolingo-style)
  */
 
+import type { Module, ModuleProgress } from '../types';
 import ModuleCard from './ModuleCard';
+
+interface ModuleGridProps {
+  modules?: Module[];
+  modulesProgress?: Record<string, ModuleProgress>;
+  onStartModule: (moduleId: string) => void;
+  onContinueModule: (moduleId: string) => void;
+  onStartModuleMCQ: (moduleId: string) => void;
+  onContinueModuleMCQ: (moduleId: string) => void;
+  onSkipModule: (moduleId: string) => void;
+}
 
 export default function ModuleGrid({
   modules = [],
@@ -12,45 +23,55 @@ export default function ModuleGrid({
   onContinueModule,
   onStartModuleMCQ,
   onContinueModuleMCQ,
-  onSkipModule,
-  onCompleteModule
-}) {
+  onSkipModule
+}: ModuleGridProps) {
   // Check if module is locked
-  const isModuleLocked = (module) => {
-    if (!module.prerequisites || module.prerequisites.length === 0) {
+  const isModuleLocked = (module: Module): boolean => {
+    if (!module.prerequisites) {
+      return false;
+    }
+
+    // Check if prerequisites is an empty array
+    if (Array.isArray(module.prerequisites) && module.prerequisites.length === 0) {
       return false;
     }
 
     // Handle OR prerequisites
-    if (module.prerequisites.or) {
-      return !module.prerequisites.or.some(prereqId => {
+    if (typeof module.prerequisites === 'object' && 'or' in module.prerequisites) {
+      return !module.prerequisites.or.some((prereqId: string) => {
         const prereqProgress = modulesProgress[prereqId];
         return prereqProgress?.state === 'completed' || prereqProgress?.state === 'skipped';
       });
     }
 
     // Handle AND prerequisites
-    return module.prerequisites.some(prereqId => {
-      const prereqProgress = modulesProgress[prereqId];
-      return prereqProgress?.state !== 'completed' && prereqProgress?.state !== 'skipped';
-    });
-  };
-
-  // Get missing prerequisites for locked module
-  const getMissingPrereqs = (module) => {
-    if (!isModuleLocked(module)) return [];
-
-    let prereqIds = [];
-    if (module.prerequisites.or) {
-      prereqIds = module.prerequisites.or;
-    } else {
-      prereqIds = module.prerequisites.filter(prereqId => {
+    if (Array.isArray(module.prerequisites)) {
+      return module.prerequisites.some((prereqId: string) => {
         const prereqProgress = modulesProgress[prereqId];
         return prereqProgress?.state !== 'completed' && prereqProgress?.state !== 'skipped';
       });
     }
 
-    return prereqIds.map(prereqId => modules.find(m => m.id === prereqId)).filter(Boolean);
+    return false;
+  };
+
+  // Get missing prerequisites for locked module
+  const getMissingPrereqs = (module: Module): Module[] => {
+    if (!isModuleLocked(module)) return [];
+
+    let prereqIds: string[] = [];
+    if (typeof module.prerequisites === 'object' && 'or' in module.prerequisites) {
+      prereqIds = module.prerequisites.or;
+    } else if (Array.isArray(module.prerequisites)) {
+      prereqIds = module.prerequisites.filter((prereqId: string) => {
+        const prereqProgress = modulesProgress[prereqId];
+        return prereqProgress?.state !== 'completed' && prereqProgress?.state !== 'skipped';
+      });
+    }
+
+    return prereqIds
+      .map((prereqId: string) => modules.find((m: Module) => m.id === prereqId))
+      .filter((m): m is Module => m !== undefined);
   };
 
   return (
@@ -60,10 +81,10 @@ export default function ModuleGrid({
 
       {/* Modules */}
       <div className="space-y-6">
-        {modules.map((module, index) => {
+        {modules.map((module) => {
           const isLocked = isModuleLocked(module);
           const missingPrereqs = getMissingPrereqs(module);
-          const moduleProgress = modulesProgress[module.id];
+          const moduleProgress = modulesProgress[module.id] || null;
 
           return (
             <div key={module.id} className="relative">
@@ -90,7 +111,6 @@ export default function ModuleGrid({
                   onStartMCQ={() => onStartModuleMCQ(module.id)}
                   onContinueMCQ={() => onContinueModuleMCQ(module.id)}
                   onSkip={() => onSkipModule(module.id)}
-                  onComplete={() => onCompleteModule(module.id)}
                 />
               </div>
             </div>

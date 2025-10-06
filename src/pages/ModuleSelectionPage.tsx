@@ -3,7 +3,17 @@
  * Duolingo-inspired linear learning path
  */
 
+import type { Module, ModuleProgress, ModuleState } from '../types';
 import ModuleGrid from '../components/ModuleGrid';
+
+interface ModuleSelectionPageProps {
+  modules: Module[];
+  modulesProgress: Record<string, ModuleProgress>;
+  loading: boolean;
+  onSelectModule: (moduleId: string) => void;
+  onSelectModuleMCQ: (moduleId: string) => void;
+  onSkipModule: (moduleId: string) => void;
+}
 
 export default function ModuleSelectionPage({
   modules,
@@ -11,13 +21,12 @@ export default function ModuleSelectionPage({
   loading,
   onSelectModule,
   onSelectModuleMCQ,
-  onSkipModule,
-  onCompleteModule
-}) {
+  onSkipModule
+}: ModuleSelectionPageProps) {
 
   // Calculate overall statistics
   const getOverallStats = () => {
-    const stats = {
+    const stats: Record<ModuleState | 'total', number> = {
       total: modules.length,
       completed: 0,
       inProgress: 0,
@@ -26,7 +35,7 @@ export default function ModuleSelectionPage({
     };
 
     Object.values(modulesProgress).forEach(progress => {
-      const state = progress?.state || 'notStarted';
+      const state: ModuleState = progress?.state || 'notStarted';
       stats[state]++;
     });
 
@@ -115,7 +124,6 @@ export default function ModuleSelectionPage({
           onStartModuleMCQ={onSelectModuleMCQ}
           onContinueModuleMCQ={onSelectModuleMCQ}
           onSkipModule={onSkipModule}
-          onCompleteModule={onCompleteModule}
         />
       </div>
     </div>
