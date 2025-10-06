@@ -31,9 +31,15 @@ export default function ModuleCard({
   const state = progress?.state || 'notStarted';
 
   // Calculate studied percent (cards attempted / total cards)
+  // Combine BOTH flashcards and MCQs for accurate progress
   const flashcards = progress?.progress?.flashcards || { total: 0, studied: 0 };
-  const completionPercent = flashcards.total > 0
-    ? Math.round((flashcards.studied / flashcards.total) * 100)
+  const mcqs = progress?.progress?.mcqs || { total: 0, attempted: 0 };
+
+  const totalCards = flashcards.total + mcqs.total;
+  const studiedCards = flashcards.studied + mcqs.attempted;
+
+  const completionPercent = totalCards > 0
+    ? Math.round((studiedCards / totalCards) * 100)
     : 0;
 
   // Debug logging
@@ -42,6 +48,9 @@ export default function ModuleCard({
       state,
       progress: progress,
       flashcards,
+      mcqs,
+      totalCards,
+      studiedCards,
       completionPercent
     });
   }
