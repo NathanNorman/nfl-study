@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react';
 import MCQCard from '../components/MCQCard';
 import { getCardsForModule } from '../utils/modules/index.js';
+import { isDue } from '../utils/fsrs';
 import type { MCQCard as MCQCardType, Module } from '../types';
 
 interface ModuleMCQPageProps {
@@ -20,20 +21,29 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
   const [moduleMCQs, setModuleMCQs] = useState<MCQCardType[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
 
-  // Snapshot MCQs when module starts - don't re-filter during study session
-  // NOTE: Only depends on module.id, NOT on mcqs array. This prevents the list from
-  // shrinking (14→13→12...) as cards are answered and removed from "due" status.
+  // Snapshot MCQs when module starts - filter to due/unanswered cards
   useEffect(() => {
     if (!module || !mcqs || !Array.isArray(mcqs)) return;
 
     const mcqIds = getCardsForModule(module.id, 'mcq');
-    const filtered = mcqs.filter(card => mcqIds.includes(card.question));
 
-    console.log(`✅ [ModuleMCQPage] Module: ${module.name}, Snapshotting ${filtered.length} MCQs`);
+    // Filter to module MCQs that are either new or due for review
+    const filtered = mcqs.filter(card => {
+      // Must be in this module
+      if (!mcqIds.includes(card.question)) return false;
+
+      // Include if not yet attempted OR if due for review
+      const isNew = !card.reps || card.reps === 0;
+      const isDueForReview = isDue(card);
+
+      return isNew || isDueForReview;
+    });
+
+    console.log(`✅ [ModuleMCQPage] Module: ${module.name}, ${filtered.length} due/new MCQs (${mcqIds.length} total in module)`);
 
     setModuleMCQs(filtered);
     setCurrentCardIndex(0);
-  }, [module?.id]); // Only re-filter when module changes, not when mcqs reload
+  }, [module?.id, mcqs]); // Re-filter when module changes OR when mcqs update
 
   const handleAnswer = async (selectedOption: string) => {
     const currentCard = moduleMCQs[currentCardIndex];
