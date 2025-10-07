@@ -10,18 +10,6 @@ export const additionalPlayersMCQ: GeneratedMCQ[] = [
   // DEFENSIVE STRATEGY & STREAMING
   // ========================================
   {
-    question: "What makes a defense valuable in fantasy football?",
-    correctAnswer: "Sacks, turnovers, TDs, and low points allowed",
-    options: [
-      "Sacks, turnovers, TDs, and low points allowed",
-      "Only defensive touchdowns matter",
-      "Total tackles by the team",
-      "Being in a cold-weather city"
-    ],
-    tags: ["Defense", "Scoring", "Strategy"],
-    difficulty: "intermediate"
-  },
-  {
     question: "When should you draft a defense?",
     correctAnswer: "Last 2 rounds",
     options: [
