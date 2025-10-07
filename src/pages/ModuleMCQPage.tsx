@@ -58,7 +58,7 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
 
     setModuleMCQs(filtered);
     setCurrentCardIndex(0);
-  }, [module?.id, mcqs]); // Re-filter when module changes OR when mcqs update
+  }, [module?.id]); // Only re-filter when module changes, NOT when mcqs update (prevents list shrinking during session)
 
   const handleAnswer = async (selectedOption: string) => {
     const currentCard = moduleMCQs[currentCardIndex];
