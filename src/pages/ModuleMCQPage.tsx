@@ -40,13 +40,21 @@ export default function ModuleMCQPage({ module, mcqs, onUpdateCard, onExit, onUp
     });
 
     console.log(`✅ [ModuleMCQPage] Module: ${module.name}, ${filtered.length} due/new MCQs (${mcqIds.length} total in module)`);
-    console.log(`🔍 [ModuleMCQPage] MCQ breakdown:`, {
-      totalMCQsInApp: mcqs.length,
-      mcqIdsForThisModule: mcqIds.length,
-      filteredDueNew: filtered.length,
-      sampleFiltered: filtered.slice(0, 3).map(c => ({ question: c.question.substring(0, 40), reps: c.reps })),
-      sampleMcqIds: mcqIds.slice(0, 3)
+
+    // Detailed logging to find duplicate
+    console.log(`🔍 [ModuleMCQPage] ALL filtered MCQ questions:`, filtered.map(c => c.question));
+    console.log(`🔍 [ModuleMCQPage] Module mapping expects these questions:`, mcqIds);
+
+    // Check for duplicates
+    const questionCounts = new Map<string, number>();
+    filtered.forEach(card => {
+      const count = questionCounts.get(card.question) || 0;
+      questionCounts.set(card.question, count + 1);
     });
+    const duplicates = Array.from(questionCounts.entries()).filter(([_, count]) => count > 1);
+    if (duplicates.length > 0) {
+      console.warn(`⚠️ [ModuleMCQPage] DUPLICATE MCQs FOUND:`, duplicates);
+    }
 
     setModuleMCQs(filtered);
     setCurrentCardIndex(0);
